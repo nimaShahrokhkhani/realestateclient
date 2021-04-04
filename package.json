@@ -1,0 +1,24 @@
+{
+  "name": "realstate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jquery-editable-select": "^2.2.0",
+    "electron": "^11.3.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "electron-store": "^7.0.2",
+    "jquery": "^3.6.0",
+    "jquery-editable-select": "^2.2.5",
+    "node-machine-id": "^1.1.12",
+    "persian-datepicker": "^1.2.0"
+  }
+}

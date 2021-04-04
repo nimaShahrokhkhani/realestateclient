@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="node_modules/persian-date/dist/persian-date.js" type="text/javascript"></script>
+    <script src="node_modules/persian-datepicker/dist/js/persian-datepicker.js" type="text/javascript"></script>
+    <script src="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
+    <link href="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
+    <style>
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        body {
+            background: #fff;
+            font-family: IRANSansMobileFaNum-Light;
+            background-color: #b7a28642 !important;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            float: none;
+            font-size: 12px;
+        }
+
+        .container-row {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .container-border {
+            border-style: groove;
+            border-width: 0.5px;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            margin: 2px;
+        }
+
+        .container .left-container {
+            width: 33%;
+        }
+
+        .container .right-container {
+            width: 75%;
+        }
+
+        div fieldset legend {
+            text-align: right;
+        }
+
+        .date-inner {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .to-date {
+            flex: 1;
+        }
+
+        .prev-week {
+            flex: 1;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button5 {
+            border-radius: 50%;
+        }
+
+        .sale-type-label {
+            font-size: 15px;
+            color: crimson;
+            margin-right: 10px;
+            margin-left: 20px;
+        }
+
+        .type-inner {
+            display: flex;
+            justify-content: center;
+        }
+
+        .fieldsetContainer {
+            width: 100%;
+            direction: rtl;
+        }
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: right;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: 0.3s;
+            font-size: 12px;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            direction: rtl;
+        }
+
+        .btn-submit {
+            width: 60px;
+            height: 30px;
+            background-color: #78ff4c;
+            border: 0;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobile-Bold;
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #code {
+            max-width: 70%;
+        }
+
+        #source {
+            width: 125px;
+        }
+
+        #corrector {
+            width: 125px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="loading">
+    <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
+</div>
+<div>
+    <div class="container">
+        <div class="left-container">
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>مناطق</legend>
+                    <label>کد:</label>
+                    <input type="text" name="code1" id="code1" style="width: 30px">
+                    <input type="text" name="code2" id="code2" style="width: 30px">
+                    <input type="text" name="code3" id="code3" style="width: 30px">
+                </fieldset>
+            </div>
+            <div class="container-row" style="justify-content: center">
+                <div style="width: 40%; margin-top: 12px">
+                    <div>
+                        <select name="code" id="code">
+                        </select>
+                        <label>:کد</label>
+                    </div>
+                    <ul id="codeAreaList" style="height: 166px;border-style: groove;border-width: 0.5px;">
+
+                    </ul>
+                </div>
+
+                <div style="display: flex; flex-direction: column; margin-top: 12px">
+                    <button style="margin-top: 31px; margin-right: 2px; margin-left: 2px">+گروه</button>
+                    <button style="margin-top: 20px; margin-bottom: 10px; margin-right: 2px; margin-left: 2px">+
+                    </button>
+                    <button style="margin-bottom: 20px;  margin-right: 2px; margin-left: 2px">-</button>
+                    <button style=" margin-right: 2px; margin-left: 2px">-گروه</button>
+                </div>
+
+                <div style="width: 40%">
+                    <ul id="codeList" style="height: 198px;border-style: groove;border-width: 0.5px;">
+
+                    </ul>
+                </div>
+            </div>
+            <div>
+
+
+                <div class="tab">
+                    <button class="tablinks active" onclick="openTab(event, 'floor')">طبقه - واحد</button>
+                    <button class="tablinks" onclick="openTab(event, 'detail1')">جزییات۱</button>
+                    <button class="tablinks" onclick="openTab(event, 'detail2')">جزییات۲</button>
+                </div>
+
+                <div id="floor" class="tabcontent" style="display: block">
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>طبقه</legend>
+                            <input type="text" name="floorCount" id="floorCount">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>تعداد طبقات</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromFloorCount">از:</label>
+                                    <input type="text" name="fromFloorCount" id="fromFloorCount" style="width: 40px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toFloorCount">تا:</label>
+                                    <input type="text" name="toFloorCount" id="toFloorCount" style="width: 40px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div style="display: flex; justify-content: center; margin: 5px">
+                        <fieldset class="fieldsetContainer" style="width: fit-content">
+                            <legend>تعداد کل واحدها</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromVahedCount">از:</label>
+                                    <input type="text" name="fromVahedCount" id="fromVahedCount" style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toVahedCount">تا:</label>
+                                    <input type="text" name="toVahedCount" id="toVahedCount" style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <!--<div style="display: flex; justify-content: center; margin: 5px">
+                        <fieldset class="fieldsetContainer" style="width: fit-content">
+                            <legend>تعداد واحد در هر طبقه</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromVahedCountPerFloor">از:</label>
+                                    <input type="text" name="fromVahedCountPerFloor" id="fromVahedCountPerFloor"
+                                           style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toVahedCountPerFloor">تا:</label>
+                                    <input type="text" name="toVahedCountPerFloor" id="toVahedCountPerFloor"
+                                           style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>-->
+                </div>
+
+                <div id="detail1" class="tabcontent">
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>سرویس بهداشتی</legend>
+                            <input type="text" name="wc" id="wc">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>خط تلفن</legend>
+                            <input type="text" name="phoneLine" id="phoneLine">
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>حیاط</legend>
+                            <input type="text" name="yard" id="yard">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>زیر زمین</legend>
+                            <input type="text" name="basement" id="basement">
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>حیاط خلوت</legend>
+                            <input type="text" name="backyard" id="backyard">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>سکونت مالک</legend>
+                            <input type="text" name="residenceOwner" id="residenceOwner">
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>مستخدم</legend>
+                            <input type="text" name="servant" id="servant">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>وضعیت سند</legend>
+                            <input type="text" name="documentStatus" id="documentStatus">
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div id="detail2" class="tabcontent">
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>منبع</legend>
+                            <select name="source" id="source">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>تنظیم کننده</legend>
+                            <select name="corrector" id="corrector">
+                                <option value="volvo">Volvo</option>
+                                <option value="saab">Saab</option>
+                                <option value="mercedes">Mercedes</option>
+                                <option value="audi">Audi</option>
+                            </select>
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>ارتفاع</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromHeight">از:</label>
+                                    <input type="text" name="fromHeight" id="fromHeight" style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toHeight">تا:</label>
+                                    <input type="text" name="toHeight" id="toHeight" style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>تراکم</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromDensity">از:</label>
+                                    <input type="text" name="fromDensity" id="fromDensity" style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toDensity">تا:</label>
+                                    <input type="text" name="toDensity" id="toDensity" style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <div class="container-border" style="flex-direction: column; width: 60%; align-items: center">
+                            <div class="from-date">
+                                <label for="pool">استخر:</label>
+                                <input type="checkbox" name="pool" id="pool">
+                            </div>
+                            <div class="from-date">
+                                <label for="sauna">سونا:</label>
+                                <input type="checkbox" name="sauna" id="sauna">
+                            </div>
+                            <div class="from-date">
+                                <label for="Jacuzzi">جکوزی:</label>
+                                <input type="checkbox" name="Jacuzzi" id="Jacuzzi">
+                            </div>
+                        </div>
+                        <div class="container-border" style="flex-direction: column; width: 40%; align-items: center">
+                            <div class="from-date">
+                                <label for="residential">مسکونی</label>
+                                <input type="checkbox" name="residential" value="checkbox" id="residential">
+                            </div>
+                            <div class="from-date">
+                                <label for="empty">تخلیه</label>
+                                <input type="checkbox" name="empty" value="checkbox" id="empty">
+                            </div>
+                            <div class="from-date">
+                                <label for="Jacuzzi">اجاره</label>
+                                <input type="checkbox" name="rent" value="checkbox" id="rent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="container-row container-border">
+                <label style="color: #9b0000; margin: 2px 5px">
+                    <input type="checkbox" name="existType" value="checkbox" id="exist">
+                    موجود</label>
+                <br>
+                <label style="color: #9b0000; margin: 2px 5px">
+                    <input type="checkbox" name="existType" value="checkbox" id="archive">
+                    بایگانی</label>
+                <br>
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>تاریخ</legend>
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromDate">از:</label>
+                            <input class='validate textInput font-text-light date-picker' type='text' name='fromDate'
+                                   id='fromDate'/>
+                        </div>
+                        <div class="to-date">
+                            <label for="toDate">تا:</label>
+                            <input class='validate textInput font-text-light date-picker' type='text' name='toDate'
+                                   id='toDate'/>
+                        </div>
+                    </div>
+                    <div class="date-inner">
+                        <div style="flex: 1">
+                            <button class="button button5">تاریخ روز</button>
+                        </div>
+                        <div class="prev-week">
+                            <label>هفته قبل</label>
+                            <input type="number" style="width: 30px">
+                        </div>
+                    </div>
+
+
+                </fieldset>
+
+                <fieldset class="fieldsetContainer">
+                    <legend>نوع ملک</legend>
+                    <div class="type-inner">
+                        <select name="moshakhese_1" id="moshakhese_1">
+                            <option value="volvo">Volvo</option>
+                            <option value="saab">Saab</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                        <label>:مشخصه۱</label>
+                        <select name="moshakhese1" id="moshakhese1">
+                            <option value="volvo">Volvo</option>
+                            <option value="saab">Saab</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                    </div>
+
+                </fieldset>
+
+                <fieldset style="width: 20%; direction: rtl">
+                    <legend> جهت ملک</legend>
+                    <p>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_north">
+                            شمالی</label>
+                        <br>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_south">
+                            جنوبی</label>
+                        <br>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_east">
+                            شرقی</label>
+                        <br>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_west">
+                            غربی</label>
+                        <br>
+                    </p>
+                </fieldset>
+            </div>
+            <div class="container-row container-border">
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="فروش" id="sale">
+                    فروش</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="مشارکت" id="collabration">
+                    مشارکت</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="معاوضه" id="exchange">
+                    معاوضه</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="اجاره و رهن" id="rentAndMortinage">
+                    اجاره و رهن</label>
+
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="رهن کامل" id="mortinage">
+                    رهن کامل</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="اجاره به خارجی" id="rentToForeigner">
+                    اجاره به خارجی</label>
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>آدرس</legend>
+
+                    <input type="text" name="address1" id="address1">
+                    <input type="text" name="address2" id="address2">
+                    <input type="text" name="address3" id="address3">
+
+                </fieldset>
+
+                <fieldset style="width: 30%; direction: rtl">
+                    <legend>تلفن</legend>
+
+                    <input type="text" name="telephone" id="telephone">
+                </fieldset>
+
+                <fieldset style="width: 30%; direction: rtl">
+                    <legend> مالک</legend>
+                    <input type="text" name="owner" id="owner">
+                </fieldset>
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>ودیعه</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromMortgage">از:</label>
+                            <input type="text" name="fromMortgage" id="fromMortgage">
+                        </div>
+                        <div class="to-date">
+                            <label for="toMortgage">تا:</label>
+                            <input type="text" name="toMortgage" id="toMortgage">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>اجاره</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromRent">از:</label>
+                            <input type="text" name="fromRent" id="fromRent">
+                        </div>
+                        <div class="to-date">
+                            <label for="toRent">تا:</label>
+                            <input type="text" name="toRent" id="toRent">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>متری</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromMetri">از:</label>
+                            <input type="text" name="fromMetri" id="fromMetri">
+                        </div>
+                        <div class="to-date">
+                            <label for="toMetri">تا:</label>
+                            <input type="text" name="toMetri" id="toMetri">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>قیمت کل</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromTotalPrice">از:</label>
+                            <input type="text" name="fromTotalPrice" id="fromTotalPrice">
+                        </div>
+                        <div class="to-date">
+                            <label for="toTotalPrice">تا:</label>
+                            <input type="text" name="toTotalPrice" id="toTotalPrice">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>خواب</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromBed">از:</label>
+                            <input type="text" name="fromBed" id="fromBed" style="width: 70px">
+                        </div>
+                        <div class="to-date">
+                            <label for="toBed">تا:</label>
+                            <input type="text" name="toBed" id="toBed" style="width: 70px">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>سن بنا</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromAge">از:</label>
+                            <input type="text" name="fromAge" id="fromAge" style="width: 70px">
+                        </div>
+                        <div class="to-date">
+                            <label for="toAge">تا:</label>
+                            <input type="text" name="toAge" id="toAge" style="width: 70px">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>شماره</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromNumber">از:</label>
+                            <input type="text" name="fromNumber" id="fromNumber" style="width: 70px">
+                        </div>
+                        <div class="to-date">
+                            <label for="toNumber">تا:</label>
+                            <input type="text" name="toNumber" id="toNumber" style="width: 70px">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>توضیح قیمت</legend>
+                    <input type="text" name="priceDescription" id="priceDescription">
+                </fieldset>
+
+            </div>
+            <div class="container-row">
+                <div style="width: 100%">
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>کف پوش</legend>
+                            <input type="text" name="kafpoosh" id="kafpoosh">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>زیر بنا</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromZirbana">از:</label>
+                                    <input type="text" name="fromZirbana" id="fromZirbana" style="width: 70px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toZirbana">تا:</label>
+                                    <input type="text" name="toZirbana" id="toZirbana" style="width: 70px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>سرویس آشپزخانه</legend>
+                            <input type="text" name="kitchen" id="kitchen">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>مساحت زمین</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromArea">از:</label>
+                                    <input type="text" name="fromArea" id="fromArea" style="width: 70px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toArea">تا:</label>
+                                    <input type="text" name="toArea" id="toArea" style="width: 70px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>نما</legend>
+                            <input type="text" name="nama" id="nama">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>طول بر</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromToolBar">از:</label>
+                                    <input type="text" name="fromToolBar" id="fromToolBar" style="width: 70px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toToolBar">تا:</label>
+                                    <input type="text" name="toToolBar" id="toToolBar" style="width: 70px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>توضیحات</legend>
+                            <input type="text" name="description" id="description" style="width: 100%">
+                        </fieldset>
+                    </div>
+                </div>
+                <fieldset class="fieldsetContainer">
+                    <legend>امکانات</legend>
+
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div style="position: fixed; bottom: 10px">
+        <button id="btn-submit" class="btn-submit">جستجو</button>
+    </div>
+</div>
+
+
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const Store = require('electron-store');
+    const store = new Store();
+
+    //fill options with configs
+    var codeSelect = document.getElementById("code");
+    for (var i = 0; i<store.get('configList')[0].region.length; i++){
+        var optionCode = document.createElement('option');
+        optionCode.value = store.get('configList')[0].region[i];
+        optionCode.innerHTML = store.get('configList')[0].region[i];
+        codeSelect.appendChild(optionCode);
+    }
+
+    var sourceSelect = document.getElementById("source");
+    for (var i = 0; i<store.get('configList')[0].source.length; i++){
+        var optionSource = document.createElement('option');
+        optionSource.value = store.get('configList')[0].source[i];
+        optionSource.innerHTML = store.get('configList')[0].source[i];
+        sourceSelect.appendChild(optionSource);
+    }
+
+    var correctorSelect = document.getElementById("corrector");
+    for (var i = 0; i<store.get('configList')[0].publisher.length; i++){
+        var optionCorrector = document.createElement('option');
+        optionCorrector.value = store.get('configList')[0].publisher[i];
+        optionCorrector.innerHTML = store.get('configList')[0].publisher[i];
+        correctorSelect.appendChild(optionCorrector);
+    }
+
+    $(document).ready(function () {
+        $(".date-picker").persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+    });
+
+    ipcRenderer.on('showLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "block";
+
+    });
+
+    ipcRenderer.on('hideLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "none";
+    });
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    $('#code').editableSelect();
+    $('#corrector').editableSelect();
+    $('#source').editableSelect();
+
+    // Get the btnSubmit
+    var btnSubmit = document.getElementById("btn-submit");
+    btnSubmit.addEventListener("click", function () {
+        var saleTypeList = document.getElementsByName('saleType');
+        var saleType = [];
+        for (var i = 0, n = saleTypeList.length; i < n; i++) {
+            if (saleTypeList[i].checked) {
+                saleType.push(saleTypeList[i].value);
+            }
+        }
+        var requestBody = {
+            tel1: document.querySelector('#telephone').value,
+            address: [
+                document.querySelector('#address1').value,
+                document.querySelector('#address2').value,
+                document.querySelector('#address3').value
+            ],
+            owner: document.querySelector('#owner').value,
+            regionCode: [
+                document.querySelector('#code1').value,
+                document.querySelector('#code2').value,
+                document.querySelector('#code3').value,
+            ],
+            fromDate: document.querySelector('#fromDate').value,
+            toDate: document.querySelector('#toDate').value,
+            fromNumber: document.querySelector('#fromNumber').value,
+            toNumber: document.querySelector('#toNumber').value,
+            sale: saleType,
+            fromRent: document.querySelector('#fromRent').value,
+            toRent: document.querySelector('#toRent').value,
+            fromMortgage: document.querySelector('#fromMortgage').value,
+            toMortgage: document.querySelector('#toMortgage').value,
+            /*apartment: document.querySelector('#apartment').value,
+            villa: document.querySelector('#villa').value,
+            building: document.querySelector('#mostaghelat').value,
+            home: document.querySelector('#home').checked,
+            oldHouse: document.querySelector('#kolangi').value,
+            office: document.querySelector('#office').value,
+            store: document.querySelector('#store').checked,
+            suite: document.querySelector('#suite').checked,*/
+            north: document.querySelector('#direction_north').checked,
+            south: document.querySelector('#direction_south').checked,
+            east: document.querySelector('#direction_east').checked,
+            west: document.querySelector('#direction_west').checked,
+            fromFloorNo: document.querySelector('#fromFloorCount').value,
+            toFloorNo: document.querySelector('#toFloorCount').value,
+            fromUnitNo: document.querySelector('#fromVahedCount').value,
+            toUnitNo: document.querySelector('#toVahedCount').value,
+            fromUnitPrice: document.querySelector('#fromMetri').value,
+            fromTotalPrice: document.querySelector('#fromTotalPrice').value,
+            toUnitPrice: document.querySelector('#toMetri').value,
+            toTotalPrice: document.querySelector('#toTotalPrice').value,
+            priceComment: document.querySelector('#priceDescription').value,
+            pool: document.querySelector('#pool').checked,
+            sona: document.querySelector('#sauna').checked,
+            jakozi: document.querySelector('#Jacuzzi').checked,
+            fromArea: document.querySelector('#fromArea').value,
+            toArea: document.querySelector('#toArea').value,
+            fromDensity: document.querySelector('#fromDensity').value,
+            toDensity: document.querySelector('#toDensity').value,
+            fromFront: document.querySelector('#fromToolBar').value,
+            toFront: document.querySelector('#toToolBar').value,
+            fromHeight: document.querySelector('#fromHeight').value,
+            toHeight: document.querySelector('#toHeight').value,
+            yard: document.querySelector('#yard').value,
+            smallYard: document.querySelector('#backyard').value,
+            underGround: document.querySelector('#basement').value,
+            employeeService: document.querySelector('#servant').value,
+            residential: document.querySelector('#residential').checked,
+            empty: document.querySelector('#empty').value,
+            rented: document.querySelector('#rent').value,
+            frontKind: document.querySelector('#nama').value,
+            source: document.querySelector('#source').value,
+            publisher: document.querySelector('#corrector').value,
+            ownerInHouse: document.querySelector('#residenceOwner').value,
+            documentKind: document.querySelector('#documentStatus').value,
+            comment: document.querySelector('#description').value,
+            //equipments: equipments,
+        };
+        ipcRenderer.send('listFile', requestBody);
+    });
+</script>
+
+</body>
+</html>

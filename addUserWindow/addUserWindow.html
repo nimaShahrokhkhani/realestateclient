@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>تعریف کاربران</title>
+    <script>
+        var $ = jQuery = require("jquery");
+        if (typeof module === 'object') {window.module = module; module = undefined;}
+    </script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery.steps.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="../node_modules/persian-date/dist/persian-date.js" type="text/javascript"></script>
+    <script src="../node_modules/persian-datepicker/dist/js/persian-datepicker.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
+
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="css/opensans-font.css">
+    <link rel="stylesheet" type="text/css" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+    <!-- Main Style Css -->
+    <link rel="stylesheet" href="css/style.css"/>
+
+	<!-- Insert this line after script imports -->
+	<script>if (window.module) module = window.module;</script>
+</head>
+<body>
+	<div class="page-content">
+		<div id="loading" style="position: absolute; z-index: 999">
+			<img id="loading-image" src="../images/loading.gif" alt="Loading..."/>
+		</div>
+		<div class="form-v1-content">
+			<div class="wizard-form">
+		        <div class="form-register">
+		        	<div id="form-total">
+		        		<!-- SECTION 1 -->
+			            <h2>
+			            	<p class="step-icon"><span>1</span></p>
+			            	<span class="step-text">اطلاعات ضروری</span>
+			            </h2>
+			            <section>
+			                <div class="inner">
+								<div class="wizard-header">
+									<h3 class="heading">اطلاعات ضروری</h3>
+								</div>
+								<div class="form-row">
+									<div class="form-holder form-holder-2">
+										<fieldset>
+											<legend>نام کاربری</legend>
+											<input type="text" name="username" id="username" class="form-control" required>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder">
+										<fieldset>
+											<legend>نام</legend>
+											<input type="text" class="form-control" id="firstName" name="firstName" required>
+										</fieldset>
+									</div>
+									<div class="form-holder">
+										<fieldset>
+											<legend>نام خانوادگی</legend>
+											<input type="text" class="form-control" id="lastName" name="lastName" required>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder form-holder-2">
+										<fieldset>
+											<legend>نقش کاربر</legend>
+											<select name="userType" id="userType" style="border: 0; background: none">
+												<option value="مدیر سیستم" disabled selected>مدیر سیستم</option>
+												<option value="اپراتور">اپراتور</option>
+												<option value="مشاور">مشاور</option>
+											</select>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder form-holder-2">
+										<fieldset>
+											<legend>کلمه عبور</legend>
+											<input type="password" class="form-control" id="password" name="password" required>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder form-holder-2">
+										<fieldset>
+											<legend>تایید کلمه عبور</legend>
+											<input type="password" class="form-control" id="repeatPassword" name="repeatPassword" required>
+										</fieldset>
+									</div>
+								</div>
+							</div>
+			            </section>
+						<!-- SECTION 2 -->
+			            <h2>
+			            	<p class="step-icon"><span>2</span></p>
+			            	<span class="step-text">مشخصات پرسنلی</span>
+			            </h2>
+			            <section>
+							<div class="inner">
+								<div class="wizard-header">
+									<h3 class="heading">مشخصات پرسنلی</h3>
+								</div>
+								<div class="form-row">
+									<div class="form-holder">
+										<fieldset>
+											<legend>ش.شناسنامه</legend>
+											<input type="text" class="form-control" id="idNumber" required>
+										</fieldset>
+									</div>
+									<div class="form-holder">
+										<fieldset>
+											<legend>کد ملی</legend>
+											<input type="text" class="form-control" id="nationalCode" required>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder">
+										<fieldset>
+											<legend>تاریخ تولد</legend>
+                                            <input class='form-control validate textInput font-text-light date-picker' type='text' name='birthDate'
+                                                   id='birthDate' required/>
+										</fieldset>
+									</div>
+									<div class="form-holder">
+										<fieldset>
+											<legend>محل تولد</legend>
+											<input type="text" class="form-control" id="birthPlace" required>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder form-holder-2">
+										<fieldset>
+											<legend>آدرس</legend>
+											<input type="text" name="address" id="address" class="form-control" required>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder">
+										<fieldset>
+											<legend>تلفن</legend>
+											<input type="text" class="form-control" id="telephone" required>
+										</fieldset>
+									</div>
+									<div class="form-holder">
+										<fieldset>
+											<legend>تاریخ استخدام</legend>
+                                            <input class='form-control validate textInput font-text-light date-picker' type='text' name='hiredDate'
+                                                   id='hiredDate' required/>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder">
+										<fieldset>
+											<legend>سمت</legend>
+											<select name="post" id="post" style="border: 0; background: none">
+												<option value="مدیر قرارداد" disabled selected>مدیر قرارداد</option>
+												<option value="سرپرست">سرپرست</option>
+												<option value="مشاور">مشاور</option>
+												<option value="منشی">منشی</option>
+												<option value="مستخدم">مستخدم</option>
+											</select>
+										</fieldset>
+									</div>
+									<div class="form-holder">
+										<fieldset>
+											<legend>پایه حقوق</legend>
+											<input type="text" class="form-control" id="salary" required>
+										</fieldset>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-holder form-holder-2">
+										<fieldset>
+											<legend>توضیحات</legend>
+											<input type="text" name="description" id="description" class="form-control" style="height: 100px" required>
+										</fieldset>
+									</div>
+								</div>
+							</div>
+			            </section>
+			            <!-- SECTION 3 -->
+			            <h2>
+			            	<p class="step-icon"><span>3</span></p>
+			            	<span class="step-text">سطح دسترسی</span>
+			            </h2>
+			            <section>
+			                <div class="inner">
+								<div class="wizard-header">
+									<h3 class="heading">سطح دسترسی</h3>
+								</div>
+								<div class="group-input-container">
+									<div class="input-container">
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">فروش</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">اجاره</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">رهن</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">مشارکت</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">معاوضه</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+									</div>
+								</div>
+								<div class="group-input-container">
+									<div class="input-container">
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">آپارتمان</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">ویلا</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">مستغلات</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">دفترکار</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+									</div>
+								</div>
+								<div class="group-input-container">
+									<div class="input-container">
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">سوییت</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">خانه</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">مغازه</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">کلنگی</label>
+											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+										</div>
+									</div>
+								</div>
+							</div>
+			            </section>
+		        	</div>
+		        </div>
+			</div>
+		</div>
+	</div>
+<script>
+	const electron = require('electron');
+	const {ipcRenderer} = electron;
+
+	var loading = document.getElementById("loading");
+	loading.style.display = "none";
+
+    $(document).ready(function () {
+        $(".date-picker").persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+    });
+
+	ipcRenderer.on('showLoading', function () {
+		var loading = document.getElementById("loading");
+		loading.style.display = "block";
+
+	});
+
+	ipcRenderer.on('hideLoading', function () {
+		var loading = document.getElementById("loading");
+		loading.style.display = "none";
+	});
+</script>
+</body>
+</html>

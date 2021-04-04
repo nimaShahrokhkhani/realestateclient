@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            direction: rtl;
+        }
+
+        th {
+            background-color: #007bff;
+        }
+
+        td, th {
+            border: 1px solid #fff;
+            padding: 8px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+</head>
+<body>
+<table id="tableContent">
+    <tr id="title">
+    </tr>
+</table>
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const Store = require('electron-store');
+    const store = new Store();
+    var fileList = store.get('searchFileList');
+
+    var showFilesTitle = [
+        {key: 'Id', value: 'کد'},
+        {key: 'date', value: 'تاریخ'},
+        {key: 'owner', value: 'مالک'},
+        {key: 'type', value: 'نوع'},
+        {key: 'unitFloor', value: 'طبقه'},
+        {key: 'sale', value: 'مورد'},
+        {key: 'totalPrice/mortgage', value: 'کل/ودیعه'},
+        {key: 'unitPrice/rent', value: 'متری/اجاره'},
+        {key: 'unitRoom', value: 'خواب'},
+        {key: 'unitBuiltUpArea', value: 'زیربنا'},
+        {key: 'age', value: 'سن'},
+        {key: 'address', value: 'آدرس'}
+    ];
+
+    if (store.get('showFilesTitle') !== undefined && store.get('showFilesTitle') !== null) {
+        showFilesTitle = store.get('showFilesTitle');
+    }
+    var tableContent = document.getElementById("tableContent");
+    var titleList = document.getElementById("title");
+    for (var i = 0, n = showFilesTitle.length; i < n; i++) {
+        var titleField = document.createElement("TH");
+        titleField.innerHTML = showFilesTitle[i].value;
+        titleList.appendChild(titleField);
+    }
+    for (var i = 0, n = fileList.length; i < n; i++) {
+        var rowContainer = document.createElement("TR");
+        for (var j = 0, k = showFilesTitle.length; j < k; j++) {
+            var columnContainer = document.createElement("TD");
+            if (showFilesTitle[j].key.includes("/")) {
+                columnContainer.innerHTML = fileList[i][showFilesTitle[j].key.split("/")[0]] ? fileList[i][showFilesTitle[j].key.split("/")[0]] : fileList[i][showFilesTitle[j].key.split("/")[1]];
+            } else {
+                columnContainer.innerHTML = fileList[i][showFilesTitle[j].key];
+            }
+            rowContainer.appendChild(columnContainer);
+        }
+        tableContent.appendChild(rowContainer);
+    }
+
+</script>
+</body>
+</html>

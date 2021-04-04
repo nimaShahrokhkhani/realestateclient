@@ -1,0 +1,1442 @@
+<html>
+
+<head>
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="node_modules/persian-date/dist/persian-date.js" type="text/javascript"></script>
+    <script src="node_modules/persian-datepicker/dist/js/persian-datepicker.js" type="text/javascript"></script>
+    <script src="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
+    <link href="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: #b7a28642 !important;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
+        body {
+            background: #fff;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .container {
+            direction: rtl;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .row {
+            direction: rtl;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .input-field {
+            direction: rtl;
+        }
+
+        .input-field input[type=date]:focus + label,
+        .input-field input[type=text]:focus + label,
+        .input-field input[type=password]:focus + label {
+            color: #e91e63;
+        }
+
+        .input-field input[type=date]:focus,
+        .input-field input[type=text]:focus,
+        .input-field input[type=password]:focus {
+            border-bottom: 2px solid #e91e63;
+            box-shadow: none;
+        }
+
+        @font-face {
+            font-family: IRANSans-Light;
+            src: url("./fonts/IRANSans-Light.eot") format('eot'),
+            url("./fonts/IRANSans-Light.woff") format('woff'),
+            url("./fonts/IRANSans-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobile-Bold;
+            src: url("./fonts/IRANSansMobile-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobile-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobile-Bold.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        .font-text-light {
+            font-family: IRANSans-Light;
+        }
+
+        .font-text-bold {
+            font-family: IRANSansMobile-Bold;
+        }
+
+        .placeholder {
+            direction: rtl;
+            text-align: right;
+            float: right;
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            color: #2480ff;
+            font-size: 12px;
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #loading-image {
+            position: absolute;
+            top: 150px;
+            left: 300px;
+            z-index: 100;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: IRANSans-Light;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .menu-item span {
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .top-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .top-container div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        .group-input-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            border-style: groove;
+            border-width: 0.5px;
+            padding: 5px;
+            width: inherit;
+        }
+
+        .textInput {
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            width: -webkit-fill-available;
+        }
+
+        .tableTextInput {
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            width: 63px;
+        }
+
+        .styled-table {
+            border-collapse: collapse;
+            font-size: 0.8em;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .styled-table thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        .styled-table tbody tr.active-row {
+            font-weight: bold;
+            color: #009879;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            -webkit-animation-name: fadeIn; /* Fade in the background */
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: #fefefe;
+            width: 100%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .btn-submit {
+            width: 60px;
+            height: 30px;
+            background-color: #78ff4c;
+            border: 0;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobile-Bold;
+        }
+
+        #apartment {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #villa {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #mostaghelat {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #kolangi {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #office {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #pool {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #sona {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #jakoozi {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #view {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #documentState {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        #InformationSource {
+            width: 100px;
+            font-family: IRANSans-Light;
+        }
+
+        div#equipmentList{
+            display: flex;
+            flex-wrap: wrap;
+            width: 100vw;
+            height: auto;
+        }
+        .equipment{
+            width: 25%;
+            height: auto;
+            flex: 0 1 25%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        div#equipmentResultList{
+            display: flex;
+            flex-wrap: wrap;
+            height: auto;
+        }
+        .equipmentResult{
+            width: 10%;
+            height: auto;
+            flex: 0 1 10%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+<div id="loading">
+    <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
+</div>
+<main class="z-depth-1 grey lighten-4 row">
+
+    <div class='container'>
+
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">تلفن:</label>
+                    <input class='validate textInput font-text-light' type='number' name='tel1'
+                           id='tel1'/>
+                    <input class='validate textInput font-text-light' type='number' name='tel2'
+                           id='tel2'/>
+                    <input class='validate textInput font-text-light' type='number' name='tel3'
+                           id='tel3'/>
+                    <input class='validate textInput font-text-light' type='number' name='tel4'
+                           id='tel4'/>
+                    <input class='validate textInput font-text-light' type='number' name='tel5'
+                           id='tel5'/>
+                </div>
+                <div class="input-container">
+                    <label class="active font-text-light placeholder">آدرس:</label>
+                    <input class='validate textInput font-text-light' type='text' name='address'
+                           id='address' style="width: 100%"/>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">مالک:</label>
+                    <input class='validate textInput font-text-light' type='text' name='owner'
+                           id='owner'/>
+                </div>
+                <div class="input-container">
+                    <label class="active font-text-light placeholder">منطقه:</label>
+                    <input class='validate textInput font-text-light' type='number' name='district'
+                           id='district' style="width: 100%"/>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">تاریخ:</label>
+                    <input class='validate textInput font-text-light date-picker' type='text' name='date'
+                           id='date'/>
+                </div>
+                <div class="input-container">
+                    <label class="active font-text-light placeholder">شماره:</label>
+                    <input class='validate textInput font-text-light' type='number' name='number'
+                           id='number' style="width: 100%"/>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">فروش</label>
+                        <input type="checkbox" class="radio" value="فروش" name="saleType[]"
+                               onclick="saleTypeClickEvent('فروش')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">اجاره</label>
+                        <input type="checkbox" class="radio" value="اجاره" name="saleType[]"
+                               onclick="saleTypeClickEvent('اجاره')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">رهن</label>
+                        <input type="checkbox" class="radio" value="رهن" name="saleType[]"
+                               onclick="saleTypeClickEvent('رهن')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">مشارکت</label>
+                        <input type="checkbox" class="radio" value="مشارکت" name="saleType[]"
+                               onclick="saleTypeClickEvent('مشارکت')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">معاوضه</label>
+                        <input type="checkbox" class="radio" value="معاوضه" name="saleType[]"
+                               onclick="saleTypeClickEvent('معاوضه')"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000" for="apartment">آپارتمان</label>
+
+                        <select name="apartment" id="apartment">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000"
+                               for="villa">ویلا</label>
+
+                        <select name="villa" id="villa">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000" for="mostaghelat">مستغلات</label>
+
+                        <select name="mostaghelat" id="mostaghelat">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000">خارجی</label>
+                        <input type="checkbox" class="radio" value="1" name="foreign[1][]" id="home"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000"
+                               for="kolangi">کلنگی</label>
+
+                        <select name="kolangi" id="kolangi">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000" for="office">دفتر
+                            کار</label>
+
+                        <select name="office" id="office">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000">مغازه</label>
+                        <input type="checkbox" class="radio" value="1" name="store[1][]" id="store"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: #6c0000">سوییت</label>
+                        <input type="checkbox" class="radio" value="1" name="suite[1][]" id="suite"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">شمالی</label>
+                        <input type="checkbox" class="radio" value="1" id="north"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">جنوبی</label>
+                        <input type="checkbox" class="radio" value="1" id="south"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">شرقی</label>
+                        <input type="checkbox" class="radio" value="1" id="east"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">غربی</label>
+                        <input type="checkbox" class="radio" value="1" id="west"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px;">تعداد طبقات:</label>
+                    <input class='validate textInput font-text-light' type='number' name='tabaghat'
+                           id='tabaghat' style="width: 30%"/>
+
+                    <label class="active font-text-light placeholder" style="margin-right: 10px;">تعداد واحد:</label>
+                    <input class='validate textInput font-text-light' type='number' name='vahed'
+                           id='vahed' style="width: 35%"/>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 350px"
+                           id='totalPriceLabel'>قیمت
+                        کل:</label>
+                    <input class='validate textInput font-text-light' type='number' name='totalPrice'
+                           id='totalPrice'/>
+                    <label class="active font-text-light placeholder" id='metriLabel'>متری:</label>
+                    <input class='validate textInput font-text-light' type='number' name='metri'
+                           id='metri' style="width: 100%"/>
+
+                    <label class="active font-text-light placeholder"
+                           style="margin-right: 10px; width: 350px; display: none" id='mortgagePriceLabel'>
+                        ودیعه:</label>
+                    <input class='validate textInput font-text-light' type='number' name='mortgagePrice'
+                           id='mortgagePrice' style="display: none"/>
+                    <label class="active font-text-light placeholder" id='rentPriceLabel'
+                           style="display: none">اجاره:</label>
+                    <input class='validate textInput font-text-light' type='number' name='rentPrice'
+                           id='rentPrice' style="width: 100%; display: none"/>
+
+                    <label class="active font-text-light placeholder">توضیح:</label>
+                    <input class='validate textInput font-text-light' type='number' name='description'
+                           id='priceComment' style="width: 100%"/>
+                    <input class='validate textInput font-text-light' type='number' name='description'
+                           id='unitComment' style="width: 100%; display: none"/>
+                </div>
+            </div>
+        </div>
+
+        <input type="image" src="images/plus.png" style="width: 20px; height: 20px" onclick="onAddTableClick()"/>
+        <div class="row">
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>طبقات</th>
+                    <th>زیربنا</th>
+                    <th>خواب</th>
+                    <th>بالکن</th>
+                    <th>تلفن</th>
+                    <th>سرویس آشپزخانه</th>
+                    <th>open</th>
+                    <th>سرویس بهداشتی</th>
+                    <th>کف پوش</th>
+                    <th>پارکینگ</th>
+                    <th>انباری</th>
+                    <th>قیمت کل</th>
+                    <th>متری</th>
+                </tr>
+                </thead>
+                <tbody id="tableRow">
+                <tr>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableFloor'
+                               id='tableFloor'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableZirBana'
+                               id='tableZirBana'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableKhab'
+                               id='tableKhab'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableBalcon'
+                               id='tableBalcon'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableTelephone'
+                               id='tableTelephone'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableKitchen'
+                               id='tableKitchen'/>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="radio" value="1" name="tableOpen" id='tableOpen'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableWC'
+                               id='tableWC'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableKafPoosh'
+                               id='tableKafPoosh'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableParking'
+                               id='tableParking'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableAnbari'
+                               id='tableAnbari'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableTotalAmount'
+                               id='tableTotalAmount'/>
+                    </td>
+                    <td>
+                        <input class='validate tableTextInput font-text-light' type='number' name='tableMetri'
+                               id='tableMetri'/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" style="border-style: groove; border-width: 0.5px;">
+            <div style="flex: 1;">
+                <button style="font-family: IRANSans-Light;" type="button" onclick="onFacilityClick()">امکانات</button>
+                <div id="equipmentResultList">
+                </div>
+            </div>
+            <div style="flex: 0">
+                <div class="group-input-container">
+                    <div class="input-container">
+                        <label class="active font-text-light placeholder" style="color: #100f8a; margin-left: 3px"
+                               for="pool">استخر:</label>
+                        <select name="pool" id="pool">
+                        </select>
+                    </div>
+                </div>
+                <div class="group-input-container">
+                    <div class="input-container">
+                        <label class="active font-text-light placeholder"
+                               style="color: #100f8a; margin-left: 3px; margin-right: 15px;"
+                               for="sona">سونا:</label>
+                        <select name="sona" id="sona">
+                        </select>
+                    </div>
+                </div>
+                <div class="group-input-container">
+                    <div class="input-container">
+                        <label class="active font-text-light placeholder" style="color: #100f8a; margin-left: 3px"
+                               for="jakoozi">جکوزی:</label>
+                        <select name="jakoozi" id="jakoozi">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">مساحت</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number' name='area'
+                               id='area'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">تراکم</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='density'
+                               id='density'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">طول بر</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='toolBar'
+                               id='toolBar'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">ارتفاع</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='height'
+                               id='height'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">اصلاحی</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='corrective'
+                               id='corrective'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">حیاط</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number' name='yard'
+                               id='yard'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">حیاط خلوت</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='backYard'
+                               id='backYard'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">زیرزمین</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='basement'
+                               id='basement'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">سرویس مستخدم</label>
+                        <input class='validate textInput font-text-light' style="width: 80px" type='number'
+                               name='employeeService'
+                               id='employeeService'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">پاسیو</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number' name='patio'
+                               id='patio'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">سکونت مالک</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='residenceOwner'
+                               id='residenceOwner'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">مسکونی</label>
+                        <input type="checkbox" class="radio" value="1" name="residential" id="residential"
+                               style="margin-bottom: 11px"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">تخلیه</label>
+                        <input type="checkbox" class="radio" value="1" name="discharge" id="discharge"
+                               style="margin-bottom: 11px"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: #6c0000;">اجاره</label>
+                        <input type="checkbox" class="radio" value="1" name="rent" id="rented"
+                               style="margin-bottom: 11px"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 50px; ">سن
+                        بنا:</label>
+                    <input class='validate textInput font-text-light' type='number' name='ageBuilding'
+                           id='ageBuilding'/>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="height: 37px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">نما:</label>
+                    <select name="view" id="view">
+                    </select>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="height: 37px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">وضعیت سند:</label>
+                    <select name="documentState" id="documentState">
+                    </select>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="height: 37px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">منبع اطلاعاتی:</label>
+                    <select name="InformationSource" id="InformationSource">
+                    </select>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <input type="checkbox" class="radio" value="1" name="isHurry" id="isHurry"
+                           style="margin-bottom: 11px"/>
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">مالک عجله دارد</label>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 100px">تنظیم
+                        کننده:</label>
+                    <input class='validate textInput font-text-light' type='text' name='ownerName'
+                           id='ownerName' value="اسکان" disabled/>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="group-input-container" style="height: 67px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder"
+                           style="margin-right: 10px; width: 50px; ">توضیحات:</label>
+                    <input class='validate textInput font-text-light' type='text' name='additionalDescription'
+                           id='additionalDescription'/>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="flex: 0">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">همه</label>
+                        <input type="checkbox" class="radio" value="1" name="participation[]"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">خصوصی</label>
+                        <input type="checkbox" class="radio" value="1" name="participation[]"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">تعاون مشاور</label>
+                        <input type="checkbox" class="radio" value="1" name="participation[]"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button id="btn-submit" class="btn-submit">ثبت</button>
+        </div>
+
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>امکانات</h2>
+            </div>
+            <div class="modal-body">
+                <div id="equipmentList">
+                    <!--<div class="equipment">
+                        <label>تست1</label>
+                        <input type="checkbox" />
+                    </div>-->
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+                    <button id="btn-submit-modal" class="btn-submit">ثبت</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const Store = require('electron-store');
+    const store = new Store();
+
+    //fill options with configs
+    var equipmentListDiv = document.getElementById("equipmentList");
+    for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
+        var equipmentDiv = document.createElement('DIV');
+        equipmentDiv.className = 'equipment';
+        var equipmentLabel = document.createElement('LABEL');
+        equipmentLabel.innerHTML = store.get('configList')[0].equipments[i];
+        var equipmentCheckBox = document.createElement('INPUT');
+        equipmentCheckBox.type = 'checkbox';
+        equipmentCheckBox.id = store.get('configList')[0].equipments[i];
+        equipmentDiv.appendChild(equipmentLabel);
+        equipmentDiv.appendChild(equipmentCheckBox);
+        equipmentListDiv.appendChild(equipmentDiv);
+    }
+
+    var informationSourceSelect = document.getElementById("InformationSource");
+    for (var i = 0; i < store.get('configList')[0].source.length; i++) {
+        var optionInformationSource = document.createElement('option');
+        optionInformationSource.value = store.get('configList')[0].source[i];
+        optionInformationSource.innerHTML = store.get('configList')[0].source[i];
+        informationSourceSelect.appendChild(optionInformationSource);
+    }
+
+    var documentStateSelect = document.getElementById("documentState");
+    for (var i = 0; i < store.get('configList')[0].documentKind.length; i++) {
+        var optionDocumentStateSource = document.createElement('option');
+        optionDocumentStateSource.value = store.get('configList')[0].documentKind[i];
+        optionDocumentStateSource.innerHTML = store.get('configList')[0].documentKind[i];
+        documentStateSelect.appendChild(optionDocumentStateSource);
+    }
+
+    var viewSelect = document.getElementById("view");
+    for (var i = 0; i < store.get('configList')[0].frontKind.length; i++) {
+        var optionView = document.createElement('option');
+        optionView.value = store.get('configList')[0].frontKind[i];
+        optionView.innerHTML = store.get('configList')[0].frontKind[i];
+        viewSelect.appendChild(optionView);
+    }
+
+    var jakooziSelect = document.getElementById("jakoozi");
+    for (var i = 0; i < store.get('configList')[0].jakozi.length; i++) {
+        var optionJakoozi = document.createElement('option');
+        optionJakoozi.value = store.get('configList')[0].jakozi[i];
+        optionJakoozi.innerHTML = store.get('configList')[0].jakozi[i];
+        jakooziSelect.appendChild(optionJakoozi);
+    }
+
+    var sonaSelect = document.getElementById("sona");
+    for (var i = 0; i < store.get('configList')[0].sona.length; i++) {
+        var optionSona = document.createElement('option');
+        optionSona.value = store.get('configList')[0].sona[i];
+        optionSona.innerHTML = store.get('configList')[0].sona[i];
+        sonaSelect.appendChild(optionSona);
+    }
+
+    var poolSelect = document.getElementById("pool");
+    for (var i = 0; i < store.get('configList')[0].pool.length; i++) {
+        var optionPool = document.createElement('option');
+        optionPool.value = store.get('configList')[0].pool[i];
+        optionPool.innerHTML = store.get('configList')[0].pool[i];
+        poolSelect.appendChild(optionPool);
+    }
+
+    var officeSelect = document.getElementById("office");
+    for (var i = 0; i < store.get('configList')[0].office.length; i++) {
+        var optionOffice = document.createElement('option');
+        optionOffice.value = store.get('configList')[0].office[i];
+        optionOffice.innerHTML = store.get('configList')[0].office[i];
+        officeSelect.appendChild(optionOffice);
+    }
+
+    var kolangiSelect = document.getElementById("kolangi");
+    for (var i = 0; i < store.get('configList')[0].oldHouse.length; i++) {
+        var optionKolangi = document.createElement('option');
+        optionKolangi.value = store.get('configList')[0].oldHouse[i];
+        optionKolangi.innerHTML = store.get('configList')[0].oldHouse[i];
+        kolangiSelect.appendChild(optionKolangi);
+    }
+
+    var mostaghelatSelect = document.getElementById("mostaghelat");
+    for (var i = 0; i < store.get('configList')[0].building.length; i++) {
+        var optionMostaghelat = document.createElement('option');
+        optionMostaghelat.value = store.get('configList')[0].building[i];
+        optionMostaghelat.innerHTML = store.get('configList')[0].building[i];
+        mostaghelatSelect.appendChild(optionMostaghelat);
+    }
+
+    var villaSelect = document.getElementById("villa");
+    for (var i = 0; i < store.get('configList')[0].vila.length; i++) {
+        var optionVilla = document.createElement('option');
+        optionVilla.value = store.get('configList')[0].vila[i];
+        optionVilla.innerHTML = store.get('configList')[0].vila[i];
+        villaSelect.appendChild(optionVilla);
+    }
+
+    var apartmentSelect = document.getElementById("apartment");
+    for (var i = 0; i < store.get('configList')[0].apartment.length; i++) {
+        var optionApartment = document.createElement('option');
+        optionApartment.value = store.get('configList')[0].apartment[i];
+        optionApartment.innerHTML = store.get('configList')[0].apartment[i];
+        apartmentSelect.appendChild(optionApartment);
+    }
+
+    // the selector will match all input controls of type :checkbox
+    // and attach a click event handler
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+
+    $(document).ready(function () {
+        $(".date-picker").persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+    });
+
+    ipcRenderer.on('showLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "block";
+
+    });
+
+    ipcRenderer.on('hideLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "none";
+    });
+
+    //add button click in table
+    function onAddTableClick() {
+        var tr = document.createElement("TR");
+        var tdFloor = document.createElement("TD");
+        var inputFloor = document.createElement("INPUT");
+        inputFloor.type = 'number';
+        inputFloor.classList.add('validate');
+        inputFloor.classList.add('tableTextInput');
+        inputFloor.classList.add('font-text-light');
+        tdFloor.appendChild(inputFloor);
+        var tdZirBana = document.createElement("TD");
+        var inputZirBana = document.createElement("INPUT");
+        inputZirBana.classList.add('validate');
+        inputZirBana.classList.add('tableTextInput');
+        inputZirBana.classList.add('font-text-light');
+        tdZirBana.appendChild(inputZirBana);
+        var tdKhab = document.createElement("TD");
+        var inputKhab = document.createElement("INPUT");
+        inputKhab.classList.add('validate');
+        inputKhab.classList.add('tableTextInput');
+        inputKhab.classList.add('font-text-light');
+        tdKhab.appendChild(inputKhab);
+        var tdBalcon = document.createElement("TD");
+        var inputBalcon = document.createElement("INPUT");
+        inputBalcon.classList.add('validate');
+        inputBalcon.classList.add('tableTextInput');
+        inputBalcon.classList.add('font-text-light');
+        tdBalcon.appendChild(inputBalcon);
+        var tdTelephone = document.createElement("TD");
+        var inputTelephone = document.createElement("INPUT");
+        inputTelephone.classList.add('validate');
+        inputTelephone.classList.add('tableTextInput');
+        inputTelephone.classList.add('font-text-light');
+        tdTelephone.appendChild(inputTelephone);
+        var tdKitchen = document.createElement("TD");
+        var inputKitchen = document.createElement("INPUT");
+        inputKitchen.classList.add('validate');
+        inputKitchen.classList.add('tableTextInput');
+        inputKitchen.classList.add('font-text-light');
+        tdKitchen.appendChild(inputKitchen);
+        var tdOpen = document.createElement("TD");
+        var inputOpen = document.createElement("INPUT");
+        inputOpen.type = 'checkbox';
+        // inputOpen.classList.add('validate');
+        // inputOpen.classList.add('tableTextInput');
+        // inputOpen.classList.add('font-text-light');
+        tdOpen.appendChild(inputOpen);
+        var tdWC = document.createElement("TD");
+        var inputWC = document.createElement("INPUT");
+        inputWC.classList.add('validate');
+        inputWC.classList.add('tableTextInput');
+        inputWC.classList.add('font-text-light');
+        tdWC.appendChild(inputWC);
+        var tdParking = document.createElement("TD");
+        var inputParking = document.createElement("INPUT");
+        inputParking.classList.add('validate');
+        inputParking.classList.add('tableTextInput');
+        inputParking.classList.add('font-text-light');
+        tdParking.appendChild(inputParking);
+        var tdAnbari = document.createElement("TD");
+        var inputAnbari = document.createElement("INPUT");
+        inputAnbari.classList.add('validate');
+        inputAnbari.classList.add('tableTextInput');
+        inputAnbari.classList.add('font-text-light');
+        tdAnbari.appendChild(inputAnbari);
+        var tdTotalAmount = document.createElement("TD");
+        var inputTotalAmount = document.createElement("INPUT");
+        inputTotalAmount.classList.add('validate');
+        inputTotalAmount.classList.add('tableTextInput');
+        inputTotalAmount.classList.add('font-text-light');
+        tdTotalAmount.appendChild(inputTotalAmount);
+        var tdKafPoosh = document.createElement("TD");
+        var inputKafPoosh = document.createElement("INPUT");
+        inputKafPoosh.classList.add('validate');
+        inputKafPoosh.classList.add('tableTextInput');
+        inputKafPoosh.classList.add('font-text-light');
+        tdKafPoosh.appendChild(inputKafPoosh);
+        var tdMetri = document.createElement("TD");
+        var inputMetri = document.createElement("INPUT");
+        inputMetri.classList.add('validate');
+        inputMetri.classList.add('tableTextInput');
+        inputMetri.classList.add('font-text-light');
+        tdMetri.appendChild(inputMetri);
+        tr.appendChild(tdFloor);
+        tr.appendChild(tdZirBana);
+        tr.appendChild(tdKhab);
+        tr.appendChild(tdBalcon);
+        tr.appendChild(tdTelephone);
+        tr.appendChild(tdKitchen);
+        tr.appendChild(tdOpen);
+        tr.appendChild(tdWC);
+        tr.appendChild(tdKafPoosh);
+        tr.appendChild(tdParking);
+        tr.appendChild(tdAnbari);
+        tr.appendChild(tdTotalAmount);
+        tr.appendChild(tdMetri);
+        document.querySelector('#tableRow').appendChild(tr);
+    }
+
+    // Get the modal
+    var facilityModal = document.getElementById("myModal");
+
+    // Get the <span> element that closes the modal
+    var facilityCloseModal = document.getElementsByClassName("close")[0];
+
+    //facilities button click
+    function onFacilityClick() {
+        facilityModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    facilityCloseModal.onclick = function () {
+        facilityModal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == facilityModal) {
+            facilityModal.style.display = "none";
+        }
+    };
+
+    function saleTypeClickEvent(saleType) {
+        if (saleType === 'فروش') {
+            document.getElementById("rentPriceLabel").style.display = "none";
+            document.getElementById("rentPrice").style.display = "none";
+            document.getElementById("mortgagePriceLabel").style.display = "none";
+            document.getElementById("mortgagePrice").style.display = "none";
+            document.getElementById("unitComment").style.display = "none";
+
+            document.getElementById("metriLabel").style.display = "block";
+            document.getElementById("metri").style.display = "block";
+            document.getElementById("totalPriceLabel").style.display = "block";
+            document.getElementById("totalPrice").style.display = "block";
+            document.getElementById("priceComment").style.display = "block";
+        } else {
+            document.getElementById("rentPriceLabel").style.display = "block";
+            document.getElementById("rentPrice").style.display = "block";
+            document.getElementById("mortgagePriceLabel").style.display = "block";
+            document.getElementById("mortgagePrice").style.display = "block";
+            document.getElementById("unitComment").style.display = "block";
+
+            document.getElementById("metriLabel").style.display = "none";
+            document.getElementById("metri").style.display = "none";
+            document.getElementById("totalPriceLabel").style.display = "none";
+            document.getElementById("totalPrice").style.display = "none";
+            document.getElementById("priceComment").style.display = "none";
+        }
+    }
+
+    $('#apartment').editableSelect();
+    $('#villa').editableSelect();
+    $('#mostaghelat').editableSelect();
+    $('#kolangi').editableSelect();
+    $('#office').editableSelect();
+    $('#pool').editableSelect();
+    $('#sona').editableSelect();
+    $('#jakoozi').editableSelect();
+    $('#view').editableSelect();
+    $('#documentState').editableSelect();
+    $('#InformationSource').editableSelect();
+
+    var checkedEquipmentList = [];
+    var btnSubmit = document.getElementById("btn-submit-modal");
+    btnSubmit.addEventListener("click", function () {
+        var equipmentResultListDiv = document.getElementById("equipmentResultList");
+        for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
+            if (document.getElementById(store.get('configList')[0].equipments[i]).checked) {
+                checkedEquipmentList.push(store.get('configList')[0].equipments[i]);
+                var equipmentResultDiv = document.createElement('DIV');
+                equipmentResultDiv.className = 'equipmentResult';
+                equipmentResultDiv.innerHTML = store.get('configList')[0].equipments[i];
+                equipmentResultListDiv.appendChild(equipmentResultDiv);
+            }
+        }
+        facilityModal.style.display = "none";
+    });
+
+    // Get the btnSubmit
+    var btnSubmit = document.getElementById("btn-submit");
+    btnSubmit.addEventListener("click", function () {
+        var saleTypeList = document.getElementsByName('saleType[]');
+        var saleType = "";
+        for (var i = 0, n = saleTypeList.length; i < n; i++) {
+            if (saleTypeList[i].checked) {
+                saleType = saleTypeList[i].value;
+            }
+        }
+        var participationList = document.getElementsByName('participation[]');
+        var participation = "";
+        for (var j = 0, m = participationList.length; j < m; j++) {
+            if (participationList[j].checked) {
+                participation = participationList[j].value;
+            }
+        }
+        var requestBody = {
+            tel1: document.querySelector('#tel1').value,
+            tel2: document.querySelector('#tel2').value,
+            tel3: document.querySelector('#tel3').value,
+            tel4: document.querySelector('#tel4').value,
+            tel5: document.querySelector('#tel5').value,
+            address: document.querySelector('#address').value,
+            owner: document.querySelector('#owner').value,
+            regionCode: document.querySelector('#district').value,
+            date: document.querySelector('#date').value,
+            number: document.querySelector('#number').value,
+            sale: saleType,
+            rent: document.querySelector('#rentPrice').value,
+            mortgage: document.querySelector('#mortgagePrice').value,
+            apartment: document.querySelector('#apartment').value,
+            villa: document.querySelector('#villa').value,
+            building: document.querySelector('#mostaghelat').value,
+            home: document.querySelector('#home').checked,
+            oldHouse: document.querySelector('#kolangi').value,
+            office: document.querySelector('#office').value,
+            store: document.querySelector('#store').checked,
+            suite: document.querySelector('#suite').checked,
+            north: document.querySelector('#north').checked,
+            south: document.querySelector('#south').checked,
+            east: document.querySelector('#east').checked,
+            west: document.querySelector('#west').checked,
+            floorNo: document.querySelector('#tabaghat').value,
+            unitNo: document.querySelector('#vahed').value,
+            unitComment: document.querySelector('#unitComment').value,
+            totalPrice: document.querySelector('#totalPrice').value,
+            unitPrice: document.querySelector('#metri').value,
+            priceComment: document.querySelector('#priceComment').value,
+            pool: document.querySelector('#pool').checked,
+            sona: document.querySelector('#sona').checked,
+            jakozi: document.querySelector('#jakoozi').checked,
+            area: document.querySelector('#area').value,
+            density: document.querySelector('#density').value,
+            front: document.querySelector('#toolBar').value,
+            height: document.querySelector('#height').value,
+            modify: document.querySelector('#corrective').value,
+            yard: document.querySelector('#yard').value,
+            smallYard: document.querySelector('#backYard').value,
+            underGround: document.querySelector('#basement').value,
+            employeeService: document.querySelector('#employeeService').value,
+            patio: document.querySelector('#patio').value,
+            residential: document.querySelector('#residential').checked,
+            empty: document.querySelector('#discharge').value,
+            rented: document.querySelector('#rented').value,
+            age: document.querySelector('#ageBuilding').value,
+            frontKind: document.querySelector('#view').value,
+            source: document.querySelector('#InformationSource').value,
+            publisher: document.querySelector('#ownerName').value,
+            ownerInHouse: document.querySelector('#residenceOwner').value,
+            documentKind: document.querySelector('#documentState').value,
+            comment: document.querySelector('#additionalDescription').value,
+            inHurry: document.querySelector('#isHurry').checked,
+            //equipments: equipments,
+            participation: participation,
+            username: document.querySelector('#ownerName').value,
+        };
+        ipcRenderer.send('setFile', requestBody);
+    });
+</script>
+</body>
+
+</html>
