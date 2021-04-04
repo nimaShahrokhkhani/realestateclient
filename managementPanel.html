@@ -1,0 +1,342 @@
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
+        body {
+            background: #fff;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .input-field {
+            direction: rtl;
+        }
+
+        .input-field input[type=date]:focus + label,
+        .input-field input[type=text]:focus + label,
+        .input-field input[type=password]:focus + label {
+            color: #e91e63;
+        }
+
+        .input-field input[type=date]:focus,
+        .input-field input[type=text]:focus,
+        .input-field input[type=password]:focus {
+            border-bottom: 2px solid #e91e63;
+            box-shadow: none;
+        }
+
+        @font-face {
+            font-family: IRANSans-Light;
+            src: url("./fonts/IRANSans-Light.eot") format('eot'),
+            url("./fonts/IRANSans-Light.woff") format('woff'),
+            url("./fonts/IRANSans-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobile-Bold;
+            src: url("./fonts/IRANSansMobile-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobile-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobile-Bold.ttf") format('truetype');
+        }
+
+        .font-text-light {
+            font-family: IRANSans-Light;
+        }
+
+        .font-text-bold {
+            font-family: IRANSansMobile-Bold;
+        }
+
+        .placeholder {
+            direction: rtl;
+            text-align: right;
+            float: right;
+            width: 100%;
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #loading-image {
+            position: absolute;
+            top: 150px;
+            left: 300px;
+            z-index: 100;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            -webkit-animation-name: fadeIn; /* Fade in the background */
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: #fefefe;
+            width: 100%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes slideIn {
+            from {bottom: -300px; opacity: 0}
+            to {bottom: 0; opacity: 1}
+        }
+
+        @keyframes slideIn {
+            from {bottom: -300px; opacity: 0}
+            to {bottom: 0; opacity: 1}
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {opacity: 0}
+            to {opacity: 1}
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0}
+            to {opacity: 1}
+        }
+    </style>
+</head>
+
+<body>
+<div id="loading">
+    <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
+</div>
+<div class="section"></div>
+<main class="z-depth-1 lighten-4">
+    <center>
+
+        <div class="section"></div>
+
+        <div class="container">
+            <div class="z-depth-1 grey lighten-4 row"
+                 style="display: inline-block; padding: 32px 48px 0 48px; border: 1px solid #EEE;">
+
+                <div class="col s12">
+                    <div class='row'>
+                        <div class='col s12'>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <ul id="deviceList">
+                        </ul>
+                    </div>
+
+                    <center>
+                        <div class='row'>
+                            <button type='submit' name='btn_login' id='btn_login'
+                                    class='col s12 btn btn-large waves-effect indigo font-text-bold'>فعالسازی دریافت فایل
+                            </button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </center>
+
+
+    <!-- The Modal -->
+    <div id="activationModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="activation-close" class="close">&times;</span>
+                <h5>فعالسازی</h5>
+            </div>
+            <div class="modal-body">
+
+                <input id="deviceId" disabled>
+                <input id="activationCode" placeholder="کد فعالسازی">
+                <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+                    <button id="active-btn-submit-modal" class="btn-submit">فعالسازی</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- The Modal -->
+    <div id="filingModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h5>فعالسازی فایلینگ</h5>
+            </div>
+            <div class="modal-body">
+
+                <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+                    <button id="btn-submit-modal" class="btn-submit">فعالسازی فایلینگ</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const Store = require('electron-store');
+    const store = new Store();
+    var myDevice = store.get('myDevice');
+    var deviceList = store.get('devices');
+
+    var deviceListElement = document.querySelector('#deviceList');
+    for (var i = 0; i < deviceList.length; i++) {
+        var deviceItem = document.createElement('LI');
+        deviceItem.style = "display: flex; direction: rtl; align-items: center";
+        var divDeviceId = document.createElement('DIV');
+        divDeviceId.style = 'margin-left: 20px; font-family: IRANSans-Light';
+        var divActiveBtn = document.createElement('DIV');
+        var deviceIdLabel = document.createElement('LABEL');
+        if (deviceList[i].deviceId === myDevice) {
+            deviceIdLabel.innerHTML = 'شماره دستگاه من:';
+            deviceIdLabel.style = 'color: #267726; font-size: 13px';
+        } else {
+            deviceIdLabel.innerHTML = 'شماره دستگاه:';
+            deviceIdLabel.style = 'font-size: 13px';
+        }
+        var deviceIdValue = document.createElement('SPAN');
+        deviceIdValue.style = 'font-size: 12px';
+        deviceIdValue.innerHTML = deviceList[i].deviceId;
+        var activeBtn = document.createElement('BUTTON');
+        activeBtn.innerHTML = 'فعالسازی';
+        activeBtn.style = 'border: 0; border-radius: 10px; padding: 5px; background-color: #8fde8f; font-family: IRANSans-Light';
+        activeBtn.id = deviceList[i].deviceId;
+        activeBtn.onclick = function () {
+            onActivationClick(this.id);
+        };
+        divActiveBtn.appendChild(activeBtn);
+        divDeviceId.appendChild(deviceIdLabel);
+        divDeviceId.appendChild(deviceIdValue);
+        deviceItem.appendChild(divDeviceId);
+        deviceItem.appendChild(divActiveBtn);
+        deviceListElement.appendChild(deviceItem);
+
+    }
+
+    ipcRenderer.on('showLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "block";
+
+    });
+
+    ipcRenderer.on('hideLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "none";
+    });
+
+    // Get the modal
+    var activationModal = document.getElementById("activationModal");
+
+    // Get the <span> element that closes the modal
+    var activationCloseModal = document.getElementById("activation-close");
+
+
+    // When the user clicks on <span> (x), close the modal
+    activationCloseModal.onclick = function () {
+        activationModal.style.display = "none";
+    };
+
+    function onActivationClick(id) {
+        var deviceId = document.getElementById("deviceId");
+        deviceId.value = id;
+        activationModal.style.display = "block";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == activationModal) {
+            activationModal.style.display = "none";
+        }
+    };
+
+    var activeButton = document.getElementById('active-btn-submit-modal');
+    activeButton.onclick = function () {
+        var deviceId = document.getElementById("deviceId").value;
+        var activationCode = document.getElementById("activationCode").value;
+        ipcRenderer.send('registerDevice', deviceId, activationCode);
+    };
+</script>
+</body>
+
+</html>

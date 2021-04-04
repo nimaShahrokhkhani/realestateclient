@@ -16,12 +16,22 @@ let searchFileTableWindow;
 let addUserWindow;
 let screenWidth = 0;
 let screenHeight = 0;
+let deviceId = undefined;
 
 // Listen for app to be ready
 app.on('ready', function () {
     nodeMachineId.machineId().then((id) => {
-        console.log('iddddddd=>',id)
-    })
+        const Store = require('electron-store');
+        const store = new Store();
+        store.set('myDevice', id);
+        deviceId = id;
+        var requestData = {
+            deviceId: id,
+            isActiveDevice: false,
+            isMasterDevice: false
+        };
+        services.insertDevice(requestData);
+    });
 
 
     screenWidth = screen.getPrimaryDisplay().workAreaSize.width;
@@ -49,18 +59,17 @@ app.on('ready', function () {
     Menu.setApplicationMenu(mainMenu);
 });
 
-// login callback
-ipcMain.on('loginData', function (e, loginDataObject) {
+// setRealStateName callback
+ipcMain.on('setRealStateName', function (e, dataObject) {
     mainWindow.webContents.send('showLoading');
-    services.login(loginDataObject).then(() => {
-        const Store = require('electron-store');
-        const store = new Store();
-        store.set('userData', loginDataObject);
-        services.getConfigs().then((response) => {
-            store.set('configList', response.data);
+    services.insertConfig(dataObject).then(() => {
+        services.getDevices().then((response) => {
+            const Store = require('electron-store');
+            const store = new Store();
+            store.set('devices', response.data);
             mainWindow.webContents.send('hideLoading');
             mainWindow.loadURL(url.format({
-                pathname: path.join(__dirname, 'mainWindow.html'),
+                pathname: path.join(__dirname, 'managementPanel.html'),
                 protocol: 'file:',
                 slashes: true
             }));
@@ -68,7 +77,56 @@ ipcMain.on('loginData', function (e, loginDataObject) {
             mainWindow.webContents.send('hideLoading');
             const notification = {
                 title: 'خطا',
-                body: 'خطا در دریافت کانفیگ های برنامه.'
+                body: 'خطا در ثبت نام آژانس.'
+            };
+            new Notification(notification).show()
+        })
+
+    }).catch(() => {
+        mainWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در ثبت نام آژانس.'
+        };
+        new Notification(notification).show()
+    });
+});
+
+// registerDevice callback
+ipcMain.on('registerDevice', function (e, deviceId, activationCode) {
+    mainWindow.webContents.send('showLoading');
+    services.getConfigs().then((response) => {
+        services.installDevice({
+            deviceId: deviceId,
+            deviceCode: activationCode,
+            realStateName: response.data.realStateName
+        }).then(() => {
+            const Store = require('electron-store');
+            const store = new Store();
+            store.set('activationCode', activationCode);
+            services.insertDevice({
+                deviceId: deviceId,
+                isActiveDevice: true
+            }).then(() => {
+                mainWindow.webContents.send('hideLoading');
+                const notification = {
+                    title: 'موفقیت',
+                    body: 'دستگاه با موفقیت فعال شد.'
+                };
+                new Notification(notification).show()
+            }).catch(() => {
+                mainWindow.webContents.send('hideLoading');
+                const notification = {
+                    title: 'خطا',
+                    body: 'خطا فعالسازی دستگاه.'
+                };
+                new Notification(notification).show()
+            })
+        }).catch(() => {
+            mainWindow.webContents.send('hideLoading');
+            const notification = {
+                title: 'خطا',
+                body: 'خطا فعالسازی دستگاه.'
             };
             new Notification(notification).show()
         })
@@ -76,11 +134,114 @@ ipcMain.on('loginData', function (e, loginDataObject) {
         mainWindow.webContents.send('hideLoading');
         const notification = {
             title: 'خطا',
-            body: 'نام کاربری یا رمز عبور نادرست است.'
+            body: 'خطا فعالسازی دستگاه.'
         };
         new Notification(notification).show()
     })
+});
 
+// login callback
+ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
+    mainWindow.webContents.send('showLoading');
+    if (isInstallationSystem) {
+        services.loginFiling(loginDataObject).then(() => {
+            services.getFilingConfigs().then((response) => {
+                const Store = require('electron-store');
+                const store = new Store();
+                store.set('configList', response.data);
+                services.insertConfig(response.data).then(() => {
+                    services.getConfigs().then((response) => {
+                        if (response.data[0].realStateName) {
+                            services.getDevices().then((response) => {
+                                const Store = require('electron-store');
+                                const store = new Store();
+                                store.set('devices', response.data);
+                                mainWindow.webContents.send('hideLoading');
+                                mainWindow.loadURL(url.format({
+                                    pathname: path.join(__dirname, 'managementPanel.html'),
+                                    protocol: 'file:',
+                                    slashes: true
+                                }));
+                            }).catch(() => {
+                                mainWindow.webContents.send('hideLoading');
+                                const notification = {
+                                    title: 'خطا',
+                                    body: 'خطا در دریافت کانفیگ های برنامه.'
+                                };
+                                new Notification(notification).show()
+                            })
+                        } else {
+                            mainWindow.webContents.send('hideLoading');
+                            mainWindow.loadURL(url.format({
+                                pathname: path.join(__dirname, 'realStateNameManagement.html'),
+                                protocol: 'file:',
+                                slashes: true
+                            }));
+                        }
+                    }).catch(() => {
+                        mainWindow.webContents.send('hideLoading');
+                        const notification = {
+                            title: 'خطا',
+                            body: 'خطا در دریافت کانفیگ های برنامه.'
+                        };
+                        new Notification(notification).show()
+                    })
+                }).catch(() => {
+                    mainWindow.webContents.send('hideLoading');
+                    const notification = {
+                        title: 'خطا',
+                        body: 'خطا در دریافت کانفیگ های برنامه.'
+                    };
+                    new Notification(notification).show()
+                });
+            }).catch(() => {
+                mainWindow.webContents.send('hideLoading');
+                const notification = {
+                    title: 'خطا',
+                    body: 'خطا در دریافت کانفیگ های برنامه.'
+                };
+                new Notification(notification).show()
+            })
+        })
+    } else {
+        services.login(loginDataObject).then(() => {
+            const Store = require('electron-store');
+            const store = new Store();
+            store.set('userData', loginDataObject);
+            services.getConfigs().then((response) => {
+                store.set('configList', response.data);
+                services.insertConfig(response.data).then(() => {
+                    mainWindow.webContents.send('hideLoading');
+                    mainWindow.loadURL(url.format({
+                        pathname: path.join(__dirname, 'mainWindow.html'),
+                        protocol: 'file:',
+                        slashes: true
+                    }));
+                }).catch(() => {
+                    mainWindow.webContents.send('hideLoading');
+                    const notification = {
+                        title: 'خطا',
+                        body: 'خطا در دریافت کانفیگ های برنامه.'
+                    };
+                    new Notification(notification).show()
+                });
+            }).catch(() => {
+                mainWindow.webContents.send('hideLoading');
+                const notification = {
+                    title: 'خطا',
+                    body: 'خطا در دریافت کانفیگ های برنامه.'
+                };
+                new Notification(notification).show()
+            })
+        }).catch(() => {
+            mainWindow.webContents.send('hideLoading');
+            const notification = {
+                title: 'خطا',
+                body: 'نام کاربری یا رمز عبور نادرست است.'
+            };
+            new Notification(notification).show()
+        })
+    }
 });
 
 // setUser callback
@@ -147,57 +308,57 @@ ipcMain.on('listFile', function (e, requestBody) {
 
 // showError callback
 ipcMain.on('showError', function (e, errorMessage) {
-        const notification = {
-            title: 'خطا',
-            body: errorMessage
-        };
-        new Notification(notification).show()
+    const notification = {
+        title: 'خطا',
+        body: errorMessage
+    };
+    new Notification(notification).show()
 });
 
 // create add file window
-function createAddFileWindow(){
+function createAddFileWindow() {
     addFileWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
         },
         width: screenWidth,
         height: screenHeight,
-        title:'ثبت فایل'
+        title: 'ثبت فایل'
     });
     addFileWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addFileWindow.html'),
         protocol: 'file:',
-        slashes:true
+        slashes: true
     }));
     // Handle garbage collection
-    addFileWindow.on('close', function(){
+    addFileWindow.on('close', function () {
         addFileWindow = null;
     });
 }
 
 // create search file window
-function createSearchFileWindow(){
+function createSearchFileWindow() {
     searchFileWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
         },
         width: screenWidth,
         height: screenHeight,
-        title:'جستجو فایل'
+        title: 'جستجو فایل'
     });
     searchFileWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'searchFileWindow.html'),
         protocol: 'file:',
-        slashes:true
+        slashes: true
     }));
     // Handle garbage collection
-    searchFileWindow.on('close', function(){
+    searchFileWindow.on('close', function () {
         searchFileWindow = null;
     });
 }
 
 // create search file table window
-function createSearchFileTableWindow(responseData){
+function createSearchFileTableWindow(responseData) {
     const Store = require('electron-store');
     const store = new Store();
     store.set('searchFileList', responseData);
@@ -207,21 +368,21 @@ function createSearchFileTableWindow(responseData){
         },
         width: screenWidth,
         height: screenHeight,
-        title:'نمایش فایل ها'
+        title: 'نمایش فایل ها'
     });
     searchFileTableWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'searchFileTableWindow.html'),
         protocol: 'file:',
-        slashes:true
+        slashes: true
     }));
     // Handle garbage collection
-    searchFileTableWindow.on('close', function(){
+    searchFileTableWindow.on('close', function () {
         searchFileTableWindow = null;
     });
 }
 
 // create add user window
-function createAddUserWindow(){
+function createAddUserWindow() {
     addUserWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
@@ -229,15 +390,15 @@ function createAddUserWindow(){
         },
         width: screenWidth,
         height: screenHeight,
-        title:'ثبت کاربر'
+        title: 'ثبت کاربر'
     });
     addUserWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addUserWindow/addUserWindow.html'),
         protocol: 'file:',
-        slashes:true
+        slashes: true
     }));
     // Handle garbage collection
-    addUserWindow.on('close', function(){
+    addUserWindow.on('close', function () {
         addUserWindow = null;
     });
 }

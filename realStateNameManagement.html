@@ -111,34 +111,18 @@
 
                     <div class='row'>
                         <div class="input-field col s12">
-                            <input class='validate textInput font-text-light' type='text' name='username'
-                                   id='username' value="admin"/>
-                            <label for='username' class="active font-text-light placeholder">نام کاربری</label>
-                        </div>
-                    </div>
-
-                    <div class='row'>
-                        <div class="input-field col s12">
-                            <input class='validate textInput font-text-light' type='password' name='password'
-                                   id='password' value="admin"/>
-                            <label for='password' class="active font-text-light placeholder">رمز ورود</label>
+                            <input class='validate textInput font-text-light' type='text' name='realStateName'
+                                   id='realStateName'/>
+                            <label for='realStateName' class="active font-text-light placeholder">نام آژانس</label>
                         </div>
                     </div>
 
                     <br/>
 
-                    <div class='row'>
-                        <div class="input-field col s12">
-                            <input class='validate textInput font-text-light' type='checkbox' name='installationSystem'
-                                   id='installationSystem' value="admin"/>
-                            <label for='installationSystem' class="active font-text-light placeholder">ورود به پنل نصب کننده سیستم</label>
-                        </div>
-                    </div>
-
                     <center>
                         <div class='row'>
                             <button type='submit' name='btn_login' id='btn_login'
-                                    class='col s12 btn btn-large waves-effect indigo font-text-bold'>ورود
+                                    class='col s12 btn btn-large waves-effect indigo font-text-bold'>ثبت
                             </button>
                         </div>
                     </center>
@@ -163,14 +147,11 @@
 
     function submitForm(e) {
         e.preventDefault();
-        const username = document.querySelector('#username').value;
-        const password = document.querySelector('#password').value;
-        const isInstallationSystem = document.querySelector('#installationSystem').checked;
-        const loginDataObject = {
-            username: username,
-            password: password
+        const realStateName = document.querySelector('#realStateName').value;
+        const dataObject = {
+            realStateName: realStateName
         };
-        ipcRenderer.send('loginData', loginDataObject, isInstallationSystem);
+        ipcRenderer.send('setRealStateName', dataObject);
     }
 
     ipcRenderer.on('showLoading', function () {
