@@ -53,27 +53,7 @@ app.on('ready', function () {
         app.quit();
     });
 
-    // Create the Application's main menu
-    var template = [{
-        label: "Application",
-        submenu: [
-            { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
-            { type: "separator" },
-            { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
-        ]}, {
-        label: "Edit",
-        submenu: [
-            { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-            { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-            { type: "separator" },
-            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-            { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-            { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
-        ]}
-    ];
-
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+    Menu.setApplicationMenu(Menu.buildFromTemplate(mainMenuTemplate));
 });
 
 // setRealStateName callback
@@ -125,12 +105,25 @@ ipcMain.on('registerDevice', function (e, deviceId, activationCode) {
                 deviceId: deviceId,
                 isActiveDevice: true
             }).then(() => {
-                mainWindow.webContents.send('hideLoading');
-                const notification = {
-                    title: 'موفقیت',
-                    body: 'دستگاه با موفقیت فعال شد.'
-                };
-                new Notification(notification).show()
+                services.getDevices().then((response) => {
+                    const Store = require('electron-store');
+                    const store = new Store();
+                    store.set('devices', response.data);
+                    mainWindow.webContents.send('hideLoading');
+                    const notification = {
+                        title: 'موفقیت',
+                        body: 'دستگاه با موفقیت فعال شد.'
+                    };
+                    new Notification(notification).show();
+                    mainWindow.reload();
+                }).catch(() => {
+                    mainWindow.webContents.send('hideLoading');
+                    const notification = {
+                        title: 'خطا',
+                        body: 'خطا فعالسازی دستگاه.'
+                    };
+                    new Notification(notification).show()
+                })
             }).catch(() => {
                 mainWindow.webContents.send('hideLoading');
                 const notification = {
@@ -436,7 +429,24 @@ ipcMain.on('addUser', function (e) {
 });
 
 // Create menu template
-const mainMenuTemplate = [];
+const mainMenuTemplate = [{
+    label: "Application",
+    submenu: [
+        { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+        { type: "separator" },
+        { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
+    ]}, {
+    label: "Edit",
+    submenu: [
+        { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+        { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+        { type: "separator" },
+        { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+        { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+        { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+        { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+    ]}
+];
 
 // If OSX, add empty object to menu
 if (process.platform === 'darwin') {
