@@ -26,9 +26,7 @@ app.on('ready', function () {
         store.set('myDevice', id);
         deviceId = id;
         var requestData = {
-            deviceId: id,
-            isActiveDevice: false,
-            isMasterDevice: false
+            deviceId: id
         };
         services.insertDevice(requestData);
     });
@@ -150,11 +148,39 @@ ipcMain.on('registerDevice', function (e, deviceId, activationCode) {
     })
 });
 
+// registerDevice callback
+ipcMain.on('registerFilingDevice', function (e, realStateCode, realStateTemporaryCode) {
+    mainWindow.webContents.send('showLoading');
+    const Store = require('electron-store');
+    const store = new Store();
+    var deviceId = store.get('myDevice');
+    var requestData = {
+        agencyCode: realStateCode,
+        registrationCode: realStateTemporaryCode
+    };
+    services.registerAgency(requestData).then(response => {
+        mainWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'موفقیت',
+            body: 'دستگاه شما با موفقیت در سامانه رجیستر شد.'
+        };
+        new Notification(notification).show()
+    }).catch(error => {
+        mainWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در رجیستر کردن.'
+        };
+        new Notification(notification).show()
+    })
+});
+
 // login callback
 ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
     mainWindow.webContents.send('showLoading');
     if (isInstallationSystem) {
-        services.loginFiling(loginDataObject).then(() => {
+        services.loginFiling(loginDataObject).then((response) => {
+            services.setAndResetSession(response.headers['set-cookie']);
             services.getFilingConfigs().then((response) => {
                 const Store = require('electron-store');
                 const store = new Store();

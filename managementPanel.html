@@ -195,8 +195,8 @@
 
                     <center>
                         <div class='row'>
-                            <button type='submit' name='btn_login' id='btn_login'
-                                    class='col s12 btn btn-large waves-effect indigo font-text-bold'>فعالسازی دریافت فایل
+                            <button type='submit' name='filing-activation-modal-btn' id='filing-activation-modal-btn'
+                                    class='col s12 btn btn-large waves-effect indigo font-text-bold' onclick="onFilingActivationClick()" disabled>فعالسازی دریافت فایل
                             </button>
                         </div>
                     </center>
@@ -233,13 +233,15 @@
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close">&times;</span>
+                <span id="filing-activation-close" class="close">&times;</span>
                 <h5>فعالسازی فایلینگ</h5>
             </div>
             <div class="modal-body">
+                <input id="realStateCode" placeholder="کد آژانس">
+                <input id="realStateTemporaryCode" placeholder="کد موقت آژانس">
 
                 <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-                    <button id="btn-submit-modal" class="btn-submit">فعالسازی فایلینگ</button>
+                    <button id="filing-btn-submit-modal" class="btn-submit">فعالسازی فایلینگ</button>
                 </div>
             </div>
         </div>
@@ -269,6 +271,14 @@
         var divActiveBtn = document.createElement('DIV');
         var deviceIdLabel = document.createElement('LABEL');
         if (deviceList[i].deviceId === myDevice) {
+            if (deviceList[i].isActiveDevice) {
+                var filingActivationBtn = document.getElementById('filing-activation-modal-btn');
+                if (deviceList[i].isMasterDevice) {
+                    filingActivationBtn.innerHTML = 'دستگاه برای دریافت فایل فعال شده'
+                } else {
+                    filingActivationBtn.disabled = false;
+                }
+            }
             deviceIdLabel.innerHTML = 'شماره دستگاه من:';
             deviceIdLabel.style = 'color: #267726; font-size: 13px';
         } else {
@@ -284,7 +294,7 @@
             activeBtn.style = 'border: 0; border-radius: 10px; padding: 5px; background-color: #8fde8f; font-family: IRANSans-Light';
         } else {
             activeBtn.innerHTML = 'فعالسازی';
-            activeBtn.style = 'border: 0; border-radius: 10px; padding: 5px; background-color: #8fde8f; font-family: IRANSans-Light';
+            activeBtn.style = 'border: 0; border-radius: 10px; padding: 5px; background-color: #f36a6a; font-family: IRANSans-Light';
             activeBtn.id = deviceList[i].deviceId;
             activeBtn.onclick = function () {
                 onActivationClick(this.id);
@@ -308,6 +318,8 @@
     ipcRenderer.on('hideLoading', function () {
         var loading = document.getElementById("loading");
         loading.style.display = "none";
+        filingActivationModal.style.display = "none";
+        activationModal.style.display = "none";
     });
 
     // Get the modal
@@ -340,6 +352,40 @@
         var deviceId = document.getElementById("deviceId").value;
         var activationCode = document.getElementById("activationCode").value;
         ipcRenderer.send('registerDevice', deviceId, activationCode);
+    };
+
+
+
+
+
+    // Get the modal
+    var filingActivationModal = document.getElementById("filingModal");
+
+    // Get the <span> element that closes the modal
+    var filingActivationCloseModal = document.getElementById("filing-activation-close");
+
+
+    // When the user clicks on <span> (x), close the modal
+    filingActivationCloseModal.onclick = function () {
+        activationModal.style.display = "none";
+    };
+
+    function onFilingActivationClick(id) {
+        filingActivationModal.style.display = "block";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == filingActivationModal) {
+            filingActivationModal.style.display = "none";
+        }
+    };
+
+    var filingActiveButton = document.getElementById('filing-btn-submit-modal');
+    filingActiveButton.onclick = function () {
+        var realStateCode = document.getElementById("realStateCode").value;
+        var realStateTemporaryCode = document.getElementById("realStateTemporaryCode").value;
+        ipcRenderer.send('registerFilingDevice', realStateCode, realStateTemporaryCode);
     };
 </script>
 </body>

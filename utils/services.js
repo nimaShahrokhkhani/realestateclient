@@ -3,6 +3,8 @@ const axios = require('axios');
 let HOST_NAME = 'http://localhost:3500/';
 let FILING_HOST_NAME = 'http://localhost:3600/';
 let INSTALLATION_HOST_NAME = 'http://localhost:3650/';
+const Store = require('electron-store');
+const store = new Store();
 
 const filingInstance = axios.create({
     baseURL: FILING_HOST_NAME
@@ -15,6 +17,16 @@ const installationInstance = axios.create({
 const instance = axios.create({
     baseURL: HOST_NAME
 });
+
+function setAndResetSession(cookieList) {
+    for(let i in cookieList) {
+        if(cookieList[i].includes('connect.sid=')) {
+            const Store = require('electron-store');
+            const store = new Store();
+            store.set('session', cookieList[i].split(';')[0]);
+        }
+    }
+}
 
 function loginFiling(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
@@ -54,6 +66,7 @@ function getConfigs(requestData) {
 
 function getFilingConfigs(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
+    filingInstance.defaults.headers['Cookie'] = store.get('session');
     return filingInstance.get(`/configs/list`, requestData)
 }
 
@@ -77,4 +90,10 @@ function insertConfig(requestData) {
     return instance.post(`/configs/insert`, requestData)
 }
 
-module.exports = {loginFiling, login, insertUser, insertFile, installDevice, getDevices, insertDevice, searchFile, getFilingConfigs, getConfigs, insertConfig};
+function registerAgency(requestData) {
+    filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
+    filingInstance.defaults.headers['Cookie'] = store.get('session');
+    return filingInstance.post(`/agency/registerAgency`, requestData)
+}
+
+module.exports = {loginFiling, login, insertUser, insertFile, installDevice, getDevices, insertDevice, searchFile, getFilingConfigs, getConfigs, insertConfig, setAndResetSession, registerAgency};
