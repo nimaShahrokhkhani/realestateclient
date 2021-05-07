@@ -11,7 +11,8 @@
     <script src="node_modules/persian-date/dist/persian-date.js" type="text/javascript"></script>
     <script src="node_modules/persian-datepicker/dist/js/persian-datepicker.js" type="text/javascript"></script>
     <script src="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
-    <link href="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css" rel="stylesheet">
+    <link href="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css"
+          rel="stylesheet">
     <link rel="stylesheet" href="node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
     <style>
         @font-face {
@@ -24,7 +25,6 @@
         body {
             background: #fff;
             font-family: IRANSansMobileFaNum-Light;
-            background-color: #b7a28642 !important;
         }
 
         .container {
@@ -184,6 +184,163 @@
             width: 125px;
         }
 
+        .horizontalScrollView {
+            white-space: nowrap;
+        }
+
+        div#equipmentResultList {
+            display: flex;
+            flex-wrap: wrap;
+            height: auto;
+        }
+
+        .equipmentResult {
+            height: auto;
+            flex: 0 1 auto;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            -webkit-animation-name: fadeIn; /* Fade in the background */
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: #fefefe;
+            width: 100%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .btn-submit {
+            margin-right: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            background-image: linear-gradient(rgb(45 47 146), white);
+            border: 0;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobile-Bold;
+        }
+
+        div#equipmentList {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100vw;
+            height: auto;
+        }
+
+        .equipment {
+            width: 25%;
+            height: auto;
+            flex: 0 1 25%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        input {
+            background-image: linear-gradient(
+                    89deg, #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -193,13 +350,12 @@
 <div>
     <div class="container">
         <div class="left-container">
-            <div class="container-row">
-                <fieldset class="fieldsetContainer">
+            <div style="overflow-x: scroll" class="container-row">
+                <fieldset id="codeListContainer" class="fieldsetContainer horizontalScrollView">
                     <legend>مناطق</legend>
                     <label>کد:</label>
-                    <input type="text" name="code1" id="code1" style="width: 30px">
-                    <input type="text" name="code2" id="code2" style="width: 30px">
-                    <input type="text" name="code3" id="code3" style="width: 30px">
+                    <input id="addTableButton" type="image" src="images/plus.png" style="width: 10px; height: 10px"
+                           onclick="onAddRegionCodeClick()"/>
                 </fieldset>
             </div>
             <div class="container-row" style="justify-content: center">
@@ -209,21 +365,15 @@
                         </select>
                         <label>:کد</label>
                     </div>
-                    <ul id="codeAreaList" style="height: 166px;border-style: groove;border-width: 0.5px;">
+                    <ul id="regionNameAreaList"
+                        style="height: 166px;border-style: groove;border-width: 0.5px;direction: rtl">
 
                     </ul>
                 </div>
 
-                <div style="display: flex; flex-direction: column; margin-top: 12px">
-                    <button style="margin-top: 31px; margin-right: 2px; margin-left: 2px">+گروه</button>
-                    <button style="margin-top: 20px; margin-bottom: 10px; margin-right: 2px; margin-left: 2px">+
-                    </button>
-                    <button style="margin-bottom: 20px;  margin-right: 2px; margin-left: 2px">-</button>
-                    <button style=" margin-right: 2px; margin-left: 2px">-گروه</button>
-                </div>
-
-                <div style="width: 40%">
-                    <ul id="codeList" style="height: 198px;border-style: groove;border-width: 0.5px;">
+                <div style="width: 40%; margin-right: 50px">
+                    <ul id="regionNameResultAreaList"
+                        style="height: 198px;border-style: groove;border-width: 0.5px;direction: rtl">
 
                     </ul>
                 </div>
@@ -350,10 +500,6 @@
                         <fieldset class="fieldsetContainer">
                             <legend>تنظیم کننده</legend>
                             <select name="corrector" id="corrector">
-                                <option value="volvo">Volvo</option>
-                                <option value="saab">Saab</option>
-                                <option value="mercedes">Mercedes</option>
-                                <option value="audi">Audi</option>
                             </select>
                         </fieldset>
                     </div>
@@ -466,18 +612,15 @@
                 <fieldset class="fieldsetContainer">
                     <legend>نوع ملک</legend>
                     <div class="type-inner">
-                        <select name="moshakhese_1" id="moshakhese_1">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
+                        <select name="noeMelk" id="noeMelk">
+                            <option value="آپارتمان">آپارتمان</option>
+                            <option value="ویلا">ویلا</option>
+                            <option value="مستغلات">مستغلات</option>
+                            <option value="کلنگی">کلنگی</option>
+                            <option value="دفتر کار">دفتر کار</option>
                         </select>
-                        <label>:مشخصه۱</label>
-                        <select name="moshakhese1" id="moshakhese1">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
+                        <label>:مشخصه</label>
+                        <select name="moshakhase" id="moshakhase">
                         </select>
                     </div>
 
@@ -739,7 +882,11 @@
                 </div>
                 <fieldset class="fieldsetContainer">
                     <legend>امکانات</legend>
-
+                    <button style="border-width: 0.5px; font-family: IRANSans-Light; background-image: linear-gradient(89deg, #130de622, white) !important;"
+                            type="button" onclick="onFacilityClick()">امکانات
+                    </button>
+                    <div id="equipmentResultList">
+                    </div>
 
                 </fieldset>
             </div>
@@ -750,37 +897,158 @@
     </div>
 </div>
 
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>امکانات</h2>
+        </div>
+        <div class="modal-body">
+            <div id="equipmentList">
+            </div>
+            <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+                <button id="btn-submit-modal" class="btn-submit">ثبت</button>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <script>
     const electron = require('electron');
     const {ipcRenderer} = electron;
+    const _ = require('underscore');
     const Store = require('electron-store');
     const store = new Store();
+    var regionNameResultList = [];
+    var regionCodeList = [];
+    var regionCodeListForSearch = [];
+    var equipments = [];
+
+    function getRegionNameListFromRegionCode(regionCode) {
+        var regionNameList = [];
+        for (var i = 0; i < store.get('configList')[0].region.length; i++) {
+            if (regionCode === store.get('configList')[0].region[i].regionCode) {
+                regionNameList.push(store.get('configList')[0].region[i].regionName)
+            }
+        }
+        return regionNameList;
+    }
+
+    function onAddRegionCodeClick() {
+        var codeListContainer = document.getElementById("codeListContainer");
+        var codeInput = document.createElement('select');
+        codeInput.id = 'id' + regionCodeListForSearch.length;
+        codeInput.style = "width: 30px";
+        for (var i = 0; i < regionCodeList.length; i++) {
+            var optionCode = document.createElement('option');
+            optionCode.value = regionCodeList[i];
+            optionCode.innerHTML = regionCodeList[i];
+            codeInput.appendChild(optionCode);
+        }
+        regionCodeListForSearch.push(codeInput);
+        codeListContainer.appendChild(codeInput);
+    }
+
+    if (!_.isEmpty(store.get('configList')[0].region)) {
+        for (var i = 0; i < store.get('configList')[0].region.length; i++) {
+            if (!_.contains(regionCodeList, store.get('configList')[0].region[i].regionCode)) {
+                regionCodeList.push(store.get('configList')[0].region[i].regionCode)
+            }
+        }
+    }
 
     //fill options with configs
     var codeSelect = document.getElementById("code");
-    for (var i = 0; i<store.get('configList')[0].region.length; i++){
+    for (var i = 0; i < regionCodeList.length; i++) {
         var optionCode = document.createElement('option');
-        optionCode.value = store.get('configList')[0].region[i];
-        optionCode.innerHTML = store.get('configList')[0].region[i];
+        optionCode.value = regionCodeList[i];
+        optionCode.innerHTML = regionCodeList[i];
         codeSelect.appendChild(optionCode);
     }
 
-    var sourceSelect = document.getElementById("source");
-    for (var i = 0; i<store.get('configList')[0].source.length; i++){
-        var optionSource = document.createElement('option');
-        optionSource.value = store.get('configList')[0].source[i];
-        optionSource.innerHTML = store.get('configList')[0].source[i];
-        sourceSelect.appendChild(optionSource);
+    if (!_.isEmpty(store.get('configList')[0].source)) {
+        var sourceSelect = document.getElementById("source");
+        for (var i = 0; i < store.get('configList')[0].source.length; i++) {
+            var optionSource = document.createElement('option');
+            optionSource.value = store.get('configList')[0].source[i];
+            optionSource.innerHTML = store.get('configList')[0].source[i];
+            sourceSelect.appendChild(optionSource);
+        }
     }
 
-    var correctorSelect = document.getElementById("corrector");
-    for (var i = 0; i<store.get('configList')[0].publisher.length; i++){
-        var optionCorrector = document.createElement('option');
-        optionCorrector.value = store.get('configList')[0].publisher[i];
-        optionCorrector.innerHTML = store.get('configList')[0].publisher[i];
-        correctorSelect.appendChild(optionCorrector);
+    if (!_.isEmpty(store.get('configList')[0].publisher)) {
+        var correctorSelect = document.getElementById("corrector");
+        for (var i = 0; i < store.get('configList')[0].publisher.length; i++) {
+            var optionCorrector = document.createElement('option');
+            optionCorrector.value = store.get('configList')[0].publisher[i];
+            optionCorrector.innerHTML = store.get('configList')[0].publisher[i];
+            correctorSelect.appendChild(optionCorrector);
+        }
     }
+
+    if (!_.isEmpty(store.get('configList')[0].equipments)) {
+        var equipmentListDiv = document.getElementById("equipmentList");
+        for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
+            var equipmentDiv = document.createElement('DIV');
+            equipmentDiv.className = 'equipment';
+            var equipmentLabel = document.createElement('LABEL');
+            equipmentLabel.innerHTML = store.get('configList')[0].equipments[i];
+            var equipmentCheckBox = document.createElement('INPUT');
+            equipmentCheckBox.type = 'checkbox';
+            equipmentCheckBox.id = store.get('configList')[0].equipments[i];
+            equipmentDiv.appendChild(equipmentLabel);
+            equipmentDiv.appendChild(equipmentCheckBox);
+            equipmentListDiv.appendChild(equipmentDiv);
+        }
+    }
+
+    // Get the modal
+    var facilityModal = document.getElementById("myModal");
+
+    // Get the <span> element that closes the modal
+    var facilityCloseModal = document.getElementsByClassName("close")[0];
+
+    //facilities button click
+    function onFacilityClick() {
+        facilityModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    facilityCloseModal.onclick = function () {
+        facilityModal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == facilityModal) {
+            facilityModal.style.display = "none";
+        }
+    };
+
+    var checkedEquipmentList = [];
+    var btnSubmit = document.getElementById("btn-submit-modal");
+    btnSubmit.addEventListener("click", function () {
+        $("#equipmentResultList").empty();
+        equipments = [];
+        if (!_.isEmpty(store.get('configList')[0].equipments)) {
+            var equipmentResultListDiv = document.getElementById("equipmentResultList");
+            for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
+                if (document.getElementById(store.get('configList')[0].equipments[i]).checked) {
+                    checkedEquipmentList.push(store.get('configList')[0].equipments[i]);
+                    var equipmentResultDiv = document.createElement('DIV');
+                    equipmentResultDiv.className = 'equipmentResult';
+                    equipmentResultDiv.innerHTML = store.get('configList')[0].equipments[i];
+                    equipmentResultListDiv.appendChild(equipmentResultDiv);
+                    equipments.push(store.get('configList')[0].equipments[i]);
+                }
+            }
+        }
+        facilityModal.style.display = "none";
+    });
 
     $(document).ready(function () {
         $(".date-picker").persianDatepicker({
@@ -814,9 +1082,67 @@
         evt.currentTarget.className += " active";
     }
 
-    $('#code').editableSelect();
+    function getNoeMelk(noeMelk) {
+        var noeMelkValue = "";
+        switch (noeMelk) {
+            case "آپارتمان":
+                noeMelkValue = "apartment";
+                break;
+            case "ویلا":
+                noeMelkValue = "vila";
+                break;
+            case "مستغلات":
+                noeMelkValue = "building";
+                break;
+            case "کلنگی":
+                noeMelkValue = "oldHouse";
+                break;
+            case "دفتر کار":
+                noeMelkValue = "office";
+                break;
+        }
+        return noeMelkValue;
+    }
+
+    $('#code').on('select.editable-select', function (e) {
+        var regionCode = document.getElementById("code").value;
+        var regionNameAreaList = document.getElementById("regionNameAreaList");
+        var regionNameList = getRegionNameListFromRegionCode(regionCode);
+        $("#regionNameAreaList").empty();
+        for (var i = 0; i < regionNameList.length; i++) {
+            var optionRegionName = document.createElement('li');
+            optionRegionName.id = regionNameList[i];
+            optionRegionName.innerHTML = regionNameList[i];
+            optionRegionName.onclick = function () {
+                var regionNameResultAreaList = document.getElementById("regionNameResultAreaList");
+                var optionRegionName = document.createElement('li');
+                optionRegionName.innerHTML = this.id;
+                optionRegionName.id = 'result-' + this.id;
+                optionRegionName.onclick = function () {
+                    regionNameResultList.pop(this.id.split('-')[1]);
+                    var regionNameResultAreaList = document.getElementById('regionNameResultAreaList');
+
+                    regionNameResultAreaList.removeChild(document.getElementById(this.id))
+                };
+                regionNameResultList.push(this.id);
+                regionNameResultAreaList.appendChild(optionRegionName);
+            };
+            regionNameAreaList.appendChild(optionRegionName);
+        }
+    }).editableSelect();
     $('#corrector').editableSelect();
     $('#source').editableSelect();
+    $('#noeMelk').on('select.editable-select', function (e) {
+        var noeMelk = document.getElementById("noeMelk");
+        var noeMelkValue = getNoeMelk(noeMelk.value);
+        $("#moshakhase").editableSelect('clear');
+        if (!_.isEmpty(store.get('configList')[0][noeMelkValue])) {
+            for (var i = 0; i < store.get('configList')[0][noeMelkValue].length; i++) {
+                $("#moshakhase").editableSelect('add', store.get('configList')[0][noeMelkValue][i]);
+            }
+        }
+    }).editableSelect();
+    $('#moshakhase').editableSelect();
 
     // Get the btnSubmit
     var btnSubmit = document.getElementById("btn-submit");
@@ -828,75 +1154,79 @@
                 saleType.push(saleTypeList[i].value);
             }
         }
+        var regionCodeList = [];
+        for (i = 0; i < regionCodeListForSearch.length; i++) {
+            regionCodeList.push(regionCodeListForSearch[i].value)
+        }
         var requestBody = {
-            tel1: document.querySelector('#telephone').value,
-            address: [
-                document.querySelector('#address1').value,
-                document.querySelector('#address2').value,
-                document.querySelector('#address3').value
-            ],
-            owner: document.querySelector('#owner').value,
-            regionCode: [
-                document.querySelector('#code1').value,
-                document.querySelector('#code2').value,
-                document.querySelector('#code3').value,
-            ],
-            fromDate: document.querySelector('#fromDate').value,
-            toDate: document.querySelector('#toDate').value,
-            fromNumber: document.querySelector('#fromNumber').value,
-            toNumber: document.querySelector('#toNumber').value,
-            sale: saleType,
-            fromRent: document.querySelector('#fromRent').value,
-            toRent: document.querySelector('#toRent').value,
-            fromMortgage: document.querySelector('#fromMortgage').value,
-            toMortgage: document.querySelector('#toMortgage').value,
+            tel1: !_.isEmpty(document.querySelector('#telephone').value) ? document.querySelector('#telephone').value : undefined,
+            address: _.compact([
+                !_.isEmpty(document.querySelector('#address1').value) ? document.querySelector('#address1').value : undefined,
+                !_.isEmpty(document.querySelector('#address2').value) ? document.querySelector('#address2').value : undefined,
+                !_.isEmpty(document.querySelector('#address3').value) ? document.querySelector('#address3').value : undefined
+            ]),
+            owner: !_.isEmpty(document.querySelector('#owner').value) ? document.querySelector('#owner').value : undefined,
+            regionCode: regionCodeList,
+            regionName: regionNameResultList,
+            fromDate: !_.isEmpty(document.querySelector('#fromDate').value) ? document.querySelector('#fromDate').value : undefined,
+            toDate: !_.isEmpty(document.querySelector('#toDate').value) ? document.querySelector('#toDate').value : undefined,
+            fromNumber: !_.isEmpty(document.querySelector('#fromNumber').value) ? document.querySelector('#fromNumber').value : undefined,
+            toNumber: !_.isEmpty(document.querySelector('#toNumber').value) ? document.querySelector('#toNumber').value : undefined,
+            sale: !_.isEmpty(saleType) ? saleType : undefined,
+            fromRent: !_.isEmpty(document.querySelector('#fromRent').value) ? document.querySelector('#fromRent').value : undefined,
+            toRent: !_.isEmpty(document.querySelector('#toRent').value) ? document.querySelector('#toRent').value : undefined,
+            fromMortgage: !_.isEmpty(document.querySelector('#fromMortgage').value) ? document.querySelector('#fromMortgage').value : undefined,
+            toMortgage: !_.isEmpty(document.querySelector('#toMortgage').value) ? document.querySelector('#toMortgage').value : undefined,
             /*apartment: document.querySelector('#apartment').value,
-            villa: document.querySelector('#villa').value,
+            vila: document.querySelector('#vila').value,
             building: document.querySelector('#mostaghelat').value,
             home: document.querySelector('#home').checked,
             oldHouse: document.querySelector('#kolangi').value,
             office: document.querySelector('#office').value,
             store: document.querySelector('#store').checked,
             suite: document.querySelector('#suite').checked,*/
-            north: document.querySelector('#direction_north').checked,
-            south: document.querySelector('#direction_south').checked,
-            east: document.querySelector('#direction_east').checked,
-            west: document.querySelector('#direction_west').checked,
-            fromFloorNo: document.querySelector('#fromFloorCount').value,
-            toFloorNo: document.querySelector('#toFloorCount').value,
-            fromUnitNo: document.querySelector('#fromVahedCount').value,
-            toUnitNo: document.querySelector('#toVahedCount').value,
-            fromUnitPrice: document.querySelector('#fromMetri').value,
-            fromTotalPrice: document.querySelector('#fromTotalPrice').value,
-            toUnitPrice: document.querySelector('#toMetri').value,
-            toTotalPrice: document.querySelector('#toTotalPrice').value,
-            priceComment: document.querySelector('#priceDescription').value,
-            pool: document.querySelector('#pool').checked,
-            sona: document.querySelector('#sauna').checked,
-            jakozi: document.querySelector('#Jacuzzi').checked,
-            fromArea: document.querySelector('#fromArea').value,
-            toArea: document.querySelector('#toArea').value,
-            fromDensity: document.querySelector('#fromDensity').value,
-            toDensity: document.querySelector('#toDensity').value,
-            fromFront: document.querySelector('#fromToolBar').value,
-            toFront: document.querySelector('#toToolBar').value,
-            fromHeight: document.querySelector('#fromHeight').value,
-            toHeight: document.querySelector('#toHeight').value,
-            yard: document.querySelector('#yard').value,
-            smallYard: document.querySelector('#backyard').value,
-            underGround: document.querySelector('#basement').value,
-            employeeService: document.querySelector('#servant').value,
-            residential: document.querySelector('#residential').checked,
-            empty: document.querySelector('#empty').value,
-            rented: document.querySelector('#rent').value,
-            frontKind: document.querySelector('#nama').value,
-            source: document.querySelector('#source').value,
-            publisher: document.querySelector('#corrector').value,
-            ownerInHouse: document.querySelector('#residenceOwner').value,
-            documentKind: document.querySelector('#documentStatus').value,
-            comment: document.querySelector('#description').value,
-            //equipments: equipments,
+            north: document.querySelector('#direction_north').checked ? true : undefined,
+            south: document.querySelector('#direction_south').checked ? true : undefined,
+            east: document.querySelector('#direction_east').checked ? true : undefined,
+            west: document.querySelector('#direction_west').checked ? true : undefined,
+            fromFloorNo: !_.isEmpty(document.querySelector('#fromFloorCount').value) ? document.querySelector('#fromFloorCount').value : undefined,
+            toFloorNo: !_.isEmpty(document.querySelector('#toFloorCount').value) ? document.querySelector('#toFloorCount').value : undefined,
+            fromUnitNo: !_.isEmpty(document.querySelector('#fromVahedCount').value) ? document.querySelector('#fromVahedCount').value : undefined,
+            toUnitNo: !_.isEmpty(document.querySelector('#toVahedCount').value) ? document.querySelector('#toVahedCount').value : undefined,
+            fromUnitPrice: !_.isEmpty(document.querySelector('#fromMetri').value) ? document.querySelector('#fromMetri').value : undefined,
+            fromTotalPrice: !_.isEmpty(document.querySelector('#fromTotalPrice').value) ? document.querySelector('#fromTotalPrice').value : undefined,
+            toUnitPrice: !_.isEmpty(document.querySelector('#toMetri').value) ? document.querySelector('#toMetri').value : undefined,
+            toTotalPrice: !_.isEmpty(document.querySelector('#toTotalPrice').value) ? document.querySelector('#toTotalPrice').value : undefined,
+            priceComment: !_.isEmpty(document.querySelector('#priceDescription').value) ? document.querySelector('#priceDescription').value : undefined,
+            pool: document.querySelector('#pool').checked ? true : undefined,
+            sona: document.querySelector('#sauna').checked ? true : undefined,
+            jakozi: document.querySelector('#Jacuzzi').checked ? true : undefined,
+            fromArea: !_.isEmpty(document.querySelector('#fromArea').value) ? document.querySelector('#fromArea').value : undefined,
+            toArea: !_.isEmpty(document.querySelector('#toArea').value) ? document.querySelector('#toArea').value : undefined,
+            fromDensity: !_.isEmpty(document.querySelector('#fromDensity').value) ? document.querySelector('#fromDensity').value : undefined,
+            toDensity: !_.isEmpty(document.querySelector('#toDensity').value) ? document.querySelector('#toDensity').value : undefined,
+            fromFront: !_.isEmpty(document.querySelector('#fromToolBar').value) ? document.querySelector('#fromToolBar').value : undefined,
+            toFront: !_.isEmpty(document.querySelector('#toToolBar').value) ? document.querySelector('#toToolBar').value : undefined,
+            fromHeight: !_.isEmpty(document.querySelector('#fromHeight').value) ? document.querySelector('#fromHeight').value : undefined,
+            toHeight: !_.isEmpty(document.querySelector('#toHeight').value) ? document.querySelector('#toHeight').value : undefined,
+            yard: !_.isEmpty(document.querySelector('#yard').value) ? document.querySelector('#yard').value : undefined,
+            smallYard: !_.isEmpty(document.querySelector('#backyard').value) ? document.querySelector('#backyard').value : undefined,
+            underGround: !_.isEmpty(document.querySelector('#basement').value) ? document.querySelector('#basement').value : undefined,
+            employeeService: !_.isEmpty(document.querySelector('#servant').value) ? document.querySelector('#servant').value : undefined,
+            residential: document.querySelector('#residential').checked ? true : undefined,
+            empty: document.querySelector('#empty').checked ? true : undefined,
+            rented: document.querySelector('#rent').checked ? true : undefined,
+            frontKind: !_.isEmpty(document.querySelector('#nama').value) ? document.querySelector('#nama').value : undefined,
+            source: !_.isEmpty(document.querySelector('#source').value) ? document.querySelector('#source').value : undefined,
+            publisher: !_.isEmpty(document.querySelector('#corrector').value) ? document.querySelector('#corrector').value : undefined,
+            ownerInHouse: !_.isEmpty(document.querySelector('#residenceOwner').value) ? document.querySelector('#residenceOwner').value : undefined,
+            documentKind: !_.isEmpty(document.querySelector('#documentStatus').value) ? document.querySelector('#documentStatus').value : undefined,
+            comment: !_.isEmpty(document.querySelector('#description').value) ? document.querySelector('#description').value : undefined,
+            equipments: equipments,
         };
+
+        requestBody[getNoeMelk(document.querySelector('#noeMelk').value)] = document.querySelector('#moshakhase').value;
+
         ipcRenderer.send('listFile', requestBody);
     });
 </script>

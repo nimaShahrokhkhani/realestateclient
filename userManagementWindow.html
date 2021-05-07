@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            direction: rtl;
+        }
+
+        th {
+            background-color: #007bff;
+        }
+
+        td, th {
+            border: 1px solid #fff;
+            padding: 8px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+</head>
+<body>
+<table id="tableContent">
+    <tr id="title">
+    </tr>
+</table>
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const Store = require('electron-store');
+    const store = new Store();
+    var userList = [];
+    var totalUsersCount = 0;
+
+    ipcRenderer.send('getUserList', {offset: 0, length: 50});
+
+    ipcRenderer.on('getUserListFromMain', function (event, users) {
+        totalUsersCount = users.totalCount;
+        userList.push(...users.data);
+
+
+        var showUserTitle = [
+            {key: '_id', value: 'شماره'},
+            {key: 'username', value: 'نام کاربری'},
+            {key: 'name', value: 'نام'},
+            {key: 'lastName', value: 'نام خانوادگی'},
+            {key: 'userRole', value: 'نقش کاربر'},
+            {key: 'tel', value: 'تلفن'},
+            {key: 'actions', value: ''}
+        ];
+
+        var tableContent = document.getElementById("tableContent");
+        var titleList = document.getElementById("title");
+        for (var i = 0, n = showUserTitle.length; i < n; i++) {
+            var titleField = document.createElement("TH");
+            titleField.innerHTML = showUserTitle[i].value;
+            titleList.appendChild(titleField);
+        }
+        for (var i = 0, n = userList.length; i < n; i++) {
+            var rowContainer = document.createElement("TR");
+            for (var j = 0, k = showUserTitle.length - 1; j < k; j++) {
+                var columnContainer = document.createElement("TD");
+                columnContainer.innerHTML = userList[i][showUserTitle[j].key];
+                rowContainer.appendChild(columnContainer);
+            }
+            var actionColumnContainer = document.createElement("TD");
+            var deleteButton = document.createElement("IMG");
+            deleteButton.src = "./images/delete.png";
+            deleteButton.id = userList[i].username;
+            deleteButton.style = "margin-left: 15px";
+            deleteButton.addEventListener("click", function () {
+                alert(this.id)
+            });
+            actionColumnContainer.appendChild(deleteButton);
+
+            var editButton = document.createElement("IMG");
+            editButton.src = "./images/edit.png";
+            editButton.id = userList[i].username;
+            editButton.addEventListener("click", function () {
+                alert(this.id)
+            });
+            actionColumnContainer.appendChild(editButton);
+            rowContainer.appendChild(actionColumnContainer);
+            tableContent.appendChild(rowContainer);
+        }
+    });
+
+    window.onscroll = function() {myFunction()};
+
+    function myFunction() {
+        if (document.body.offsetHeight + document.body.scrollTop >= document.body.scrollHeight) {
+            if (totalUsersCount > userList.length) {
+                ipcRenderer.send('getUserList', {offset: userList.length - 1, length: userList.length + 50});
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -21,8 +21,6 @@ const instance = axios.create({
 function setAndResetSession(cookieList) {
     for(let i in cookieList) {
         if(cookieList[i].includes('connect.sid=')) {
-            const Store = require('electron-store');
-            const store = new Store();
             store.set('session', cookieList[i].split(';')[0]);
         }
     }
@@ -44,23 +42,49 @@ function login(requestData) {
     })
 }
 
+function getUserList(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.get(`/users/list`, {
+        params: requestData
+    })
+}
+
 function insertUser(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
     return instance.post(`/users/insert`, requestData)
 }
 
 function insertFile(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
     return instance.post(`/files/insert`, requestData)
+}
+
+function editFile(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.post(`/files/edit`, requestData)
 }
 
 function searchFile(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
-    return instance.get(`/files/list`, requestData)
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.get(`/files/list`, {
+        params: requestData
+    })
+}
+
+function getFileTotalCount(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.get(`/files/totalCount`, requestData)
 }
 
 function getConfigs(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
     return instance.get(`/configs/list`, requestData)
 }
 
@@ -77,16 +101,19 @@ function installDevice(requestData) {
 
 function getDevices(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
     return instance.get(`/devices/list`, requestData)
 }
 
 function insertDevice(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
     return instance.post(`/devices/insert`, requestData)
 }
 
 function insertConfig(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
     return instance.post(`/configs/insert`, requestData)
 }
 
@@ -96,4 +123,21 @@ function registerAgency(requestData) {
     return filingInstance.post(`/agency/registerAgency`, requestData)
 }
 
-module.exports = {loginFiling, login, insertUser, insertFile, installDevice, getDevices, insertDevice, searchFile, getFilingConfigs, getConfigs, insertConfig, setAndResetSession, registerAgency};
+module.exports = {
+    loginFiling,
+    login,
+    insertUser,
+    insertFile,
+    installDevice,
+    getDevices,
+    insertDevice,
+    searchFile,
+    getFilingConfigs,
+    getConfigs,
+    insertConfig,
+    setAndResetSession,
+    registerAgency,
+    getFileTotalCount,
+    editFile,
+    getUserList
+};

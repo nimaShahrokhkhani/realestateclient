@@ -1,0 +1,121 @@
+<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+    <style type="text/css">
+        <!--
+        span.cls_002 {
+            font-family: Arial, serif;
+            font-size: 12.8px;
+            color: rgb(45, 47, 146);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_002 {
+            font-family: Arial, serif;
+            font-size: 12.8px;
+            color: rgb(45, 47, 146);
+            font-weight: bold;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        span.cls_003 {
+            font-family: Arial, serif;
+            font-size: 26.3px;
+            color: rgb(45, 47, 146);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_003 {
+            font-family: Arial, serif;
+            font-size: 26.3px;
+            color: rgb(45, 47, 146);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        span.cls_004 {
+            font-family: Arial, serif;
+            font-size: 12.8px;
+            color: rgb(45, 47, 146);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        div.cls_004 {
+            font-family: Arial, serif;
+            font-size: 12.8px;
+            color: rgb(45, 47, 146);
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none
+        }
+
+        -->
+    </style>
+</head>
+<body>
+<div id="file" style="position:absolute;left:50%;margin-left:-297px;top:0px;width:595px;height:419px;border-style:outset;overflow:hidden">
+    <div style="position:absolute;left:0px;top:0px">
+        <img src="images/file-background.jpg" width=595 height=419></div>
+    <div style="position:absolute;left:31.55px;top:95.19px" class="cls_002"><span class="cls_002" id="date"></span>
+    </div>
+    <div style="position:absolute;left:146.50px;top:95.19px" class="cls_002"><span class="cls_002" id="region"></span>
+    </div>
+    <div style="position:absolute;left:249.34px;top:95.19px" class="cls_002"><span class="cls_002" id="telephone"></span></div>
+    <div style="position:absolute;left:361.86px;top:95.19px" class="cls_002"><span class="cls_002" id="publisher"></span></div>
+    <div style="position:absolute;left:506.74px;top:95.19px" class="cls_002"><span class="cls_002" id="owner"></span>
+    </div>
+    <div style="position:absolute;left:43.69px;top:122.94px" class="cls_002"><span class="cls_002" id="Id"></span></div>
+    <div style="position:absolute;left:419.17px;top:122.94px" class="cls_002"><span class="cls_002" id="address"></span>
+    </div>
+    <div style="position:absolute;left:436.71px;top:179.19px" class="cls_002"><span class="cls_002"><img src="images/tickFile.png" width="20px" height="20px"></span></div>
+    <div style="position:absolute;left:542.49px;top:173.33px" class="cls_003"><span class="cls_003"></span></div>
+    <div style="position:absolute;left:41.76px;top:210.69px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:347.71px;top:210.69px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:469.23px;top:210.69px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:44.62px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:109.67px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:182.52px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:228.95px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:274.96px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:322.87px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:388.24px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:434.70px;top:263.94px" class="cls_004"><span class="cls_004"></span></div>
+    <div style="position:absolute;left:469.16px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:514.26px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:544.52px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:35.49px;top:282.08px" class="cls_003"><span class="cls_003"></span></div>
+    <div style="position:absolute;left:234.24px;top:282.08px" class="cls_003"><span class="cls_003"></span></div>
+    <div style="position:absolute;left:305.49px;top:282.08px" class="cls_003"><span class="cls_003"></span></div>
+    <div style="position:absolute;left:508.24px;top:347.94px" class="cls_002"><span class="cls_002"></span></div>
+    <div style="position:absolute;left:35.49px;top:339.08px" class="cls_003"><span class="cls_003"></span></div>
+</div>
+
+<div style="position: fixed; bottom: 10px">
+    <img id="btn-convert-pdf" src="images/pdf.png" width="50" height="50"/>
+</div>
+
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const _ = require('underscore');
+    ipcRenderer.send('getPrintFile');
+
+    ipcRenderer.on('sendPrintFileFromMain', function (event, printFile) {
+        document.getElementById('date').innerText = printFile.date;
+    });
+
+    var pdf = document.getElementById('btn-convert-pdf');
+    pdf.addEventListener('click', (event) => {
+        ipcRenderer.send('printFile');
+    });
+</script>
+</body>
+</html>

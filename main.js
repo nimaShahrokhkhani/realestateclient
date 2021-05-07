@@ -1,22 +1,27 @@
 const electron = require('electron');
 const path = require('path');
+const fs = require('fs');
 const url = require('url');
 const services = require('./utils/services');
 const nodeMachineId = require('node-machine-id');
+const _ = require('underscore');
 
 // SET ENV
 process.env.NODE_ENV = 'development';
 
-const {app, BrowserWindow, Menu, ipcMain, Notification, screen} = electron;
+const {app, BrowserWindow, Menu, ipcMain, Notification, screen, shell} = electron;
 
 let mainWindow;
 let addFileWindow;
 let searchFileWindow;
 let searchFileTableWindow;
 let addUserWindow;
+let userManagementWindow;
+let filePrintWindow;
 let screenWidth = 0;
 let screenHeight = 0;
 let deviceId = undefined;
+let file = undefined;
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -240,10 +245,11 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
             })
         })
     } else {
-        services.login(loginDataObject).then(() => {
+        services.login(loginDataObject).then((responseData) => {
             const Store = require('electron-store');
             const store = new Store();
             store.set('userData', loginDataObject);
+            services.setAndResetSession(responseData.headers['set-cookie']);
             services.getConfigs().then((response) => {
                 store.set('configList', response.data);
                 services.insertConfig(response.data).then(() => {
@@ -303,14 +309,140 @@ ipcMain.on('setUser', function (e, requestBody) {
 });
 
 // setFile callback
-ipcMain.on('setFile', function (e, requestBody) {
+ipcMain.on('setFile', async function (e, requestArray) {
     addFileWindow.webContents.send('showLoading');
+    for (var i in requestArray) {
+        requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
+        var result = await services.insertFile(requestArray[i]);
+        if (parseInt(i) === (requestArray.length - 1)) {
+            addFileWindow.close();
+            const notification = {
+                title: 'موفقیت',
+                body: 'فایل با موفقیت ذخیره شد.'
+            };
+            new Notification(notification).show()
+        }
+    }
 
-    services.insertFile(requestBody).then(() => {
+});
+
+// searchFile callback
+ipcMain.on('listFile', function (e, requestBody) {
+    // searchFileWindow.webContents.send('showLoading');
+    //
+    // services.searchFile(requestBody).then((response) => {
+    //     searchFileWindow.close();
+    //     createSearchFileTableWindow(response.data);
+    // }).catch(() => {
+    //     searchFileWindow.webContents.send('hideLoading');
+    //     const notification = {
+    //         title: 'خطا',
+    //         body: 'خطا در جستجو فایل.'
+    //     };
+    //     new Notification(notification).show()
+    // })
+    const Store = require('electron-store');
+    const store = new Store();
+    store.set('fileSearchBody', requestBody);
+    searchFileWindow.close();
+    createSearchFileTableWindow();
+
+});
+
+// searchFile callback
+ipcMain.on('getFileList', function (e, requestBody) {
+    const Store = require('electron-store');
+    const store = new Store();
+    var request = store.get('fileSearchBody');
+    request.offset = requestBody.offset;
+    request.length = requestBody.length;
+    searchFileTableWindow.webContents.send('showLoading');
+
+    services.searchFile(request).then((response) => {
+        searchFileTableWindow.webContents.send('hideLoading');
+        searchFileTableWindow.webContents.send('getFileListFromMain', response.data);
+    }).catch(() => {
+        searchFileTableWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در جستجو فایل.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// getUserList callback
+ipcMain.on('getUserList', function (e, requestBody) {
+    services.getUserList(requestBody).then((response) => {
+        userManagementWindow.webContents.send('getUserListFromMain', response.data);
+    }).catch(() => {
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در نمایش کاربران های املاک.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// getFilesTotalCountFromMain callback
+ipcMain.on('getFileTotalCount', function (e) {
+    services.getFileTotalCount().then((response) => {
+        addFileWindow.webContents.send('getFilesTotalCountFromMain', response.data);
+    }).catch(() => {
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در دریافت کد فایل.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// searchFileOnTelephoneNumber callback
+ipcMain.on('searchFileOnTelephoneNumber', function (e, request) {
+    if (_.isEmpty(searchFileTableWindow)) {
+        services.searchFile(request).then((response) => {
+            if (!_.isEmpty(response.data)) {
+                const Store = require('electron-store');
+                const store = new Store();
+                store.set('fileSearchBody', request);
+                createSearchFileTableWindow();
+            }
+        }).catch((error) => {
+        })
+    }
+});
+
+// getFileForEditing callback
+ipcMain.on('getFileForEditing', function (e, id) {
+    if (_.isEmpty(addFileWindow)) {
+        services.searchFile({Id: id}).then((response) => {
+            if (!_.isEmpty(response.data)) {
+                file = response.data[0];
+                createAddFileWindow();
+            }
+        }).catch((error) => {
+        })
+    }
+});
+
+// getEditFile callback
+ipcMain.on('getEditFile', function (e) {
+    let editFile = file;
+    file = undefined;
+    addFileWindow.webContents.send('sendFileFromMain', editFile);
+});
+
+// getEditFile callback
+ipcMain.on('editFile', async function (e, request) {
+    addFileWindow.webContents.send('showLoading');
+    services.editFile(request).then(() => {
         addFileWindow.close();
         const notification = {
             title: 'موفقیت',
-            body: 'فایل با موفقیت ذخیره شد.'
+            body: 'فایل با موفقیت اصلاح شد.'
         };
         new Notification(notification).show()
     }).catch(() => {
@@ -321,25 +453,51 @@ ipcMain.on('setFile', function (e, requestBody) {
         };
         new Notification(notification).show()
     })
-
 });
 
-// searchFile callback
-ipcMain.on('listFile', function (e, requestBody) {
-    searchFileWindow.webContents.send('showLoading');
+// open print file callback
+ipcMain.on('openPrintFile', async function (e, printFile) {
+    file = printFile;
+    createFilePrintWindow();
+});
 
-    services.searchFile(requestBody).then((response) => {
-        searchFileWindow.close();
-        createSearchFileTableWindow(response.data);
-    }).catch(() => {
-        searchFileWindow.webContents.send('hideLoading');
-        const notification = {
-            title: 'خطا',
-            body: 'خطا در جستجو فایل.'
-        };
-        new Notification(notification).show()
-    })
+// get print file callback
+ipcMain.on('getPrintFile', async function (e, request) {
+    let printFile = file;
+    file = undefined;
+    filePrintWindow.webContents.send('sendPrintFileFromMain', printFile);
+});
 
+// get print file callback
+ipcMain.on('printFile', async function (e) {
+// Importing BrowserWindow from Main
+    let filepath = path.join(__dirname, './assets/print.pdf');
+
+    let options = {
+        marginsType: 0,
+        pageSize: 'A5',
+        printBackground: true,
+        printSelectionOnly: false,
+        landscape: false
+    };
+
+    filePrintWindow.webContents.printToPDF(options).then(data => {
+        fs.writeFile(filepath, data, function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('PDF Generated Successfully');
+                shell.openPath(filepath);
+            }
+        });
+    }).catch(error => {
+        console.log(error)
+    });
+});
+
+// addNewUserFromManagementPanel callback
+ipcMain.on('addNewUserFromManagementPanel', function (e, requestBody) {
+    createAddUserWindow();
 });
 
 // showError callback
@@ -395,9 +553,6 @@ function createSearchFileWindow() {
 
 // create search file table window
 function createSearchFileTableWindow(responseData) {
-    const Store = require('electron-store');
-    const store = new Store();
-    store.set('searchFileList', responseData);
     searchFileTableWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
@@ -439,6 +594,50 @@ function createAddUserWindow() {
     });
 }
 
+// create search user window
+function createUserManagementWindow() {
+    userManagementWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: screenWidth,
+        height: screenHeight,
+        title: 'لیست کاربران'
+    });
+    userManagementWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'userManagementWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    userManagementWindow.on('close', function () {
+        userManagementWindow = null;
+    });
+}
+
+// create print file window
+function createFilePrintWindow() {
+    filePrintWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 600,
+        height: 550,
+        title: 'فایل'
+    });
+    filePrintWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'filePrintWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    filePrintWindow.on('close', function () {
+        filePrintWindow = null;
+    });
+}
+
 //add file menu press
 ipcMain.on('addFile', function (e) {
     createAddFileWindow();
@@ -452,6 +651,11 @@ ipcMain.on('searchFile', function (e) {
 //add file menu press
 ipcMain.on('addUser', function (e) {
     createAddUserWindow();
+});
+
+//search user menu press
+ipcMain.on('searchUser', function (e) {
+    createUserManagementWindow();
 });
 
 // Create menu template
