@@ -210,6 +210,38 @@ ipcMain.on('getFileFromFilling', function (e, request) {
     })
 });
 
+// getConfigsFromFilling callback
+ipcMain.on('getConfigsFromFilling', function (e) {
+    settingWindow.webContents.send('showLoading');
+    services.getFilingConfigs().then((response) => {
+        const Store = require('electron-store');
+        const store = new Store();
+        store.set('configList', response.data);
+        services.insertConfig(response.data).then(() => {
+            settingWindow.webContents.send('hideLoading');
+            const notification = {
+                title: 'موفقیت',
+                body: 'فایل با موفقیت ذخیره شد.'
+            };
+            new Notification(notification).show()
+        }).catch(() => {
+            settingWindow.webContents.send('hideLoading');
+            const notification = {
+                title: 'خطا',
+                body: 'خطا در دریافت کانفیگ های برنامه.'
+            };
+            new Notification(notification).show()
+        });
+    }).catch(() => {
+        settingWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در دریافت کانفیگ های برنامه.'
+        };
+        new Notification(notification).show()
+    })
+});
+
 // login callback
 ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
     mainWindow.webContents.send('showLoading');

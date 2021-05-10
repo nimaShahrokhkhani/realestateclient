@@ -133,6 +133,7 @@
 </div>
 <div class="tab">
     <button class="tablinks active" onclick="openTab(event, 'getFiling')">دریافت فایل</button>
+    <button class="tablinks" onclick="openTab(event, 'getConfigs')">دریافت کانفیگ</button>
 </div>
 
 <div id="getFiling" class="tabcontent" style="display: flex;">
@@ -150,6 +151,12 @@
     </div>
     <div class="tabSideContainer">
         <button id="btn-getFile" class="btn-submit">دریافت فایل</button>
+    </div>
+</div>
+
+<div id="getConfigs" class="tabcontent" style="justify-content: center; align-items: center">
+    <div class="tabSideContainer">
+        <button id="btn-getConfig" class="btn-submit">دریافت کانفیگ های برنامه</button>
     </div>
 </div>
 
@@ -188,7 +195,7 @@
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
-        document.getElementById(cityName).style.display = "block";
+        document.getElementById(cityName).style.display = "flex";
         evt.currentTarget.className += " active";
     }
 
@@ -201,6 +208,11 @@
             toDate: StringUtils.convertShamsiToMillisecond(document.querySelector('#toDate').value)
         };
         ipcRenderer.send('getFileFromFilling', request);
+    });
+
+    var btnGetConfigs = document.getElementById("btn-getConfig");
+    btnGetConfigs.addEventListener("click", function () {
+        ipcRenderer.send('getConfigsFromFilling');
     })
 </script>
 
