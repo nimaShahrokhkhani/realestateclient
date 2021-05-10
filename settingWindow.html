@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="node_modules/persian-date/dist/persian-date.js" type="text/javascript"></script>
+    <script src="node_modules/persian-datepicker/dist/js/persian-datepicker.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: IRANSansMobileFaNum-Light;
+            direction: rtl;
+        }
+
+        @font-face {
+            font-family: IRANSans-Light;
+            src: url("./fonts/IRANSans-Light.eot") format('eot'),
+            url("./fonts/IRANSans-Light.woff") format('woff'),
+            url("./fonts/IRANSans-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobile-Bold;
+            src: url("./fonts/IRANSansMobile-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobile-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobile-Bold.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            direction: rtl;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            font-family: IRANSansMobileFaNum-Light;
+            background-color: inherit;
+            float: right;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            min-height: 390px;
+        }
+
+        input{
+            background-image: linear-gradient(
+                    89deg
+                    , #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px;
+        }
+
+        .btn-submit {
+            margin-right: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            background-image: linear-gradient(rgb(45 47 146), white);
+            border: 0;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobile-Bold;
+        }
+
+        .tabSideContainer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #loading-image {
+            position: absolute;
+            top: 150px;
+            left: 300px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+<div id="loading">
+    <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
+</div>
+<div class="tab">
+    <button class="tablinks active" onclick="openTab(event, 'getFiling')">دریافت فایل</button>
+</div>
+
+<div id="getFiling" class="tabcontent" style="display: flex;">
+    <div class="tabSideContainer">
+        <div class="date-inner">
+            <input placeholder="از تاریخ" class='validate custom-text-input font-text-light date-picker'
+                   type='text' name='creationDate'
+                   id='fromDate'/>
+        </div>
+        <div class="date-inner" style="margin-top: 10px">
+            <input placeholder="تا تاریخ" class='validate custom-text-input font-text-light date-picker'
+                   type='text' name='expiredDate'
+                   id='toDate'/>
+        </div>
+    </div>
+    <div class="tabSideContainer">
+        <button id="btn-getFile" class="btn-submit">دریافت فایل</button>
+    </div>
+</div>
+
+<script>
+    const StringUtils = require('./utils/StringUtils');
+    const electron = require('electron');
+    const _ = require('underscore');
+    const {ipcRenderer} = electron;
+    const Store = require('electron-store');
+    const store = new Store();
+
+    $(document).ready(function () {
+        $(".date-picker").persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+    });
+
+    ipcRenderer.on('showLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "block";
+    });
+
+    ipcRenderer.on('hideLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "none";
+    });
+
+    function openTab(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    var btnSubmit = document.getElementById("btn-getFile");
+    btnSubmit.addEventListener("click", function () {
+        var request = {
+            realStateCode: store.get('realStateCode'),
+            realStateTemporaryCode: store.get('realStateTemporaryCode'),
+            fromDate: StringUtils.convertShamsiToMillisecond(document.querySelector('#fromDate').value),
+            toDate: StringUtils.convertShamsiToMillisecond(document.querySelector('#toDate').value)
+        };
+        ipcRenderer.send('getFileFromFilling', request);
+    })
+</script>
+
+</body>
+</html>

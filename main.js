@@ -16,6 +16,7 @@ let addFileWindow;
 let searchFileWindow;
 let searchFileTableWindow;
 let addUserWindow;
+let settingWindow;
 let userManagementWindow;
 let filePrintWindow;
 let screenWidth = 0;
@@ -164,6 +165,8 @@ ipcMain.on('registerFilingDevice', function (e, realStateCode, realStateTemporar
         registrationCode: realStateTemporaryCode
     };
     services.registerAgency(requestData).then(response => {
+        store.set('realStateCode', realStateCode);
+        store.set('realStateTemporaryCode', realStateTemporaryCode);
         mainWindow.webContents.send('hideLoading');
         const notification = {
             title: 'موفقیت',
@@ -172,6 +175,33 @@ ipcMain.on('registerFilingDevice', function (e, realStateCode, realStateTemporar
         new Notification(notification).show()
     }).catch(error => {
         mainWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در رجیستر کردن.'
+        };
+        new Notification(notification).show()
+    })
+});
+
+// getFileFromFilling callback
+ipcMain.on('getFileFromFilling', function (e, request) {
+    settingWindow.webContents.send('showLoading');
+    services.getFileFromFilling(request).then(async response => {
+        let requestArray = response.data;
+        for (var i in requestArray) {
+            requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
+            var result = await services.insertFromFiling(requestArray[i]);
+            if (parseInt(i) === (requestArray.length - 1)) {
+                settingWindow.webContents.send('hideLoading');
+                const notification = {
+                    title: 'موفقیت',
+                    body: 'فایل با موفقیت ذخیره شد.'
+                };
+                new Notification(notification).show()
+            }
+        }
+    }).catch(error => {
+        settingWindow.webContents.send('hideLoading');
         const notification = {
             title: 'خطا',
             body: 'خطا در رجیستر کردن.'
@@ -594,6 +624,28 @@ function createAddUserWindow() {
     });
 }
 
+// create add user window
+function createSettingWindow() {
+    settingWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 600,
+        height: 500,
+        title: 'تنظیمات'
+    });
+    settingWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'settingWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    settingWindow.on('close', function () {
+        settingWindow = null;
+    });
+}
+
 // create search user window
 function createUserManagementWindow() {
     userManagementWindow = new BrowserWindow({
@@ -651,6 +703,11 @@ ipcMain.on('searchFile', function (e) {
 //add file menu press
 ipcMain.on('addUser', function (e) {
     createAddUserWindow();
+});
+
+//setting menu press
+ipcMain.on('setting', function (e) {
+    createSettingWindow();
 });
 
 //search user menu press

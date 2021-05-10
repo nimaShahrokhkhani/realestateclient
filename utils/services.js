@@ -62,6 +62,12 @@ function insertFile(requestData) {
     return instance.post(`/files/insert`, requestData)
 }
 
+function insertFromFiling(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.post(`/files/insertFromFiling`, requestData)
+}
+
 function editFile(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
     instance.defaults.headers['Cookie'] = store.get('session');
@@ -91,7 +97,7 @@ function getConfigs(requestData) {
 function getFilingConfigs(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
     filingInstance.defaults.headers['Cookie'] = store.get('session');
-    return filingInstance.get(`/configs/list`, requestData)
+    return filingInstance.get(`/clientConfig/list`, requestData)
 }
 
 function installDevice(requestData) {
@@ -123,11 +129,18 @@ function registerAgency(requestData) {
     return filingInstance.post(`/agency/registerAgency`, requestData)
 }
 
+function getFileFromFilling(requestData) {
+    filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
+    filingInstance.defaults.headers['Cookie'] = store.get('session');
+    return filingInstance.post(`/clientFiles/getClientFileList`, requestData)
+}
+
 module.exports = {
     loginFiling,
     login,
     insertUser,
     insertFile,
+    insertFromFiling,
     installDevice,
     getDevices,
     insertDevice,
@@ -139,5 +152,6 @@ module.exports = {
     registerAgency,
     getFileTotalCount,
     editFile,
-    getUserList
+    getUserList,
+    getFileFromFilling
 };

@@ -1092,6 +1092,7 @@
 </main>
 
 <script>
+    const StringUtils = require('./utils/StringUtils');
     const electron = require('electron');
     const _ = require('underscore');
     const {ipcRenderer} = electron;
@@ -1131,7 +1132,7 @@
             document.querySelector('#regionCode').value = file.regionCode;
             onRegionCodeChange();
             document.querySelector('#regionName').value = file.regionName;
-            document.querySelector('#date').value = file.date;
+            document.querySelector('#date').value = StringUtils.convertMillisecondToShamsi(file.date);
             document.querySelector('#rentPrice').value = file.rent;
             document.querySelector('#sale').checked = file.sale === 'فروش';
             document.querySelector('#rent').checked = file.sale === 'اجاره';
@@ -1241,7 +1242,7 @@
         if (!isEdit) {
             var number = document.getElementById('number');
             number.readOnly = true;
-            number.value = 'fl-' + 10000 + fileTotalCount;
+            number.value = 'cl-' + 10000 + fileTotalCount;
         }
     });
 
@@ -1471,7 +1472,6 @@
     ipcRenderer.on('showLoading', function () {
         var loading = document.getElementById("loading");
         loading.style.display = "block";
-
     });
 
     ipcRenderer.on('hideLoading', function () {
@@ -1719,7 +1719,7 @@
                 owner: document.querySelector('#owner').value,
                 regionCode: document.querySelector('#regionCode').value,
                 regionName: document.querySelector('#regionName').value,
-                date: document.querySelector('#date').value,
+                date: StringUtils.convertShamsiToMillisecond(document.querySelector('#date').value),
                 sale: saleType,
                 rent: document.querySelector('#rentPrice').value,
                 mortgage: document.querySelector('#mortgagePrice').value,

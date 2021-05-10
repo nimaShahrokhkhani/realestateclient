@@ -918,6 +918,7 @@
 </div>
 
 <script>
+    const StringUtils = require('./utils/StringUtils');
     const electron = require('electron');
     const {ipcRenderer} = electron;
     const _ = require('underscore');
@@ -1168,8 +1169,8 @@
             owner: !_.isEmpty(document.querySelector('#owner').value) ? document.querySelector('#owner').value : undefined,
             regionCode: regionCodeList,
             regionName: regionNameResultList,
-            fromDate: !_.isEmpty(document.querySelector('#fromDate').value) ? document.querySelector('#fromDate').value : undefined,
-            toDate: !_.isEmpty(document.querySelector('#toDate').value) ? document.querySelector('#toDate').value : undefined,
+            fromDate: !_.isEmpty(document.querySelector('#fromDate').value) ? StringUtils.convertShamsiToMillisecond(document.querySelector('#fromDate').value) : undefined,
+            toDate: !_.isEmpty(document.querySelector('#toDate').value) ? StringUtils.convertShamsiToMillisecond(document.querySelector('#toDate').value) : undefined,
             fromNumber: !_.isEmpty(document.querySelector('#fromNumber').value) ? document.querySelector('#fromNumber').value : undefined,
             toNumber: !_.isEmpty(document.querySelector('#toNumber').value) ? document.querySelector('#toNumber').value : undefined,
             sale: !_.isEmpty(saleType) ? saleType : undefined,

@@ -178,7 +178,7 @@
                         <img src="images/zonkan.jpeg" height="150" width="150">
                     </div>
                     <div class="col s3">
-                        <img src="images/setting.jpeg" height="150" width="150">
+                        <img id="setting" src="images/setting.jpeg" height="150" width="150">
                     </div>
                     <div class="col s3">
                         <img src="images/messages.jpeg" height="150" width="150">
@@ -223,6 +223,10 @@
 
     document.querySelector('#addUser').addEventListener("click", function () {
         ipcRenderer.send('addUser');
+    });
+
+    document.querySelector('#setting').addEventListener("click", function () {
+        ipcRenderer.send('setting');
     });
 
     ipcRenderer.on('showLoading', function () {
