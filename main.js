@@ -23,6 +23,7 @@ let screenWidth = 0;
 let screenHeight = 0;
 let deviceId = undefined;
 let file = undefined;
+let fileList = [];
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -242,6 +243,18 @@ ipcMain.on('getConfigsFromFilling', function (e) {
     })
 });
 
+// setPublisher callback
+ipcMain.on('setPublisher', function (e, publisher) {
+    const Store = require('electron-store');
+    const store = new Store();
+    store.set('publisher', publisher);
+    const notification = {
+        title: 'موفقیت',
+        body: 'تنظیم کننده با موفقیت تغییر کرد.'
+    };
+    new Notification(notification).show()
+});
+
 // login callback
 ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
     mainWindow.webContents.send('showLoading');
@@ -421,6 +434,7 @@ ipcMain.on('getFileList', function (e, requestBody) {
     searchFileTableWindow.webContents.send('showLoading');
 
     services.searchFile(request).then((response) => {
+        fileList = response.data;
         searchFileTableWindow.webContents.send('hideLoading');
         searchFileTableWindow.webContents.send('getFileListFromMain', response.data);
     }).catch(() => {

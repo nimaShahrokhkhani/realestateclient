@@ -1006,7 +1006,7 @@
                     <label class="active font-text-light placeholder" style="margin-right: 10px; width: 100px">تنظیم
                         کننده:</label>
                     <input class='validate textInput font-text-light' type='text' name='ownerName'
-                           id='ownerName' value="اسکان" disabled/>
+                           id='ownerName' value="گیلان فایل" disabled/>
                 </div>
             </div>
 
@@ -1103,6 +1103,9 @@
     var isEdit = false;
     var isDisabled = false;
     var editFile = undefined;
+
+    document.getElementById('ownerName').value = !_.isEmpty(store.get('publisher')) ?
+        store.get('publisher') : document.getElementById('ownerName').value;
 
     ipcRenderer.send('getEditFile');
 

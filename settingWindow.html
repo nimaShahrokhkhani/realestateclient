@@ -134,18 +134,19 @@
 <div class="tab">
     <button class="tablinks active" onclick="openTab(event, 'getFiling')">دریافت فایل</button>
     <button class="tablinks" onclick="openTab(event, 'getConfigs')">دریافت کانفیگ</button>
+    <button class="tablinks" onclick="openTab(event, 'setPublisher')">تنظیم کننده</button>
 </div>
 
 <div id="getFiling" class="tabcontent" style="display: flex;">
     <div class="tabSideContainer">
         <div class="date-inner">
             <input placeholder="از تاریخ" class='validate custom-text-input font-text-light date-picker'
-                   type='text' name='creationDate'
+                   type='text' name='fromDate'
                    id='fromDate'/>
         </div>
         <div class="date-inner" style="margin-top: 10px">
             <input placeholder="تا تاریخ" class='validate custom-text-input font-text-light date-picker'
-                   type='text' name='expiredDate'
+                   type='text' name='toDate'
                    id='toDate'/>
         </div>
     </div>
@@ -157,6 +158,14 @@
 <div id="getConfigs" class="tabcontent" style="justify-content: center; align-items: center">
     <div class="tabSideContainer">
         <button id="btn-getConfig" class="btn-submit">دریافت کانفیگ های برنامه</button>
+    </div>
+</div>
+
+<div id="setPublisher" class="tabcontent" style="justify-content: center; align-items: center">
+    <div class="tabSideContainer">
+        <input class='validate custom-text-input font-text-light'
+               type='text' name='publisher' id='publisher'>
+        <button id="btn-setPublisher" class="btn-submit">ثبت</button>
     </div>
 </div>
 
@@ -213,6 +222,13 @@
     var btnGetConfigs = document.getElementById("btn-getConfig");
     btnGetConfigs.addEventListener("click", function () {
         ipcRenderer.send('getConfigsFromFilling');
+    });
+
+    document.getElementById('publisher').value = !_.isEmpty(store.get('publisher')) ?
+        store.get('publisher') : '';
+    var btnSetPublisher = document.getElementById("btn-setPublisher");
+    btnSetPublisher.addEventListener("click", function () {
+        ipcRenderer.send('setPublisher', document.getElementById("publisher").value);
     })
 </script>
 
