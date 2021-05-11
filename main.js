@@ -255,6 +255,18 @@ ipcMain.on('setPublisher', function (e, publisher) {
     new Notification(notification).show()
 });
 
+// setFileTableHeader callback
+ipcMain.on('setFileTableHeader', function (e, headerTitleList) {
+    const Store = require('electron-store');
+    const store = new Store();
+    store.set('showFilesTitle', headerTitleList);
+    const notification = {
+        title: 'موفقیت',
+        body: 'چیدمان جدول نمایش فایل با موفقیت تغییر کرد.'
+    };
+    new Notification(notification).show()
+});
+
 // login callback
 ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
     mainWindow.webContents.send('showLoading');

@@ -77,10 +77,9 @@
             min-height: 390px;
         }
 
-        input{
+        input {
             background-image: linear-gradient(
-                    89deg
-                    , #130de622, white) !important;
+                    89deg, #130de622, white) !important;
             border-width: 0.5px;
             border-radius: 5px;
         }
@@ -125,6 +124,36 @@
             left: 300px;
             z-index: 100;
         }
+
+        div#headerTitleResultList {
+            display: flex;
+            flex-wrap: wrap;
+            height: auto;
+            width: 100%;
+            min-height: 300px;
+        }
+
+        .headerTitleResult {
+            width: 25%;
+            height: 25px;
+            border-radius: 10px;
+            flex: 0 1 25%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-right: 10px;
+            background-image: linear-gradient(rgb(45 146 62), white);
+        }
+
+        .textInput {
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            width: -webkit-fill-available;
+            background-image: linear-gradient(
+                    89deg, #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px
+        }
     </style>
 </head>
 <body>
@@ -135,6 +164,7 @@
     <button class="tablinks active" onclick="openTab(event, 'getFiling')">دریافت فایل</button>
     <button class="tablinks" onclick="openTab(event, 'getConfigs')">دریافت کانفیگ</button>
     <button class="tablinks" onclick="openTab(event, 'setPublisher')">تنظیم کننده</button>
+    <button class="tablinks" onclick="openTab(event, 'setFileTableHeader')">عنوان جدول فایل</button>
 </div>
 
 <div id="getFiling" class="tabcontent" style="display: flex;">
@@ -169,6 +199,32 @@
     </div>
 </div>
 
+<div id="setFileTableHeader" class="tabcontent">
+    <div class="tabSideContainer" style="justify-content: flex-start">
+        <div style="display: flex; flex-direction: row">
+            <select class='textInput validate custom-text-input font-text-light' name='headerTitle' id='headerTitle'>
+                <option>کد</option>
+                <option>تاریخ</option>
+                <option>مالک</option>
+                <option>نوع</option>
+                <option>طبقه</option>
+                <option>مورد</option>
+                <option>آدرس</option>
+                <option>خواب</option>
+                <option>زیربنا</option>
+                <option>سن</option>
+                <option>کل/ودیعه</option>
+                <option>متری/اجاره</option>
+            </select>
+            <button id="btn-addHeaderTitle" class="btn-submit">افزودن</button>
+        </div>
+        <div id="headerTitleResultList">
+
+        </div>
+        <button id="btn-setFileTableHeader" class="btn-submit">ثبت</button>
+    </div>
+</div>
+
 <script>
     const StringUtils = require('./utils/StringUtils');
     const electron = require('electron');
@@ -176,6 +232,21 @@
     const {ipcRenderer} = electron;
     const Store = require('electron-store');
     const store = new Store();
+    let headerTitleList = !_.isEmpty(store.get('showFilesTitle')) ? store.get('showFilesTitle') : [];
+
+    for (let headerTitle of headerTitleList) {
+        var headerTitleResultListDiv = document.getElementById("headerTitleResultList");
+        var headerTitleDiv = document.createElement('DIV');
+        headerTitleDiv.className = 'headerTitleResult';
+        headerTitleDiv.innerHTML = headerTitle.value;
+        headerTitleDiv.id = headerTitle.value;
+        headerTitleDiv.onclick = function () {
+            headerTitleList = headerTitleList.filter(item => item.value !== this.id);
+            var headerTitleResultListDiv = document.getElementById("headerTitleResultList");
+            headerTitleResultListDiv.removeChild(document.getElementById(this.id))
+        };
+        headerTitleResultListDiv.appendChild(headerTitleDiv);
+    }
 
     $(document).ready(function () {
         $(".date-picker").persianDatepicker({
@@ -208,6 +279,43 @@
         evt.currentTarget.className += " active";
     }
 
+    function getheaderObject(title) {
+        var showFilesTitle = [
+            {key: 'Id', value: 'کد'},
+            {key: 'date', value: 'تاریخ'},
+            {key: 'owner', value: 'مالک'},
+            {key: 'type', value: 'نوع'},
+            {key: 'unitFloor', value: 'طبقه'},
+            {key: 'sale', value: 'مورد'},
+            {key: 'totalPrice/mortgage', value: 'کل/ودیعه'},
+            {key: 'unitPrice/rent', value: 'متری/اجاره'},
+            {key: 'unitRoom', value: 'خواب'},
+            {key: 'unitBuiltUpArea', value: 'زیربنا'},
+            {key: 'age', value: 'سن'},
+            {key: 'address', value: 'آدرس'}
+        ];
+        return showFilesTitle.find(item => item.value === title);
+    }
+
+    var btnAddHeaderTitle = document.getElementById("btn-addHeaderTitle");
+    btnAddHeaderTitle.addEventListener("click", function () {
+        var headerTitle = document.getElementById("headerTitle");
+        var headerTitleResultListDiv = document.getElementById("headerTitleResultList");
+        if (_.isEmpty(headerTitleList.find(item => item.value === headerTitle.value))) {
+            var headerTitleDiv = document.createElement('DIV');
+            headerTitleDiv.className = 'headerTitleResult';
+            headerTitleDiv.innerHTML = headerTitle.value;
+            headerTitleDiv.id = headerTitle.value;
+            headerTitleDiv.onclick = function () {
+                headerTitleList = headerTitleList.filter(item => item.value !== this.id);
+                var headerTitleResultListDiv = document.getElementById("headerTitleResultList");
+                headerTitleResultListDiv.removeChild(document.getElementById(this.id))
+            };
+            headerTitleResultListDiv.appendChild(headerTitleDiv);
+            headerTitleList.push(getheaderObject(headerTitle.value));
+        }
+    });
+
     var btnSubmit = document.getElementById("btn-getFile");
     btnSubmit.addEventListener("click", function () {
         var request = {
@@ -229,6 +337,11 @@
     var btnSetPublisher = document.getElementById("btn-setPublisher");
     btnSetPublisher.addEventListener("click", function () {
         ipcRenderer.send('setPublisher', document.getElementById("publisher").value);
+    })
+
+    var btnSetFileTableHeader = document.getElementById("btn-setFileTableHeader");
+    btnSetFileTableHeader.addEventListener("click", function () {
+        ipcRenderer.send('setFileTableHeader', headerTitleList);
     })
 </script>
 
