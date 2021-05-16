@@ -48,6 +48,7 @@
     </tr>
 </table>
 <script>
+    const StringUtils = require('./utils/StringUtils');
     const electron = require('electron');
     const {ipcRenderer} = electron;
     const Store = require('electron-store');
@@ -102,6 +103,8 @@
                 var columnContainer = document.createElement("TD");
                 if (showFilesTitle[j].key.includes("/")) {
                     columnContainer.innerHTML = fileList[i][showFilesTitle[j].key.split("/")[0]] ? fileList[i][showFilesTitle[j].key.split("/")[0]] : fileList[i][showFilesTitle[j].key.split("/")[1]];
+                } else if (showFilesTitle[j].key.includes("date")) {
+                    columnContainer.innerHTML = StringUtils.convertMillisecondToShamsi(fileList[i][showFilesTitle[j].key]);
                 } else {
                     columnContainer.innerHTML = fileList[i][showFilesTitle[j].key];
                 }

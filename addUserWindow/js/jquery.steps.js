@@ -3,6 +3,10 @@
  * Copyright (c) 2014 Rafael Staib (http://www.jquery-steps.com)
  * Licensed under MIT http://www.opensource.org/licenses/MIT
  */
+
+let isEdit = false;
+let editUser = undefined;
+
 ;(function ($, undefined)
 {
 $.fn.extend({
@@ -1937,8 +1941,6 @@ var defaults = $.fn.steps.defaults = {
      * @for defaults
      **/
     onFinished: function (event, currentIndex) {
-        const electron = require('electron');
-        const {ipcRenderer, Notification} = electron;
 
         var repeatPassword = document.querySelector('#repeatPassword').value;
 
@@ -1957,15 +1959,17 @@ var defaults = $.fn.steps.defaults = {
             recruitedDate: document.querySelector('#hiredDate').value,
             profession: document.querySelector('#post').value,
             minimumSalary: document.querySelector('#salary').value,
-            comment: document.querySelector('#description').value
+            comment: document.querySelector('#description').value,
+            insertFile: document.querySelector('#insertFile').checked,
+            editFile: document.querySelector('#editFile').checked,
+            deleteFile: document.querySelector('#deleteFile').checked,
         };
-        console.log('username',requestBody.username)
         if (requestBody.username === "" || requestBody.password === "") {
             ipcRenderer.send('showError', 'نام کاربری یا رمز عبور وارد نشده.');
         } else if (repeatPassword !== requestBody.password) {
             ipcRenderer.send('showError', 'رمز عبور و تکرار رمز عبور یکسان نیستند.');
         } else {
-            ipcRenderer.send('setUser', requestBody);
+            (isEdit ? ipcRenderer.send('editUser', requestBody) : ipcRenderer.send('setUser', requestBody));
         }
     },
 
@@ -1987,7 +1991,35 @@ var defaults = $.fn.steps.defaults = {
      * @default function (event) { }
      * @for defaults
      **/
-    onInit: function (event, currentIndex) { },
+    onInit: function (event, currentIndex) {
+        ipcRenderer.send('getEditUser');
+
+        ipcRenderer.on('sendUserFromMain', function (event, user) {
+            if (!_.isEmpty(user)) {
+                editUser = user;
+                isEdit = true;
+
+                document.querySelector('#username').value = user.username;
+                document.querySelector('#firstName').value = user.name;
+                document.querySelector('#lastName').value = user.lastName;
+                document.querySelector('#userType').value = user.userRole;
+                document.querySelector('#password').value = user.password;
+                document.querySelector('#idNumber').value = user.shenaSName;
+                document.querySelector('#nationalCode').value = user.nationalId;
+                document.querySelector('#birthDate').value = user.birthDate;
+                document.querySelector('#birthPlace').value = user.birthPlace;
+                document.querySelector('#address').value = user.address;
+                document.querySelector('#telephone').value = user.tel;
+                document.querySelector('#hiredDate').value = user.recruitedDate;
+                document.querySelector('#post').value = user.profession;
+                document.querySelector('#salary').value = user.minimumSalary;
+                document.querySelector('#description').value = user.comment;
+                document.querySelector('#insertFile').checked = user.insertFile;
+                document.querySelector('#editFile').checked = user.editFile;
+                document.querySelector('#deleteFile').checked = user.deleteFile;
+            }
+        });
+    },
 
     /**
      * Contains all labels.

@@ -1,9 +1,8 @@
 <html>
 
 <head>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+          href="libraries/materialize.min.css">
     <style>
         body {
             display: flex;
@@ -146,14 +145,15 @@
             </div>
         </div>
     </center>
-
+    <input type="image" src="images/settingHostName.png" style="width: 20px; height: 20px; position: absolute; right: 20px"
+           onclick="onAddHostNameClick()"/>
     <div class="section"></div>
     <div class="section"></div>
 </main>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="libraries/jquery.min.js"></script>
 <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+        src="libraries/materialize.min.js"></script>
 
 <script>
     const electron = require('electron');
@@ -183,6 +183,10 @@
         var loading = document.getElementById("loading");
         loading.style.display = "none";
     });
+
+    function onAddHostNameClick() {
+        ipcRenderer.send('addHostName');
+    }
 </script>
 </body>
 

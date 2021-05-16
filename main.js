@@ -94,6 +94,93 @@ ipcMain.on('setRealStateName', function (e, dataObject) {
     });
 });
 
+// setUser callback
+ipcMain.on('setUser', function (e, requestBody) {
+    addUserWindow.webContents.send('showLoading');
+
+    services.insertUser(requestBody).then(() => {
+        addUserWindow.close();
+        const notification = {
+            title: 'موفقیت',
+            body: 'کاربر با موفقیت ذخیره شد.'
+        };
+        new Notification(notification).show()
+    }).catch(() => {
+        addUserWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'نام کاربری یا رمز عبور نادرست است.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// editUser callback
+ipcMain.on('editUser', function (e, requestBody) {
+    addUserWindow.webContents.send('showLoading');
+
+    services.editUser(requestBody).then(() => {
+        addUserWindow.close();
+        const notification = {
+            title: 'موفقیت',
+            body: 'کاربر با موفقیت اصلاح شد.'
+        };
+        new Notification(notification).show()
+    }).catch(() => {
+        addUserWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در اصلاح کاربر.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// setFile callback
+ipcMain.on('setFile', async function (e, requestArray) {
+    const Store = require('electron-store');
+    const store = new Store();
+    if (store.get('userData').insertFile) {
+        addFileWindow.webContents.send('showLoading');
+        for (var i in requestArray) {
+            // services.insertFile(requestArray[i]).then(() => {
+            //     addFileWindow.close();
+            //     const notification = {
+            //         title: 'موفقیت',
+            //         body: 'فایل ' + i + ' با موفقیت ذخیره شد.'
+            //     };
+            //     new Notification(notification).show()
+            // }).catch(() => {
+            //     addFileWindow.webContents.send('hideLoading');
+            //     const notification = {
+            //         title: 'خطا',
+            //         body: 'خطا در دخیره فایل.'
+            //     };
+            //     new Notification(notification).show()
+            // })
+            requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
+            var result = await services.insertFile(requestArray[i]);
+            if (parseInt(i) === (requestArray.length - 1)) {
+                addFileWindow.close();
+                const notification = {
+                    title: 'موفقیت',
+                    body: 'فایل با موفقیت ذخیره شد.'
+                };
+                new Notification(notification).show()
+            }
+        }
+    } else {
+        const notification = {
+            title: 'خطا',
+            body: 'دسترسی برای ایجاد فایل وجود ندارد.'
+        };
+        new Notification(notification).show()
+    }
+
+});
+
 // registerDevice callback
 ipcMain.on('registerDevice', function (e, deviceId, activationCode) {
     mainWindow.webContents.send('showLoading');
@@ -273,39 +360,18 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
     if (isInstallationSystem) {
         services.loginFiling(loginDataObject).then((response) => {
             services.setAndResetSession(response.headers['set-cookie']);
-            services.getFilingConfigs().then((response) => {
-                const Store = require('electron-store');
-                const store = new Store();
-                store.set('configList', response.data);
-                services.insertConfig(response.data).then(() => {
-                    services.getConfigs().then((response) => {
-                        if (response.data[0].realStateName) {
-                            services.getDevices().then((response) => {
-                                const Store = require('electron-store');
-                                const store = new Store();
-                                store.set('devices', response.data);
-                                mainWindow.webContents.send('hideLoading');
-                                mainWindow.loadURL(url.format({
-                                    pathname: path.join(__dirname, 'managementPanel.html'),
-                                    protocol: 'file:',
-                                    slashes: true
-                                }));
-                            }).catch(() => {
-                                mainWindow.webContents.send('hideLoading');
-                                const notification = {
-                                    title: 'خطا',
-                                    body: 'خطا در دریافت کانفیگ های برنامه.'
-                                };
-                                new Notification(notification).show()
-                            })
-                        } else {
-                            mainWindow.webContents.send('hideLoading');
-                            mainWindow.loadURL(url.format({
-                                pathname: path.join(__dirname, 'realStateNameManagement.html'),
-                                protocol: 'file:',
-                                slashes: true
-                            }));
-                        }
+            services.getConfigs().then((response) => {
+                if (response.data[0].realStateName) {
+                    services.getDevices().then((response) => {
+                        const Store = require('electron-store');
+                        const store = new Store();
+                        store.set('devices', response.data);
+                        mainWindow.webContents.send('hideLoading');
+                        mainWindow.loadURL(url.format({
+                            pathname: path.join(__dirname, 'managementPanel.html'),
+                            protocol: 'file:',
+                            slashes: true
+                        }));
                     }).catch(() => {
                         mainWindow.webContents.send('hideLoading');
                         const notification = {
@@ -314,14 +380,14 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
                         };
                         new Notification(notification).show()
                     })
-                }).catch(() => {
+                } else {
                     mainWindow.webContents.send('hideLoading');
-                    const notification = {
-                        title: 'خطا',
-                        body: 'خطا در دریافت کانفیگ های برنامه.'
-                    };
-                    new Notification(notification).show()
-                });
+                    mainWindow.loadURL(url.format({
+                        pathname: path.join(__dirname, 'realStateNameManagement.html'),
+                        protocol: 'file:',
+                        slashes: true
+                    }));
+                }
             }).catch(() => {
                 mainWindow.webContents.send('hideLoading');
                 const notification = {
@@ -335,7 +401,7 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
         services.login(loginDataObject).then((responseData) => {
             const Store = require('electron-store');
             const store = new Store();
-            store.set('userData', loginDataObject);
+            store.set('userData', responseData.data);
             services.setAndResetSession(responseData.headers['set-cookie']);
             services.getConfigs().then((response) => {
                 store.set('configList', response.data);
@@ -446,7 +512,7 @@ ipcMain.on('getFileList', function (e, requestBody) {
     searchFileTableWindow.webContents.send('showLoading');
 
     services.searchFile(request).then((response) => {
-        fileList = response.data;
+        fileList = response.data.data;
         searchFileTableWindow.webContents.send('hideLoading');
         searchFileTableWindow.webContents.send('getFileListFromMain', response.data);
     }).catch(() => {
@@ -462,7 +528,9 @@ ipcMain.on('getFileList', function (e, requestBody) {
 
 // getUserList callback
 ipcMain.on('getUserList', function (e, requestBody) {
+    userManagementWindow.webContents.send('showLoading');
     services.getUserList(requestBody).then((response) => {
+        userManagementWindow.webContents.send('hideLoading');
         userManagementWindow.webContents.send('getUserListFromMain', response.data);
     }).catch(() => {
         const notification = {
@@ -472,6 +540,47 @@ ipcMain.on('getUserList', function (e, requestBody) {
         new Notification(notification).show()
     })
 
+});
+
+// deleteUser callback
+ipcMain.on('deleteUser', function (e, username) {
+    let options  = {
+        buttons: ["بله","خیر"],
+        message: "آیا از حذف کاربر اطمینان دارید؟"
+    };
+    dialog.showMessageBox(userManagementWindow, options).then(result => {
+        if (result.response === 0) {
+            userManagementWindow.webContents.send('showLoading');
+            services.deleteUser({username}).then((response) => {
+                userManagementWindow.webContents.send('hideLoading');
+                userManagementWindow && userManagementWindow.reload();
+            }).catch(() => {
+                userManagementWindow.webContents.send('hideLoading');
+                const notification = {
+                    title: 'خطا',
+                    body: 'خطا در حذف کاربر.'
+                };
+                new Notification(notification).show()
+            })
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+
+});
+
+// editUser callback
+ipcMain.on('userEdit', function (e, editUser) {
+    user = editUser;
+    userManagementWindow.close();
+    createAddUserWindow();
+});
+
+// getEditUser callback
+ipcMain.on('getEditUser', function (e) {
+    let editUser = user;
+    user = undefined;
+    addUserWindow.webContents.send('sendUserFromMain', editUser);
 });
 
 // getFilesTotalCountFromMain callback
@@ -486,6 +595,15 @@ ipcMain.on('getFileTotalCount', function (e) {
         new Notification(notification).show()
     })
 
+});
+
+// showError callback
+ipcMain.on('showError', function (e, errorMessage) {
+    const notification = {
+        title: 'خطا',
+        body: errorMessage
+    };
+    new Notification(notification).show()
 });
 
 // searchFileOnTelephoneNumber callback
@@ -516,6 +634,57 @@ ipcMain.on('getFileForEditing', function (e, id) {
     }
 });
 
+// getPrevFile callback
+ipcMain.on('getPrevFile', function (e, currentFile) {
+    let index = findWithAttr(fileList, 'Id', currentFile.Id);
+    if (index > 0) {
+        services.searchFile({Id: fileList[index - 1].Id}).then((response) => {
+            if (!_.isEmpty(response.data)) {
+                file = response.data[0];
+                addFileWindow.close();
+                createAddFileWindow();
+            }
+        }).catch((error) => {
+        })
+    } else {
+        const notification = {
+            title: 'خطا',
+            body: 'فایلی قبل از فایل جاری موجود نیست.'
+        };
+        new Notification(notification).show()
+    }
+});
+
+// getNextFile callback
+ipcMain.on('getNextFile', function (e, currentFile) {
+    let index = findWithAttr(fileList, 'Id', currentFile.Id);
+    if (index < fileList.length - 1) {
+        services.searchFile({Id: fileList[index + 1].Id}).then((response) => {
+            if (!_.isEmpty(response.data)) {
+                file = response.data[0];
+                addFileWindow.close();
+                createAddFileWindow();
+            }
+        }).catch((error) => {
+        })
+    } else {
+        const notification = {
+            title: 'خطا',
+            body: 'فایلی بعد  از فایل جاری موجود نیست.'
+        };
+        new Notification(notification).show()
+    }
+});
+
+function findWithAttr(array, attr, value) {
+    for(var i = 0; i < array.length; i += 1) {
+        if(array[i][attr] === value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 // getEditFile callback
 ipcMain.on('getEditFile', function (e) {
     let editFile = file;
@@ -525,22 +694,53 @@ ipcMain.on('getEditFile', function (e) {
 
 // getEditFile callback
 ipcMain.on('editFile', async function (e, request) {
-    addFileWindow.webContents.send('showLoading');
-    services.editFile(request).then(() => {
-        addFileWindow.close();
-        const notification = {
-            title: 'موفقیت',
-            body: 'فایل با موفقیت اصلاح شد.'
-        };
-        new Notification(notification).show()
-    }).catch(() => {
-        addFileWindow.webContents.send('hideLoading');
+    const Store = require('electron-store');
+    const store = new Store();
+    if (store.get('userData').editFile) {
+        addFileWindow.webContents.send('showLoading');
+        services.editFile(request).then(() => {
+            addFileWindow.close();
+            const notification = {
+                title: 'موفقیت',
+                body: 'فایل با موفقیت اصلاح شد.'
+            };
+            new Notification(notification).show()
+        }).catch(() => {
+            addFileWindow.webContents.send('hideLoading');
+            const notification = {
+                title: 'خطا',
+                body: 'خطا در دخیره فایل.'
+            };
+            new Notification(notification).show()
+        })
+    } else {
         const notification = {
             title: 'خطا',
-            body: 'خطا در دخیره فایل.'
+            body: 'دسترسی برای اصلاح فایل وجود ندارد.'
         };
         new Notification(notification).show()
-    })
+    }
+});
+
+// addToContactList callback
+ipcMain.on('addToContactList', async function (e, contact) {
+    const Store = require('electron-store');
+    const store = new Store();
+    var contactList = !_.isEmpty(store.get('contactList')) ? store.get('contactList') : [];
+    contactList.push(contact);
+    store.set('contactList', contactList);
+    addContactWindow.close();
+    if (!_.isEmpty(contactListWindow)) {
+        contactListWindow.reload();
+    }
+});
+
+// addToContactList callback
+ipcMain.on('changeHostName', async function (e, serverAddress) {
+    const Store = require('electron-store');
+    const store = new Store();
+    store.set('serverAddress', serverAddress);
+    addHostNameWindow.close();
 });
 
 // open print file callback
@@ -683,6 +883,50 @@ function createAddUserWindow() {
 }
 
 // create add user window
+function createContactListWindow() {
+    contactListWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 500,
+        height: 400,
+        title: 'لیست مخاطبین'
+    });
+    contactListWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'contactWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    contactListWindow.on('close', function () {
+        contactListWindow = null;
+    });
+}
+
+// create add user window
+function createAddContactWindow() {
+    addContactWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 800,
+        height: 600,
+        title: 'افزودن مخاطب'
+    });
+    addContactWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'addContactWindow/addContactWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    addContactWindow.on('close', function () {
+        addContactWindow = null;
+    });
+}
+
+// create add user window
 function createSettingWindow() {
     settingWindow = new BrowserWindow({
         webPreferences: {
@@ -748,6 +992,28 @@ function createFilePrintWindow() {
     });
 }
 
+// create print file window
+function createAddHostWindow() {
+    addHostNameWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 500,
+        height: 400,
+        title: 'افزودن سرویس جدید'
+    });
+    addHostNameWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'addHostNameWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    addHostNameWindow.on('close', function () {
+        addHostNameWindow = null;
+    });
+}
+
 //add file menu press
 ipcMain.on('addFile', function (e) {
     createAddFileWindow();
@@ -758,9 +1024,19 @@ ipcMain.on('searchFile', function (e) {
     createSearchFileWindow();
 });
 
-//add file menu press
+//add user menu press
 ipcMain.on('addUser', function (e) {
     createAddUserWindow();
+});
+
+//add user menu press
+ipcMain.on('contactList', function (e) {
+    createContactListWindow();
+});
+
+//add user menu press
+ipcMain.on('addContact', function (e) {
+    createAddContactWindow();
 });
 
 //setting menu press
@@ -771,6 +1047,11 @@ ipcMain.on('setting', function (e) {
 //search user menu press
 ipcMain.on('searchUser', function (e) {
     createUserManagementWindow();
+});
+
+//addService
+ipcMain.on('addHostName', function (e) {
+    createAddHostWindow();
 });
 
 // Create menu template

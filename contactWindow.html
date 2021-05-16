@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>سرویس ها</title>
+    <style>
+        canvas{
+
+            width:800px !important;
+            height:400px !important;
+
+        }
+
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #contacts {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            direction: rtl;
+        }
+
+        #contacts td, #contacts th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        #contacts tr:nth-child(even){background-color: #f2f2f2;}
+
+        #contacts tr:hover {background-color: #ddd;}
+
+        #contacts th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #addTableButton {
+            align-self: flex-end;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="chart-container">
+    <input id="addTableButton" type="image" src="images/plus.png" style="width: 20px; height: 20px"
+           onclick="onAddTableClick()"/>
+    <table id="contacts">
+        <tr>
+            <th>نام</th>
+            <th>شماره تلفن</th>
+        </tr>
+    </table>
+</div>
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const _ = require('underscore');
+    const Store = require('electron-store');
+    const store = new Store();
+    var contactList = store.get('contactList');
+
+    function onAddTableClick() {
+        ipcRenderer.send('addContact');
+    }
+
+    var showContactTitle = [
+        {key: 'name', value: 'نام'},
+        {key: 'tel', value: 'شماره تلفن'}
+    ];
+
+    var tableContent = document.getElementById("contacts");
+
+    for (var i = 0, n = contactList.length; i < n; i++) {
+        var rowContainer = document.createElement("TR");
+        for (var j = 0, k = showContactTitle.length; j < k; j++) {
+            var columnContainer = document.createElement("TD");
+            columnContainer.innerHTML = contactList[i][showContactTitle[j].key];
+            rowContainer.appendChild(columnContainer);
+        }
+        tableContent.appendChild(rowContainer);
+    }
+</script>
+</body>
+</html>

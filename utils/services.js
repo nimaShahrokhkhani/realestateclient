@@ -5,6 +5,7 @@ let FILING_HOST_NAME = 'http://localhost:3600/';
 let INSTALLATION_HOST_NAME = 'http://localhost:3650/';
 const Store = require('electron-store');
 const store = new Store();
+const _ = require('underscore');
 
 const filingInstance = axios.create({
     baseURL: FILING_HOST_NAME
@@ -48,6 +49,18 @@ function getUserList(requestData) {
     return instance.get(`/users/list`, {
         params: requestData
     })
+}
+
+function deleteUser(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.post(`/users/delete`, requestData)
+}
+
+function editUser(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.post(`/users/edit`, requestData)
 }
 
 function insertUser(requestData) {
@@ -153,5 +166,7 @@ module.exports = {
     getFileTotalCount,
     editFile,
     getUserList,
-    getFileFromFilling
+    getFileFromFilling,
+    editUser,
+    deleteUser,
 };

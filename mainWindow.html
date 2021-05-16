@@ -136,7 +136,7 @@
 </head>
 
 <body>
-<script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+<script src="libraries/jalali-moment.browser.js"></script>
 <div id="loading">
     <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
 </div>
@@ -160,31 +160,31 @@
 
                 <div class="row">
                     <div class="col s3">
-                        <img id="addFile" src="images/add-file.jpeg" height="150" width="150">
+                        <img id="addFile" src="icon-png/add-file-PNG.png" height="100" width="100">
                     </div>
                     <div class="col s3">
-                        <img id="searchFile" src="images/search-file.jpeg" height="150" width="150">
+                        <img id="searchFile" src="icon-png/search-png.png" height="100" width="100">
                     </div>
                     <div class="col s3">
-                        <img id="addUser" src="images/add-user.jpeg" height="150" width="150">
+                        <img id="addUser" src="icon-png/add-user-png.png" height="100" width="100">
                     </div>
                     <div class="col s3">
-                        <img src="images/search-user.jpeg" height="150" width="150">
+                        <img id="searchUser" src="icon-png/search-user-png.png" height="100" width="100">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col s3">
-                        <img src="images/zonkan.jpeg" height="150" width="150">
+                        <img src="icon-png/zonkan-png.png" height="100" width="100">
                     </div>
                     <div class="col s3">
-                        <img id="setting" src="images/setting.jpeg" height="150" width="150">
+                        <img id="setting" src="icon-png/Setting.png" height="100" width="100">
                     </div>
+                    <!--<div class="col s3">-->
+                        <!--<img src="images/messages.jpeg" height="150" width="150">-->
+                    <!--</div>-->
                     <div class="col s3">
-                        <img src="images/messages.jpeg" height="150" width="150">
-                    </div>
-                    <div class="col s3">
-                        <img src="images/phone-book.jpeg" height="150" width="150">
+                        <img id="contactList" src="icon-png/phonebook-png.png" height="100" width="100">
                     </div>
                 </div>
 
@@ -196,9 +196,9 @@
     <div class="section"></div>
 </main>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="libraries/jquery.min.js"></script>
 <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+        src="libraries/materialize.min.js"></script>
 
 <script>
     const electron = require('electron');
@@ -227,6 +227,14 @@
 
     document.querySelector('#setting').addEventListener("click", function () {
         ipcRenderer.send('setting');
+    });
+
+    document.querySelector('#searchUser').addEventListener("click", function () {
+        ipcRenderer.send('searchUser');
+    });
+
+    document.querySelector('#contactList').addEventListener("click", function () {
+        ipcRenderer.send('contactList');
     });
 
     ipcRenderer.on('showLoading', function () {

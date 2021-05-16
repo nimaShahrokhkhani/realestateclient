@@ -8,7 +8,6 @@
         if (typeof module === 'object') {window.module = module; module = undefined;}
     </script>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery.steps.js"></script>
@@ -205,67 +204,83 @@
 								<div class="group-input-container">
 									<div class="input-container">
 										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">فروش</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+											<label class="active font-text-light placeholder" style="margin-right: 10px">ثبت</label>
+											<input type="checkbox" class="radio" value="1" id="insertFile"/>
 										</div>
 										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">اجاره</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+											<label class="active font-text-light placeholder" style="margin-right: 10px">حذف</label>
+											<input type="checkbox" class="radio" value="1" id="deleteFile"/>
 										</div>
 										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">رهن</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">مشارکت</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">معاوضه</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
+											<label class="active font-text-light placeholder" style="margin-right: 10px">اصلاح</label>
+											<input type="checkbox" class="radio" value="1" id="editFile"/>
 										</div>
 									</div>
 								</div>
-								<div class="group-input-container">
-									<div class="input-container">
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">آپارتمان</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">ویلا</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">مستغلات</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">دفترکار</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-									</div>
-								</div>
-								<div class="group-input-container">
-									<div class="input-container">
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">سوییت</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">خانه</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">مغازه</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-										<div class="checkbox-item">
-											<label class="active font-text-light placeholder" style="margin-right: 10px">کلنگی</label>
-											<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>
-										</div>
-									</div>
-								</div>
+								<!--<div class="group-input-container">-->
+									<!--<div class="input-container">-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">فروش</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">اجاره</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">رهن</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">مشارکت</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">معاوضه</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="group-input-container">-->
+									<!--<div class="input-container">-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">آپارتمان</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">ویلا</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">مستغلات</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">دفترکار</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="group-input-container">-->
+									<!--<div class="input-container">-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">سوییت</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">خانه</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">مغازه</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+										<!--<div class="checkbox-item">-->
+											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">کلنگی</label>-->
+											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
 							</div>
 			            </section>
 		        	</div>
@@ -276,6 +291,7 @@
 <script>
 	const electron = require('electron');
 	const {ipcRenderer} = electron;
+	const _ = require('underscore');
 
 	var loading = document.getElementById("loading");
 	loading.style.display = "none";
