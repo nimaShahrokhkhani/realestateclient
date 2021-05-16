@@ -59,12 +59,28 @@
             align-self: flex-end;
             margin: 5px;
         }
+
+        .textInput {
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            width: -webkit-fill-available;
+            background-image: linear-gradient(
+                    89deg, #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px
+        }
     </style>
 </head>
 <body>
 <div class="chart-container">
-    <input id="addTableButton" type="image" src="images/plus.png" style="width: 20px; height: 20px"
-           onclick="onAddTableClick()"/>
+    <div style="display: flex; align-items: center; width: 100%">
+        <input id="searchButton" type="image" src="images/search-contact.png" style="width: 20px; height: 20px"
+               onclick="onSearchContactClick()"/>
+        <input type="text" class="textInput" id="search-contact">
+        <input id="addTableButton" type="image" src="images/plus.png" style="width: 20px; height: 20px"
+               onclick="onAddTableClick()"/>
+    </div>
+
     <table id="contacts">
         <tr>
             <th>نام</th>
@@ -79,15 +95,36 @@
     const Store = require('electron-store');
     const store = new Store();
     var contactList = store.get('contactList');
+    var showContactTitle = [
+        {key: 'name', value: 'نام'},
+        {key: 'tel', value: 'شماره تلفن'}
+    ];
 
     function onAddTableClick() {
         ipcRenderer.send('addContact');
     }
 
-    var showContactTitle = [
-        {key: 'name', value: 'نام'},
-        {key: 'tel', value: 'شماره تلفن'}
-    ];
+    function onSearchContactClick() {
+        var searchContact = document.getElementById('search-contact').value;
+        var tableContent = document.getElementById("contacts");
+        var newContactList = [];
+        tableContent.innerHTML = '';
+        if (isNaN(searchContact)) {
+            newContactList = contactList.filter(contact => (contact.name) && (contact.name).includes(searchContact));
+        } else {
+            newContactList = contactList.filter(contact => (contact.tel) && (contact.tel).includes(searchContact));
+        }
+
+        for (var i = 0, n = newContactList.length; i < n; i++) {
+            var rowContainer = document.createElement("TR");
+            for (var j = 0, k = showContactTitle.length; j < k; j++) {
+                var columnContainer = document.createElement("TD");
+                columnContainer.innerHTML = newContactList[i][showContactTitle[j].key];
+                rowContainer.appendChild(columnContainer);
+            }
+            tableContent.appendChild(rowContainer);
+        }
+    }
 
     var tableContent = document.getElementById("contacts");
 

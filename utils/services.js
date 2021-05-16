@@ -1,11 +1,12 @@
 const electron = require('electron');
 const axios = require('axios');
-let HOST_NAME = 'http://localhost:3500/';
 let FILING_HOST_NAME = 'http://localhost:3600/';
 let INSTALLATION_HOST_NAME = 'http://localhost:3650/';
 const Store = require('electron-store');
 const store = new Store();
 const _ = require('underscore');
+
+let HOST_NAME = !_.isEmpty(store.get('serverAddress')) ? store.get('serverAddress') : 'http://localhost:3600/';
 
 const filingInstance = axios.create({
     baseURL: FILING_HOST_NAME

@@ -46,6 +46,7 @@ app.on('ready', function () {
         webPreferences: {
             nodeIntegration: true
         },
+        height: screenHeight
     });
     // Load html in window
     mainWindow.loadURL(url.format({
