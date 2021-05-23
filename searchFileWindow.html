@@ -450,17 +450,20 @@
                     <div class="container-row" style="flex-direction: row">
                         <fieldset class="fieldsetContainer">
                             <legend>سرویس بهداشتی</legend>
-                            <input type="text" name="wc" id="wc">
+                            <select name="wc" id="wc">
+                            </select>
                         </fieldset>
                         <fieldset class="fieldsetContainer">
                             <legend>خط تلفن</legend>
-                            <input type="text" name="phoneLine" id="phoneLine">
+                            <select name="phoneLine" id="phoneLine">
+                            </select>
                         </fieldset>
                     </div>
                     <div class="container-row" style="flex-direction: row">
                         <fieldset class="fieldsetContainer">
                             <legend>حیاط</legend>
-                            <input type="text" name="yard" id="yard">
+                            <select name="yard" id="yard">
+                            </select>
                         </fieldset>
                         <fieldset class="fieldsetContainer">
                             <legend>زیر زمین</legend>
@@ -470,21 +473,25 @@
                     <div class="container-row" style="flex-direction: row">
                         <fieldset class="fieldsetContainer">
                             <legend>حیاط خلوت</legend>
-                            <input type="text" name="backyard" id="backyard">
+                            <select name="backyard" id="backyard">
+                            </select>
                         </fieldset>
                         <fieldset class="fieldsetContainer">
                             <legend>سکونت مالک</legend>
-                            <input type="text" name="residenceOwner" id="residenceOwner">
+                            <select name="residenceOwner" id="residenceOwner">
+                            </select>
                         </fieldset>
                     </div>
                     <div class="container-row" style="flex-direction: row">
                         <fieldset class="fieldsetContainer">
                             <legend>مستخدم</legend>
-                            <input type="text" name="servant" id="servant">
+                            <select name="servant" id="servant">
+                            </select>
                         </fieldset>
                         <fieldset class="fieldsetContainer">
                             <legend>وضعیت سند</legend>
-                            <input type="text" name="documentStatus" id="documentStatus">
+                            <select name="documentStatus" id="documentStatus">
+                            </select>
                         </fieldset>
                     </div>
                 </div>
@@ -599,10 +606,10 @@
                         <div style="flex: 1">
                             <button class="button button5">تاریخ روز</button>
                         </div>
-                        <div class="prev-week">
+                        <!--<div class="prev-week">
                             <label>هفته قبل</label>
                             <input type="number" style="width: 30px">
-                        </div>
+                        </div>-->
                     </div>
 
 
@@ -812,7 +819,8 @@
                     <div class="container-row">
                         <fieldset class="fieldsetContainer">
                             <legend>کف پوش</legend>
-                            <input type="text" name="kafpoosh" id="kafpoosh">
+                            <select name="kafpoosh" id="kafpoosh">
+                            </select>
                         </fieldset>
                         <fieldset class="fieldsetContainer">
                             <legend>زیر بنا</legend>
@@ -833,7 +841,8 @@
                     <div class="container-row">
                         <fieldset class="fieldsetContainer">
                             <legend>سرویس آشپزخانه</legend>
-                            <input type="text" name="kitchen" id="kitchen">
+                            <select name="kitchen" id="kitchen">
+                            </select>
                         </fieldset>
                         <fieldset class="fieldsetContainer">
                             <legend>مساحت زمین</legend>
@@ -854,7 +863,8 @@
                     <div class="container-row">
                         <fieldset class="fieldsetContainer">
                             <legend>نما</legend>
-                            <input type="text" name="nama" id="nama">
+                            <select name="nama" id="nama">
+                            </select>
                         </fieldset>
                         <fieldset class="fieldsetContainer">
                             <legend>طول بر</legend>
@@ -930,9 +940,11 @@
 
     function getRegionNameListFromRegionCode(regionCode) {
         var regionNameList = [];
-        for (var i = 0; i < store.get('configList')[0].region.length; i++) {
-            if (regionCode === store.get('configList')[0].region[i].regionCode) {
-                regionNameList.push(store.get('configList')[0].region[i].regionName)
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].region)) {
+            for (var i = 0; i < store.get('configList')[0].region.length; i++) {
+                if (regionCode === store.get('configList')[0].region[i].regionCode) {
+                    regionNameList.push(store.get('configList')[0].region[i].regionName)
+                }
             }
         }
         return regionNameList;
@@ -953,7 +965,7 @@
         codeListContainer.appendChild(codeInput);
     }
 
-    if (!_.isEmpty(store.get('configList')[0].region)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].region)) {
         for (var i = 0; i < store.get('configList')[0].region.length; i++) {
             if (!_.contains(regionCodeList, store.get('configList')[0].region[i].regionCode)) {
                 regionCodeList.push(store.get('configList')[0].region[i].regionCode)
@@ -970,7 +982,7 @@
         codeSelect.appendChild(optionCode);
     }
 
-    if (!_.isEmpty(store.get('configList')[0].source)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].source)) {
         var sourceSelect = document.getElementById("source");
         for (var i = 0; i < store.get('configList')[0].source.length; i++) {
             var optionSource = document.createElement('option');
@@ -980,7 +992,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].publisher)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].publisher)) {
         var correctorSelect = document.getElementById("corrector");
         for (var i = 0; i < store.get('configList')[0].publisher.length; i++) {
             var optionCorrector = document.createElement('option');
@@ -990,7 +1002,107 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].equipments)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
+        var wcServiceSelect = document.getElementById("wc");
+        for (var i = 0; i < store.get('configList')[0].wcService.length; i++) {
+            var optionWcService = document.createElement('option');
+            optionWcService.value = store.get('configList')[0].wcService[i];
+            optionWcService.innerHTML = store.get('configList')[0].wcService[i];
+            wcServiceSelect.appendChild(optionWcService);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
+        var telephoneSelect = document.getElementById("phoneLine");
+        for (var i = 0; i < store.get('configList')[0].telephone.length; i++) {
+            var optionTelephone = document.createElement('option');
+            optionTelephone.value = store.get('configList')[0].telephone[i];
+            optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
+            telephoneSelect.appendChild(optionTelephone);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].yard)) {
+        var yardSelect = document.getElementById("yard");
+        for (var i = 0; i < store.get('configList')[0].yard.length; i++) {
+            var optionYard = document.createElement('option');
+            optionYard.value = store.get('configList')[0].yard[i];
+            optionYard.innerHTML = store.get('configList')[0].yard[i];
+            yardSelect.appendChild(optionYard);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].backYard)) {
+        var backYardSelect = document.getElementById("backyard");
+        for (var i = 0; i < store.get('configList')[0].backYard.length; i++) {
+            var optionBackYard = document.createElement('option');
+            optionBackYard.value = store.get('configList')[0].backYard[i];
+            optionBackYard.innerHTML = store.get('configList')[0].backYard[i];
+            backYardSelect.appendChild(optionBackYard);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].residenceOwner)) {
+        var residenceOwnerSelect = document.getElementById("residenceOwner");
+        for (var i = 0; i < store.get('configList')[0].residenceOwner.length; i++) {
+            var optionResidenceOwner = document.createElement('option');
+            optionResidenceOwner.value = store.get('configList')[0].residenceOwner[i];
+            optionResidenceOwner.innerHTML = store.get('configList')[0].residenceOwner[i];
+            residenceOwnerSelect.appendChild(optionResidenceOwner);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].employeeService)) {
+        var employeeServiceSelect = document.getElementById("servant");
+        for (var i = 0; i < store.get('configList')[0].employeeService.length; i++) {
+            var optionEmployeeService = document.createElement('option');
+            optionEmployeeService.value = store.get('configList')[0].employeeService[i];
+            optionEmployeeService.innerHTML = store.get('configList')[0].employeeService[i];
+            employeeServiceSelect.appendChild(optionEmployeeService);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].documentKind)) {
+        var documentKindSelect = document.getElementById("documentStatus");
+        for (var i = 0; i < store.get('configList')[0].documentKind.length; i++) {
+            var optionDocumentKind = document.createElement('option');
+            optionDocumentKind.value = store.get('configList')[0].documentKind[i];
+            optionDocumentKind.innerHTML = store.get('configList')[0].documentKind[i];
+            documentKindSelect.appendChild(optionDocumentKind);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
+        var kafpooshSelect = document.getElementById("kafpoosh");
+        for (var i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
+            var optionKafpoosh = document.createElement('option');
+            optionKafpoosh.value = store.get('configList')[0].floorCovering[i];
+            optionKafpoosh.innerHTML = store.get('configList')[0].floorCovering[i];
+            kafpooshSelect.appendChild(optionKafpoosh);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].kitchenService)) {
+        var kitchenSelect = document.getElementById("kitchen");
+        for (var i = 0; i < store.get('configList')[0].kitchenService.length; i++) {
+            var optionKitchen = document.createElement('option');
+            optionKitchen.value = store.get('configList')[0].kitchenService[i];
+            optionKitchen.innerHTML = store.get('configList')[0].kitchenService[i];
+            kitchenSelect.appendChild(optionKitchen);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].frontKind)) {
+        var namaSelect = document.getElementById("nama");
+        for (var i = 0; i < store.get('configList')[0].frontKind.length; i++) {
+            var optionNama = document.createElement('option');
+            optionNama.value = store.get('configList')[0].frontKind[i];
+            optionNama.innerHTML = store.get('configList')[0].frontKind[i];
+            namaSelect.appendChild(optionNama);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].equipments)) {
         var equipmentListDiv = document.getElementById("equipmentList");
         for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
             var equipmentDiv = document.createElement('DIV');
@@ -1034,7 +1146,7 @@
     btnSubmit.addEventListener("click", function () {
         $("#equipmentResultList").empty();
         equipments = [];
-        if (!_.isEmpty(store.get('configList')[0].equipments)) {
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].equipments)) {
             var equipmentResultListDiv = document.getElementById("equipmentResultList");
             for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
                 if (document.getElementById(store.get('configList')[0].equipments[i]).checked) {
@@ -1136,13 +1248,23 @@
         var noeMelk = document.getElementById("noeMelk");
         var noeMelkValue = getNoeMelk(noeMelk.value);
         $("#moshakhase").editableSelect('clear');
-        if (!_.isEmpty(store.get('configList')[0][noeMelkValue])) {
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0][noeMelkValue])) {
             for (var i = 0; i < store.get('configList')[0][noeMelkValue].length; i++) {
                 $("#moshakhase").editableSelect('add', store.get('configList')[0][noeMelkValue][i]);
             }
         }
     }).editableSelect();
     $('#moshakhase').editableSelect();
+    $('#servant').editableSelect();
+    $('#documentStatus').editableSelect();
+    $('#kafpoosh').editableSelect();
+    $('#kitchen').editableSelect();
+    $('#nama').editableSelect();
+    $('#residenceOwner').editableSelect();
+    $('#backyard').editableSelect();
+    $('#yard').editableSelect();
+    $('#phoneLine').editableSelect();
+    $('#wc').editableSelect();
 
     // Get the btnSubmit
     var btnSubmit = document.getElementById("btn-submit");
@@ -1177,14 +1299,6 @@
             toRent: !_.isEmpty(document.querySelector('#toRent').value) ? document.querySelector('#toRent').value : undefined,
             fromMortgage: !_.isEmpty(document.querySelector('#fromMortgage').value) ? document.querySelector('#fromMortgage').value : undefined,
             toMortgage: !_.isEmpty(document.querySelector('#toMortgage').value) ? document.querySelector('#toMortgage').value : undefined,
-            /*apartment: document.querySelector('#apartment').value,
-            vila: document.querySelector('#vila').value,
-            building: document.querySelector('#mostaghelat').value,
-            home: document.querySelector('#home').checked,
-            oldHouse: document.querySelector('#kolangi').value,
-            office: document.querySelector('#office').value,
-            store: document.querySelector('#store').checked,
-            suite: document.querySelector('#suite').checked,*/
             north: document.querySelector('#direction_north').checked ? true : undefined,
             south: document.querySelector('#direction_south').checked ? true : undefined,
             east: document.querySelector('#direction_east').checked ? true : undefined,

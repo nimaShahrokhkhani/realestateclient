@@ -23,6 +23,7 @@ let screenWidth = 0;
 let screenHeight = 0;
 let deviceId = undefined;
 let file = undefined;
+let user = undefined;
 let fileList = [];
 
 // Listen for app to be ready
@@ -76,7 +77,7 @@ ipcMain.on('setRealStateName', function (e, dataObject) {
                 protocol: 'file:',
                 slashes: true
             }));
-        }).catch(() => {
+        }).catch((error) => {
             mainWindow.webContents.send('hideLoading');
             const notification = {
                 title: 'خطا',
@@ -85,7 +86,7 @@ ipcMain.on('setRealStateName', function (e, dataObject) {
             new Notification(notification).show()
         })
 
-    }).catch(() => {
+    }).catch((error) => {
         mainWindow.webContents.send('hideLoading');
         const notification = {
             title: 'خطا',

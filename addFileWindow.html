@@ -671,16 +671,20 @@
                            id='rentPrice' style="width: 100%; display: none"/>
 
                     <label class="active font-text-light placeholder">توضیح:</label>
-                    <input class='validate textInput font-text-light' type='number' name='description'
+                    <input class='validate textInput font-text-light' name='description'
                            id='priceComment' style="width: 100%"/>
-                    <input class='validate textInput font-text-light' type='number' name='description'
+                    <input class='validate textInput font-text-light' name='description'
                            id='unitComment' style="width: 100%; display: none"/>
                 </div>
             </div>
         </div>
 
-        <input id="addTableButton" type="image" src="images/plus.png" style="width: 20px; height: 20px"
-               onclick="onAddTableClick()"/>
+        <div style="display: flex; align-items: center">
+            <input id="addTableButton" type="image" src="images/plus.png" style="width: 20px; height: 20px"
+                   onclick="onAddTableClick()"/>
+            <input id="removeTableButton" type="image" src="images/removeRow.png" style="width: 20px; height: 20px; margin-right: 10px"
+                   onclick="onRemoveTableClick()"/>
+        </div>
         <div class="row">
             <table class="styled-table">
                 <thead>
@@ -721,36 +725,31 @@
                                id='tableBalcon0'/>
                     </td>
                     <td>
-                        <input class='validate textInput tableTextInput font-text-light' type='number'
-                               name='tableTelephone'
-                               id='tableTelephone0'/>
+                        <select class="textInput tableTextInput font-text-light" name="tableTelephone" id="tableTelephone0">
+                        </select>
                     </td>
                     <td>
-                        <input class='validate textInput tableTextInput font-text-light' type='number'
-                               name='tableKitchen'
-                               id='tableKitchen0'/>
+                        <select class="textInput tableTextInput font-text-light" name="tableKitchen" id="tableKitchen0">
+                        </select>
                     </td>
                     <td>
                         <input type="checkbox" class="radio" value="1" name="tableOpen" id='tableOpen0'/>
                     </td>
                     <td>
-                        <input class='validate textInput tableTextInput font-text-light' type='number' name='tableWC'
-                               id='tableWC0'/>
+                        <select class="textInput tableTextInput font-text-light" name="tableWC" id="tableWC0">
+                        </select>
                     </td>
                     <td>
-                        <input class='validate textInput tableTextInput font-text-light' type='number'
-                               name='tableKafPoosh'
-                               id='tableKafPoosh0'/>
+                        <select class="textInput tableTextInput font-text-light" name="tableKafPoosh" id="tableKafPoosh0">
+                        </select>
                     </td>
                     <td>
-                        <input class='validate textInput tableTextInput font-text-light' type='number'
-                               name='tableParking'
-                               id='tableParking0'/>
+                        <select class="textInput tableTextInput font-text-light" name="tableParking" id="tableParking0">
+                        </select>
                     </td>
                     <td>
-                        <input class='validate textInput tableTextInput font-text-light' type='number'
-                               name='tableAnbari'
-                               id='tableAnbari0'/>
+                        <select class="textInput tableTextInput font-text-light" name="tableAnbari" id="tableAnbari0">
+                        </select>
                     </td>
                     <td>
                         <input class='validate textInput tableTextInput font-text-light' type='number'
@@ -857,9 +856,8 @@
                     <div class="checkbox-item">
                         <label class="active font-text-light placeholder"
                                style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">اصلاحی</label>
-                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
-                               name='corrective'
-                               id='corrective'/>
+                        <select class="textInput tableTextInput font-text-light" name="corrective" id="corrective">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -869,8 +867,8 @@
                     <div class="checkbox-item">
                         <label class="active font-text-light placeholder"
                                style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">حیاط</label>
-                        <input class='validate textInput font-text-light' style="width: 71px" type='number' name='yard'
-                               id='yard'/>
+                        <select class="textInput tableTextInput font-text-light" name="yard" id="yard">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -880,9 +878,8 @@
                     <div class="checkbox-item">
                         <label class="active font-text-light placeholder"
                                style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">حیاط خلوت</label>
-                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
-                               name='backYard'
-                               id='backYard'/>
+                        <select class="textInput tableTextInput font-text-light" name="backYard" id="backYard">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -892,9 +889,8 @@
                     <div class="checkbox-item">
                         <label class="active font-text-light placeholder"
                                style="font-size: 10px; margin-right: 10px; color:rgb(45 47 146);">زیرزمین</label>
-                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
-                               name='basement'
-                               id='basement'/>
+                        <select class="textInput tableTextInput font-text-light" name="basement" id="basement">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -903,10 +899,9 @@
                 <div class="input-container">
                     <div class="checkbox-item">
                         <label class="active font-text-light placeholder"
-                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">سرویس مستخدم</label>
-                        <input class='validate textInput font-text-light' style="width: 80px" type='number'
-                               name='employeeService'
-                               id='employeeService'/>
+                               style="width: 70px; font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">سرویس مستخدم</label>
+                        <select class="textInput tableTextInput font-text-light" name="employeeService" id="employeeService">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -916,8 +911,8 @@
                     <div class="checkbox-item">
                         <label class="active font-text-light placeholder"
                                style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">پاسیو</label>
-                        <input class='validate textInput font-text-light' style="width: 71px" type='number' name='patio'
-                               id='patio'/>
+                        <select class="textInput tableTextInput font-text-light" name="patio" id="patio">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -927,9 +922,8 @@
                     <div class="checkbox-item">
                         <label class="active font-text-light placeholder"
                                style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">سکونت مالک</label>
-                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
-                               name='residenceOwner'
-                               id='residenceOwner'/>
+                        <select class="textInput tableTextInput font-text-light" name="residenceOwner" id="residenceOwner">
+                        </select>
                     </div>
                 </div>
             </div>
@@ -1284,13 +1278,15 @@
 
     function searchTelInContactList(id, telNumber) {
         var contactList = store.get('contactList');
-        var contact = contactList.filter(contact => contact.tel === telNumber);
-        if (!_.isEmpty(contact)) {
-            document.getElementById('contact' + id.split('tel')[1]).style.display = 'block';
-            document.getElementById('contact' + id.split('tel')[1]).innerText = contact[0].name;
-        } else {
-            document.getElementById('contact' + id.split('tel')[1]).style.display = 'none';
-            document.getElementById('contact' + id.split('tel')[1]).innerText = '';
+        if (!_.isEmpty(contactList)) {
+            var contact = contactList.filter(contact => contact.tel === telNumber);
+            if (!_.isEmpty(contact)) {
+                document.getElementById('contact' + id.split('tel')[1]).style.display = 'block';
+                document.getElementById('contact' + id.split('tel')[1]).innerText = contact[0].name;
+            } else {
+                document.getElementById('contact' + id.split('tel')[1]).style.display = 'none';
+                document.getElementById('contact' + id.split('tel')[1]).innerText = '';
+            }
         }
     }
 
@@ -1323,7 +1319,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].region)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].region)) {
         for (var i = 0; i < store.get('configList')[0].region.length; i++) {
             if (!_.contains(regionCodeList, store.get('configList')[0].region[i].regionCode)) {
                 regionCodeList.push(store.get('configList')[0].region[i].regionCode)
@@ -1333,7 +1329,7 @@
 
     function getRegionNameListFromRegionCode(regionCode) {
         var regionNameList = [];
-        if (!_.isEmpty(store.get('configList')[0].region)) {
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].region)) {
             for (var i = 0; i < store.get('configList')[0].region.length; i++) {
                 if (regionCode === store.get('configList')[0].region[i].regionCode) {
                     regionNameList.push(store.get('configList')[0].region[i].regionName)
@@ -1357,7 +1353,7 @@
     }
 
     //fill options with configs
-    if (!_.isEmpty(store.get('configList')[0].equipments)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].equipments)) {
         var equipmentListDiv = document.getElementById("equipmentList");
         for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
             var equipmentDiv = document.createElement('DIV');
@@ -1373,7 +1369,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].source)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].source)) {
         var informationSourceSelect = document.getElementById("InformationSource");
         for (var i = 0; i < store.get('configList')[0].source.length; i++) {
             var optionInformationSource = document.createElement('option');
@@ -1383,7 +1379,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].documentKind)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].documentKind)) {
         var documentStateSelect = document.getElementById("documentState");
         for (var i = 0; i < store.get('configList')[0].documentKind.length; i++) {
             var optionDocumentStateSource = document.createElement('option');
@@ -1393,7 +1389,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].frontKind)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].frontKind)) {
         var viewSelect = document.getElementById("view");
         for (var i = 0; i < store.get('configList')[0].frontKind.length; i++) {
             var optionView = document.createElement('option');
@@ -1403,7 +1399,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].jakozi)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].jakozi)) {
         var jakooziSelect = document.getElementById("jakoozi");
         for (var i = 0; i < store.get('configList')[0].jakozi.length; i++) {
             var optionJakoozi = document.createElement('option');
@@ -1413,7 +1409,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].sona)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].sona)) {
         var sonaSelect = document.getElementById("sona");
         for (var i = 0; i < store.get('configList')[0].sona.length; i++) {
             var optionSona = document.createElement('option');
@@ -1423,7 +1419,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].pool)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].pool)) {
         var poolSelect = document.getElementById("pool");
         for (var i = 0; i < store.get('configList')[0].pool.length; i++) {
             var optionPool = document.createElement('option');
@@ -1433,7 +1429,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].office)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].office)) {
         var officeSelect = document.getElementById("office");
         for (var i = 0; i < store.get('configList')[0].office.length; i++) {
             var optionOffice = document.createElement('option');
@@ -1443,7 +1439,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].oldHouse)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].oldHouse)) {
         var kolangiSelect = document.getElementById("kolangi");
         for (var i = 0; i < store.get('configList')[0].oldHouse.length; i++) {
             var optionKolangi = document.createElement('option');
@@ -1453,7 +1449,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].building)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].building)) {
         var mostaghelatSelect = document.getElementById("mostaghelat");
         for (var i = 0; i < store.get('configList')[0].building.length; i++) {
             var optionMostaghelat = document.createElement('option');
@@ -1463,7 +1459,7 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].vila)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].vila)) {
         var vilaSelect = document.getElementById("vila");
         for (var i = 0; i < store.get('configList')[0].vila.length; i++) {
             var optionvila = document.createElement('option');
@@ -1473,13 +1469,143 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')[0].apartment)) {
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].apartment)) {
         var apartmentSelect = document.getElementById("apartment");
         for (var i = 0; i < store.get('configList')[0].apartment.length; i++) {
             var optionApartment = document.createElement('option');
             optionApartment.value = store.get('configList')[0].apartment[i];
             optionApartment.innerHTML = store.get('configList')[0].apartment[i];
             apartmentSelect.appendChild(optionApartment);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].modify)) {
+        var modifySelect = document.getElementById("corrective");
+        for (var i = 0; i < store.get('configList')[0].modify.length; i++) {
+            var optionModify = document.createElement('option');
+            optionModify.value = store.get('configList')[0].modify[i];
+            optionModify.innerHTML = store.get('configList')[0].modify[i];
+            modifySelect.appendChild(optionModify);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].yard)) {
+        var yardSelect = document.getElementById("yard");
+        for (var i = 0; i < store.get('configList')[0].yard.length; i++) {
+            var optionYard = document.createElement('option');
+            optionYard.value = store.get('configList')[0].yard[i];
+            optionYard.innerHTML = store.get('configList')[0].yard[i];
+            yardSelect.appendChild(optionYard);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].backYard)) {
+        var backYardSelect = document.getElementById("backYard");
+        for (var i = 0; i < store.get('configList')[0].backYard.length; i++) {
+            var optionBackYard = document.createElement('option');
+            optionBackYard.value = store.get('configList')[0].backYard[i];
+            optionBackYard.innerHTML = store.get('configList')[0].backYard[i];
+            backYardSelect.appendChild(optionBackYard);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].employeeService)) {
+        var employeeServiceSelect = document.getElementById("employeeService");
+        for (var i = 0; i < store.get('configList')[0].employeeService.length; i++) {
+            var optionEmployeeService = document.createElement('option');
+            optionEmployeeService.value = store.get('configList')[0].employeeService[i];
+            optionEmployeeService.innerHTML = store.get('configList')[0].employeeService[i];
+            employeeServiceSelect.appendChild(optionEmployeeService);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].basement)) {
+        var basementSelect = document.getElementById("basement");
+        for (var i = 0; i < store.get('configList')[0].basement.length; i++) {
+            var optionBasement = document.createElement('option');
+            optionBasement.value = store.get('configList')[0].basement[i];
+            optionBasement.innerHTML = store.get('configList')[0].basement[i];
+            basementSelect.appendChild(optionBasement);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].patio)) {
+        var patioSelect = document.getElementById("patio");
+        for (var i = 0; i < store.get('configList')[0].patio.length; i++) {
+            var optionPatio = document.createElement('option');
+            optionPatio.value = store.get('configList')[0].patio[i];
+            optionPatio.innerHTML = store.get('configList')[0].patio[i];
+            patioSelect.appendChild(optionPatio);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].residenceOwner)) {
+        var residenceOwnerSelect = document.getElementById("residenceOwner");
+        for (var i = 0; i < store.get('configList')[0].residenceOwner.length; i++) {
+            var optionResidenceOwner = document.createElement('option');
+            optionResidenceOwner.value = store.get('configList')[0].residenceOwner[i];
+            optionResidenceOwner.innerHTML = store.get('configList')[0].residenceOwner[i];
+            residenceOwnerSelect.appendChild(optionResidenceOwner);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].kitchenService)) {
+        var tableKitchenSelect = document.getElementById("tableKitchen0");
+        for (let i = 0; i < store.get('configList')[0].kitchenService.length; i++) {
+            var optionKitchen = document.createElement('option');
+            optionKitchen.value = store.get('configList')[0].kitchenService[i];
+            optionKitchen.innerHTML = store.get('configList')[0].kitchenService[i];
+            tableKitchenSelect.appendChild(optionKitchen);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
+        var tableKafPooshSelect = document.getElementById("tableKafPoosh0");
+        for (let i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
+            var optionFloorCovering = document.createElement('option');
+            optionFloorCovering.value = store.get('configList')[0].floorCovering[i];
+            optionFloorCovering.innerHTML = store.get('configList')[0].floorCovering[i];
+            tableKafPooshSelect.appendChild(optionFloorCovering);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].warehouse)) {
+        var tableAnbariSelect = document.getElementById("tableAnbari0");
+        for (let i = 0; i < store.get('configList')[0].warehouse.length; i++) {
+            var optionWarehouse = document.createElement('option');
+            optionWarehouse.value = store.get('configList')[0].warehouse[i];
+            optionWarehouse.innerHTML = store.get('configList')[0].warehouse[i];
+            tableAnbariSelect.appendChild(optionWarehouse);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].parking)) {
+        var tableParkingSelect = document.getElementById("tableParking0");
+        for (let i = 0; i < store.get('configList')[0].parking.length; i++) {
+            var optionParking = document.createElement('option');
+            optionParking.value = store.get('configList')[0].parking[i];
+            optionParking.innerHTML = store.get('configList')[0].parking[i];
+            tableParkingSelect.appendChild(optionParking);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
+        var tableWCSelect = document.getElementById("tableWC0");
+        for (let i = 0; i < store.get('configList')[0].wcService.length; i++) {
+            var optionWC = document.createElement('option');
+            optionWC.value = store.get('configList')[0].wcService[i];
+            optionWC.innerHTML = store.get('configList')[0].wcService[i];
+            tableWCSelect.appendChild(optionWC);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
+        var tableTelephoneSelect = document.getElementById("tableTelephone0");
+        for (let i = 0; i < store.get('configList')[0].telephone.length; i++) {
+            var optionTelephone = document.createElement('option');
+            optionTelephone.value = store.get('configList')[0].telephone[i];
+            optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
+            tableTelephoneSelect.appendChild(optionTelephone);
         }
     }
 
@@ -1521,6 +1647,7 @@
     ipcRenderer.on('showLoading', function () {
         var loading = document.getElementById("loading");
         loading.style.display = "block";
+
     });
 
     ipcRenderer.on('hideLoading', function () {
@@ -1566,52 +1693,89 @@
         inputBalcon.id = ('tableBalcon' + index);
         tdBalcon.appendChild(inputBalcon);
         var tdTelephone = document.createElement("TD");
-        var inputTelephone = document.createElement("INPUT");
+        var inputTelephone = document.createElement("SELECT");
         inputTelephone.classList.add('validate');
         inputTelephone.classList.add('tableTextInput');
         inputTelephone.classList.add('font-text-light');
         inputTelephone.classList.add('textInput');
         inputTelephone.id = ('tableTelephone' + index);
         tdTelephone.appendChild(inputTelephone);
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
+            for (let i = 0; i < store.get('configList')[0].telephone.length; i++) {
+                var optionTelephone = document.createElement('option');
+                optionTelephone.value = store.get('configList')[0].telephone[i];
+                optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
+                inputTelephone.appendChild(optionTelephone);
+            }
+        }
         var tdKitchen = document.createElement("TD");
-        var inputKitchen = document.createElement("INPUT");
+        var inputKitchen = document.createElement("SELECT");
         inputKitchen.classList.add('validate');
         inputKitchen.classList.add('tableTextInput');
         inputKitchen.classList.add('font-text-light');
         inputKitchen.classList.add('textInput');
         inputKitchen.id = ('tableKitchen' + index);
         tdKitchen.appendChild(inputKitchen);
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].kitchenService)) {
+            for (let i = 0; i < store.get('configList')[0].kitchenService.length; i++) {
+                var optionKitchen = document.createElement('option');
+                optionKitchen.value = store.get('configList')[0].kitchenService[i];
+                optionKitchen.innerHTML = store.get('configList')[0].kitchenService[i];
+                inputKitchen.appendChild(optionKitchen);
+            }
+        }
         var tdOpen = document.createElement("TD");
         var inputOpen = document.createElement("INPUT");
         inputOpen.type = 'checkbox';
-        // inputOpen.classList.add('validate');
-        // inputOpen.classList.add('tableTextInput');
-        // inputOpen.classList.add('font-text-light');
         tdOpen.appendChild(inputOpen);
         var tdWC = document.createElement("TD");
-        var inputWC = document.createElement("INPUT");
+        var inputWC = document.createElement("SELECT");
         inputWC.classList.add('validate');
         inputWC.classList.add('tableTextInput');
         inputWC.classList.add('font-text-light');
         inputWC.classList.add('textInput');
         inputWC.id = ('tableWC' + index);
         tdWC.appendChild(inputWC);
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
+            for (let i = 0; i < store.get('configList')[0].wcService.length; i++) {
+                var optionWC = document.createElement('option');
+                optionWC.value = store.get('configList')[0].wcService[i];
+                optionWC.innerHTML = store.get('configList')[0].wcService[i];
+                inputWC.appendChild(optionWC);
+            }
+        }
         var tdParking = document.createElement("TD");
-        var inputParking = document.createElement("INPUT");
+        var inputParking = document.createElement("SELECT");
         inputParking.classList.add('validate');
         inputParking.classList.add('tableTextInput');
         inputParking.classList.add('font-text-light');
         inputParking.classList.add('textInput');
         inputParking.id = ('tableParking' + index);
         tdParking.appendChild(inputParking);
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].parking)) {
+            for (let i = 0; i < store.get('configList')[0].parking.length; i++) {
+                var optionParking = document.createElement('option');
+                optionParking.value = store.get('configList')[0].parking[i];
+                optionParking.innerHTML = store.get('configList')[0].parking[i];
+                inputParking.appendChild(optionParking);
+            }
+        }
         var tdAnbari = document.createElement("TD");
-        var inputAnbari = document.createElement("INPUT");
+        var inputAnbari = document.createElement("SELECT");
         inputAnbari.classList.add('validate');
         inputAnbari.classList.add('tableTextInput');
         inputAnbari.classList.add('font-text-light');
         inputAnbari.classList.add('textInput');
         inputAnbari.id = ('tableAnbari' + index);
         tdAnbari.appendChild(inputAnbari);
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].warehouse)) {
+            for (let i = 0; i < store.get('configList')[0].warehouse.length; i++) {
+                var optionWarehouse = document.createElement('option');
+                optionWarehouse.value = store.get('configList')[0].warehouse[i];
+                optionWarehouse.innerHTML = store.get('configList')[0].warehouse[i];
+                inputAnbari.appendChild(optionWarehouse);
+            }
+        }
         var tdTotalAmount = document.createElement("TD");
         var inputTotalAmount = document.createElement("INPUT");
         inputTotalAmount.classList.add('validate');
@@ -1621,13 +1785,21 @@
         inputTotalAmount.id = ('tableTotalAmount' + index);
         tdTotalAmount.appendChild(inputTotalAmount);
         var tdKafPoosh = document.createElement("TD");
-        var inputKafPoosh = document.createElement("INPUT");
+        var inputKafPoosh = document.createElement("SELECT");
         inputKafPoosh.classList.add('validate');
         inputKafPoosh.classList.add('tableTextInput');
         inputKafPoosh.classList.add('font-text-light');
         inputKafPoosh.classList.add('textInput');
         inputKafPoosh.id = ('tableKafPoosh' + index);
         tdKafPoosh.appendChild(inputKafPoosh);
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
+            for (let i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
+                var optionFloorCovering = document.createElement('option');
+                optionFloorCovering.value = store.get('configList')[0].floorCovering[i];
+                optionFloorCovering.innerHTML = store.get('configList')[0].floorCovering[i];
+                inputKafPoosh.appendChild(optionFloorCovering);
+            }
+        }
         var tdMetri = document.createElement("TD");
         var inputMetri = document.createElement("INPUT");
         inputMetri.classList.add('validate');
@@ -1650,6 +1822,18 @@
         tr.appendChild(tdTotalAmount);
         tr.appendChild(tdMetri);
         document.querySelector('#tableRow').appendChild(tr);
+        // $('#' + 'tableKafPoosh' + index).editableSelect();
+        // $('#' + 'tableAnbari' + index).editableSelect();
+        // $('#' + 'tableParking' + index).editableSelect();
+        // $('#' + 'tableWC' + index).editableSelect();
+        // $('#' + 'tableTelephone' + index).editableSelect();
+        // $('#' + 'tableKitchen' + index).editableSelect();
+    }
+
+    //remove button click in table
+    function onRemoveTableClick() {
+        var index = document.querySelector('#tableRow').rows.length;
+        (index !== 1) && document.querySelector('#tableRow').removeChild(document.querySelector('#tableRow').childNodes[index - 1]);
     }
 
     // Get the modal
@@ -1714,13 +1898,26 @@
     $('#view').editableSelect();
     $('#documentState').editableSelect();
     $('#InformationSource').editableSelect();
+    // $('#tableTelephone0').editableSelect();
+    // $('#tableKitchen0').editableSelect();
+    // $('#tableWC0').editableSelect();
+    // $('#tableParking0').editableSelect();
+    // $('#tableAnbari0').editableSelect();
+    // $('#tableKafPoosh0').editableSelect();
+    $('#residenceOwner').editableSelect();
+    $('#patio').editableSelect();
+    $('#basement').editableSelect();
+    $('#employeeService').editableSelect();
+    $('#backYard').editableSelect();
+    $('#yard').editableSelect();
+    $('#corrective').editableSelect();
 
     var checkedEquipmentList = [];
     var btnSubmit = document.getElementById("btn-submit-modal");
     btnSubmit.addEventListener("click", function () {
         $("#equipmentResultList").empty();
         equipments = [];
-        if (!_.isEmpty(store.get('configList')[0].equipments)) {
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].equipments)) {
             var equipmentResultListDiv = document.getElementById("equipmentResultList");
             for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
                 if (document.getElementById(store.get('configList')[0].equipments[i]).checked) {
