@@ -107,6 +107,17 @@
             margin-top: 10px;
         }
 
+        .container {
+            background-image: url("./New-icon-png/Background.png");
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            flex: 1;
+            width: 100%;
+            padding: 20px;
+        }
+
         .top-container {
             display: flex;
             flex-direction: row;
@@ -132,6 +143,26 @@
             font-family: IRANSansMobileFaNum-Light;
             padding: 10px;
         }
+
+        .calculatorContainer {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50px;
+        }
+
+        #welcome {
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        #username {
+            font-family: IRANSansMobile-Bold;
+            margin-left: 5px;
+            color: darkgreen;
+        }
+
+        row {
+            margin-bottom: 0 !important;
+        }
     </style>
 </head>
 
@@ -140,60 +171,63 @@
 <div id="loading">
     <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
 </div>
-<div class="section"></div>
-<main>
-    <center>
-        <div class="top-container">
-            <span id="miladi-date"></span>
-            <div>
-                <img src="images/realstate.png" height="100" width="250"/>
-                <img src="images/logoGilanFile.png" height="50" width="80"/>
-            </div>
-            <span id="shamsi-date"></span>
+<main class="container">
+    <div style="display: flex; flex-direction: column; flex: 0;  height: 500px">
+        <div style="flex: 1; margin-top: -30px">
+            <img src="New-icon-png/Gilanfile.png" width="180">
         </div>
+        <div style="display: flex; flex: 1; align-items: flex-end; justify-content: center; margin-bottom: -30px">
+            <img src="New-icon-png/insta2.png" width="40">
+            <img src="New-icon-png/whatsApp2.png" width="40">
+            <img src="New-icon-png/telegram2.png" width="40">
+        </div>
+    </div>
 
-        <div class="section"></div>
-
-        <div class="container">
-            <div class="z-depth-1 lighten-4 row"
-                 style="display: block; padding: 32px 48px 0 48px; border: 1px solid #ededed; background-color: #eee">
-
-                <div class="row">
-                    <div class="col s3">
-                        <img id="addFile" src="icon-png/add-file-PNG.png" height="100" width="100">
-                    </div>
-                    <div class="col s3">
-                        <img id="searchFile" src="icon-png/search-png.png" height="100" width="100">
-                    </div>
-                    <div class="col s3">
-                        <img id="addUser" src="icon-png/add-user-png.png" height="100" width="100">
-                    </div>
-                    <div class="col s3">
-                        <img id="searchUser" src="icon-png/search-user-png.png" height="100" width="100">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col s3">
-                        <img src="icon-png/zonkan-png.png" height="100" width="100">
-                    </div>
-                    <div class="col s3">
-                        <img id="setting" src="icon-png/Setting.png" height="100" width="100">
-                    </div>
-                    <!--<div class="col s3">-->
-                        <!--<img src="images/messages.jpeg" height="150" width="150">-->
-                    <!--</div>-->
-                    <div class="col s3">
-                        <img id="contactList" src="icon-png/phonebook-png.png" height="100" width="100">
-                    </div>
-                </div>
-
+    <div style="flex: 1;">
+        <div style="display: flex; padding: 0px 55px 0 40px">
+            <div style="flex: 1">
+                <span id="shamsi-date"></span>
+            </div>
+            <div style="display: flex; align-items: center; flex: 1; justify-content: flex-end">
+                <span id="welcome">خوش آمدید</span>
+                <span id="username"></span>
             </div>
         </div>
-    </center>
+        <div style="display: block; padding: 20px 48px 0 48px">
 
-    <div class="section"></div>
-    <div class="section"></div>
+            <div class="row">
+                <div class="col s3">
+                    <img src="New-icon-png/Massaege.png" width="100">
+                </div>
+                <div class="col s3" style="margin-top: 3px">
+                    <img id="addUser" src="New-icon-png/Add-Users.png" width="100">
+                </div>
+                <div class="col s3" style="margin-top: 6px">
+                    <img id="setting" src="New-icon-png/Setting.png" width="100">
+                </div>
+                <div class="col s3">
+                    <img id="addFile" src="New-icon-png/Add-File.png" width="100">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s3">
+                    <img id="contactList" src="New-icon-png/PhoneBook.png" width="100">
+                </div>
+                <div class="col s3">
+                    <img id="searchUser" src="New-icon-png/Search-Users.png" width="100">
+                </div>
+                <div class="col s3">
+                    <img id="zoncan" src="New-icon-png/Zoncan.png" width="100">
+                </div>
+                <div class="col s3">
+                    <img id="searchFile" src="New-icon-png/search-file.png" width="100">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </main>
 
 <script type="text/javascript" src="libraries/jquery.min.js"></script>
@@ -203,6 +237,10 @@
 <script>
     const electron = require('electron');
     const {ipcRenderer} = electron;
+    const Store = require('electron-store');
+    const store = new Store();
+
+    document.querySelector('#username').innerText = store.get('userData').name;
 
     const miladi_days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const shamsi_days = ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
@@ -211,7 +249,7 @@
     var shamsi_day = shamsi_days[(new Date()).getDay()];
 
     document.querySelector('#shamsi-date').innerText = moment(new Date(), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD') + ' ' + shamsi_day;
-    document.querySelector('#miladi-date').innerText = moment(new Date()).format('YYYY/MM/DD') + ' ' + miladi_day;
+    // document.querySelector('#miladi-date').innerText = moment(new Date()).format('YYYY/MM/DD') + ' ' + miladi_day;
 
     document.querySelector('#addFile').addEventListener("click", function () {
         ipcRenderer.send('addFile');

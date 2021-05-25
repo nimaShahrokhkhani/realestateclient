@@ -9,7 +9,7 @@ const _ = require('underscore');
 // SET ENV
 process.env.NODE_ENV = 'development';
 
-const {app, BrowserWindow, Menu, ipcMain, Notification, screen, shell} = electron;
+const {app, BrowserWindow, Menu, ipcMain, Notification, screen, shell, globalShortcut} = electron;
 
 let mainWindow;
 let addFileWindow;
@@ -18,6 +18,8 @@ let searchFileTableWindow;
 let addUserWindow;
 let settingWindow;
 let userManagementWindow;
+let addHostNameWindow;
+let addFilingHostNameWindow;
 let filePrintWindow;
 let screenWidth = 0;
 let screenHeight = 0;
@@ -39,15 +41,19 @@ app.on('ready', function () {
         services.insertDevice(requestData);
     });
 
+    globalShortcut.register('Alt+CommandOrControl+I', () => {
+        createAddFilingHostNameWindow();
+    });
 
     screenWidth = screen.getPrimaryDisplay().workAreaSize.width;
     screenHeight = screen.getPrimaryDisplay().workAreaSize.height;
     // Create new window
     mainWindow = new BrowserWindow({
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            width: 800,
+            height: 600
         },
-        height: screenHeight
     });
     // Load html in window
     mainWindow.loadURL(url.format({
@@ -737,12 +743,21 @@ ipcMain.on('addToContactList', async function (e, contact) {
     }
 });
 
-// addToContactList callback
+// changeHostName callback
 ipcMain.on('changeHostName', async function (e, serverAddress) {
     const Store = require('electron-store');
     const store = new Store();
     store.set('serverAddress', serverAddress);
     addHostNameWindow.close();
+});
+
+// changeFilingHostName callback
+ipcMain.on('changeFilingHostName', async function (e, address) {
+    const Store = require('electron-store');
+    const store = new Store();
+    store.set('filingServerAddress', address.filingServerAddress);
+    store.set('installationServerAddress', address.installationServerAddress);
+    addFilingHostNameWindow.close();
 });
 
 // open print file callback
@@ -1013,6 +1028,28 @@ function createAddHostWindow() {
     // Handle garbage collection
     addHostNameWindow.on('close', function () {
         addHostNameWindow = null;
+    });
+}
+
+// create print file window
+function createAddFilingHostNameWindow() {
+    addFilingHostNameWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 500,
+        height: 400,
+        title: 'افزودن سرویس جدید'
+    });
+    addFilingHostNameWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'addFilingHostNameWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    addFilingHostNameWindow.on('close', function () {
+        addFilingHostNameWindow = null;
     });
 }
 
