@@ -720,7 +720,7 @@
                                id='tableKhab0'/>
                     </td>
                     <td>
-                        <input class='validate textInput tableTextInput font-text-light' type='number'
+                        <input type="checkbox" class="radio" value="1"
                                name='tableBalcon'
                                id='tableBalcon0'/>
                     </td>
@@ -1022,7 +1022,7 @@
                 <div class="input-container">
                     <label class="active font-text-light placeholder"
                            style="margin-right: 10px; width: 50px; ">توضیحات:</label>
-                    <input class='validate textInput font-text-light' type='text' name='additionalDescription'
+                    <input style="height: 50px" class='validate textInput font-text-light' type='text' name='additionalDescription'
                            id='additionalDescription'/>
                 </div>
             </div>
@@ -1214,11 +1214,12 @@
             document.querySelector('#tableFloor0').value = file.unitFloor;
             document.querySelector('#tableZirBana0').value = file.unitBuiltUpArea;
             document.querySelector('#tableKhab0').value = file.unitRoom;
-            document.querySelector('#tableBalcon0').value = file.unitBalcony;
+            document.querySelector('#tableBalcon0').checked = file.unitBalcony;
             document.querySelector('#tableTelephone0').value = file.unitTelephone;
             document.querySelector('#tableKitchen0').value = file.unitKitchen;
             document.querySelector('#tableWC0').value = file.unitWC;
             document.querySelector('#tableKafPoosh0').value = file.unitFloorCovering;
+            document.querySelector('#tableOpen0').checked = file.unitOpen;
 
             document.querySelector('#allParticipation').checked = file.participation === 'همه';
             document.querySelector('#privateParticipation').value = file.participation === 'خصوصی';
@@ -1686,10 +1687,7 @@
         tdKhab.appendChild(inputKhab);
         var tdBalcon = document.createElement("TD");
         var inputBalcon = document.createElement("INPUT");
-        inputBalcon.classList.add('validate');
-        inputBalcon.classList.add('tableTextInput');
-        inputBalcon.classList.add('font-text-light');
-        inputBalcon.classList.add('textInput');
+        inputBalcon.type = 'checkbox';
         inputBalcon.id = ('tableBalcon' + index);
         tdBalcon.appendChild(inputBalcon);
         var tdTelephone = document.createElement("TD");
@@ -2016,11 +2014,12 @@
                 unitFloor: document.querySelector('#tableFloor' + index).value,
                 unitBuiltUpArea: document.querySelector('#tableZirBana' + index).value,
                 unitRoom: document.querySelector('#tableKhab' + index).value,
-                unitBalcony: document.querySelector('#tableBalcon' + index).value,
+                unitBalcony: document.querySelector('#tableBalcon' + index).checked,
                 unitTelephone: document.querySelector('#tableTelephone' + index).value,
                 unitKitchen: document.querySelector('#tableKitchen' + index).value,
                 unitWC: document.querySelector('#tableWC' + index).value,
                 unitFloorCovering: document.querySelector('#tableKafPoosh' + index).value,
+                unitOpen: document.querySelector('#tableOpen' + index).checked,
                 unitPrice: _.isEmpty(document.querySelector('#tableKafPoosh' + index).value) ?
                     document.querySelector('#metri').value :
                     document.querySelector('#tableKafPoosh' + index).value,
