@@ -550,6 +550,23 @@ ipcMain.on('getUserList', function (e, requestBody) {
 
 });
 
+// getUserFilterList callback
+ipcMain.on('getUserFilterList', function (e, requestBody) {
+    userManagementWindow.webContents.send('showLoading');
+    services.getUserList(requestBody).then((response) => {
+        userManagementWindow.webContents.send('hideLoading');
+        userManagementWindow.webContents.send('getUserListFromMain', response.data);
+    }).catch(() => {
+        userManagementWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در نمایش کاربران های املاک.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
 // deleteUser callback
 ipcMain.on('deleteUser', function (e, username) {
     let options  = {

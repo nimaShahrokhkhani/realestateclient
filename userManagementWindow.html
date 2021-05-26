@@ -2,9 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <script src="libraries/jquery-1.12.4.js"></script>
+    <script src="libraries/jquery-ui.js"></script>
+    <script src="libraries/jquery-editable-select.min.js"></script>
+    <link href="libraries/jquery-editable-select.min.css"
+          rel="stylesheet">
     <style>
+        @font-face {
+            font-family: IRANSans-Light;
+            src: url("./fonts/IRANSans-Light.eot") format('eot'),
+            url("./fonts/IRANSans-Light.woff") format('woff'),
+            url("./fonts/IRANSans-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobile-Bold;
+            src: url("./fonts/IRANSansMobile-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobile-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobile-Bold.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
         table {
-            font-family: arial, sans-serif;
+            font-family: IRANSans-Light;
             border-collapse: collapse;
             width: 100%;
             direction: rtl;
@@ -43,6 +72,19 @@
             left: 300px;
             z-index: 100;
         }
+
+        .textInput {
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            width: 20%;
+            background-image: linear-gradient(
+                    89deg, #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px;
+            direction: rtl;
+            height: 25px;
+            font-family: IRANSansMobileFaNum-Light;
+        }
     </style>
 </head>
 </head>
@@ -50,17 +92,30 @@
 <div id="loading">
     <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
 </div>
+<div style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 10px">
+    <input id="searchButton" type="image" src="images/search-contact.png" style="width: 20px; height: 20px"
+           onclick="onSearchUserClick()"/>
+    <input type="text" class="textInput" id="username" placeholder="نام کاربری">
+    <input type="text" class="textInput" id="name"  placeholder="نام">
+    <input type="text" class="textInput" id="lastName" placeholder="نام خانوادگی">
+    <select class="textInput" id="userRole" placeholder="نقش کاربر">
+        <option value="مدیر سیستم">مدیر سیستم</option>
+        <option value="اپراتور">اپراتور</option>
+        <option value="کارشناس">کارشناس</option>
+    </select>
+</div>
 <table id="tableContent">
-    <tr id="title">
-    </tr>
 </table>
 <script>
     const electron = require('electron');
     const {ipcRenderer} = electron;
+    const _ = require('underscore');
     const Store = require('electron-store');
     const store = new Store();
     var userList = [];
     var totalUsersCount = 0;
+
+    $('#userRole').editableSelect();
 
     ipcRenderer.on('showLoading', function () {
         var loading = document.getElementById("loading");
@@ -76,8 +131,13 @@
     ipcRenderer.send('getUserList', {offset: 0, length: 50});
 
     ipcRenderer.on('getUserListFromMain', function (event, users) {
-        totalUsersCount = users.totalCount;
-        userList.push(...users.data);
+        if (!_.isEmpty(users.data)) {
+            totalUsersCount = users.totalCount;
+            userList.push(...users.data);
+        } else {
+            totalUsersCount = users.length;
+            userList = users;
+        }
 
 
         var showUserTitle = [
@@ -91,7 +151,10 @@
         ];
 
         var tableContent = document.getElementById("tableContent");
-        var titleList = document.getElementById("title");
+        tableContent.innerHTML = '';
+        var titleList = document.createElement("TR");
+        titleList.id = 'title';
+        tableContent.appendChild(titleList);
         for (var i = 0, n = showUserTitle.length; i < n; i++) {
             var titleField = document.createElement("TH");
             titleField.innerHTML = showUserTitle[i].value;
@@ -101,7 +164,7 @@
             var rowContainer = document.createElement("TR");
             for (var j = 0, k = showUserTitle.length - 1; j < k; j++) {
                 var columnContainer = document.createElement("TD");
-                columnContainer.innerHTML = userList[i][showUserTitle[j].key];
+                columnContainer.innerHTML = !_.isEmpty(userList[i][showUserTitle[j].key]) ? userList[i][showUserTitle[j].key] : '';
                 rowContainer.appendChild(columnContainer);
             }
             var actionColumnContainer = document.createElement("TD");
@@ -134,6 +197,14 @@
                 ipcRenderer.send('getUserList', {offset: userList.length - 1, length: userList.length + 50});
             }
         }
+    }
+
+    function onSearchUserClick() {
+        var username = !_.isEmpty(document.getElementById("username").value) ? document.getElementById("username").value : undefined;
+        var name = !_.isEmpty(document.getElementById("name").value) ? document.getElementById("name").value: undefined;
+        var lastName = !_.isEmpty(document.getElementById("lastName").value) ? document.getElementById("lastName").value : undefined;
+        var userRole = !_.isEmpty(document.getElementById("userRole").value) ? document.getElementById("userRole").value : undefined;
+        ipcRenderer.send('getUserFilterList', {username,name,lastName,userRole});
     }
 
 </script>
