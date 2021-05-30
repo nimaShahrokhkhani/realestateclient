@@ -727,10 +727,12 @@
                     </td>
                     <td>
                         <select class="textInput tableTextInput font-text-light" name="tableTelephone" id="tableTelephone0">
+                            <option></option>
                         </select>
                     </td>
                     <td>
                         <select class="textInput tableTextInput font-text-light" name="tableKitchen" id="tableKitchen0">
+                            <option></option>
                         </select>
                     </td>
                     <td>
@@ -738,18 +740,22 @@
                     </td>
                     <td>
                         <select class="textInput tableTextInput font-text-light" name="tableWC" id="tableWC0">
+                            <option></option>
                         </select>
                     </td>
                     <td>
                         <select class="textInput tableTextInput font-text-light" name="tableKafPoosh" id="tableKafPoosh0">
+                            <option></option>
                         </select>
                     </td>
                     <td>
                         <select class="textInput tableTextInput font-text-light" name="tableParking" id="tableParking0">
+                            <option></option>
                         </select>
                     </td>
                     <td>
                         <select class="textInput tableTextInput font-text-light" name="tableAnbari" id="tableAnbari0">
+                            <option></option>
                         </select>
                     </td>
                     <td>
@@ -1013,6 +1019,14 @@
                         کننده:</label>
                     <input class='validate textInput font-text-light' type='text' name='ownerName'
                            id='ownerName' value="گیلان فایل" disabled/>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 100px">نام کاربری:</label>
+                    <input class='validate textInput font-text-light' type='text' name='username'
+                           id='username' value=""/>
                 </div>
             </div>
 
@@ -1955,6 +1969,7 @@
             }
             var requestBody = {
                 Id: document.querySelector('#number').value,
+                Number: document.querySelector('#number').value.split('cl-')[1],
                 tel1: document.querySelector('#tel1').value,
                 tel2: document.querySelector('#tel2').value,
                 tel3: document.querySelector('#tel3').value,
@@ -1964,10 +1979,10 @@
                 owner: document.querySelector('#owner').value,
                 regionCode: StringUtils.convertNumbersToEnglish(document.querySelector('#regionCode').value),
                 regionName: document.querySelector('#regionName').value,
-                date: StringUtils.convertShamsiToMillisecond(document.querySelector('#date').value),
+                date: parseInt(StringUtils.convertShamsiToMillisecond(document.querySelector('#date').value)),
                 sale: saleType,
-                rent: document.querySelector('#rentPrice').value,
-                mortgage: document.querySelector('#mortgagePrice').value,
+                rent: parseInt(document.querySelector('#rentPrice').value),
+                mortgage: parseInt(document.querySelector('#mortgagePrice').value),
                 apartment: document.querySelector('#apartment').value,
                 vila: document.querySelector('#vila').value,
                 building: document.querySelector('#mostaghelat').value,
@@ -1980,15 +1995,15 @@
                 south: document.querySelector('#south').checked,
                 east: document.querySelector('#east').checked,
                 west: document.querySelector('#west').checked,
-                floorNo: document.querySelector('#tabaghat').value,
-                unitNo: document.querySelector('#vahed').value,
+                floorNo: parseInt(document.querySelector('#tabaghat').value),
+                unitNo: parseInt(document.querySelector('#vahed').value),
                 unitComment: document.querySelector('#unitComment').value,
-                totalPrice: document.querySelector('#totalPrice').value,
+                totalPrice: parseInt(document.querySelector('#totalPrice').value),
                 priceComment: document.querySelector('#priceComment').value,
                 pool: document.querySelector('#pool').checked,
                 sona: document.querySelector('#sona').checked,
                 jakozi: document.querySelector('#jakoozi').checked,
-                area: document.querySelector('#area').value,
+                area: parseInt(document.querySelector('#area').value),
                 density: document.querySelector('#density').value,
                 front: document.querySelector('#toolBar').value,
                 height: document.querySelector('#height').value,
@@ -2001,7 +2016,7 @@
                 residential: document.querySelector('#residential').checked,
                 empty: document.querySelector('#discharge').value,
                 rented: document.querySelector('#rented').value,
-                age: document.querySelector('#ageBuilding').value,
+                age: parseInt(document.querySelector('#ageBuilding').value),
                 frontKind: document.querySelector('#view').value,
                 source: document.querySelector('#InformationSource').value,
                 publisher: document.querySelector('#ownerName').value,
@@ -2022,8 +2037,8 @@
                 unitFloorCovering: document.querySelector('#tableKafPoosh' + index).value,
                 unitOpen: document.querySelector('#tableOpen' + index).checked,
                 unitPrice: _.isEmpty(document.querySelector('#tableKafPoosh' + index).value) ?
-                    document.querySelector('#metri').value :
-                    document.querySelector('#tableKafPoosh' + index).value,
+                    parseInt(document.querySelector('#metri').value) :
+                    parseInt(document.querySelector('#tableKafPoosh' + index).value),
             };
             requestArray.push(requestBody);
         }

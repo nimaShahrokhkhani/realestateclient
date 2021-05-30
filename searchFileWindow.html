@@ -604,7 +604,7 @@
                     </div>
                     <div class="date-inner">
                         <div style="flex: 1">
-                            <button class="button button5">تاریخ روز</button>
+                            <button class="button button5" onclick="onCurrentDateClick()">تاریخ روز</button>
                         </div>
                         <!--<div class="prev-week">
                             <label>هفته قبل</label>
@@ -1265,6 +1265,11 @@
     $('#yard').editableSelect();
     $('#phoneLine').editableSelect();
     $('#wc').editableSelect();
+
+    onCurrentDateClick = function () {
+        document.querySelector('#fromDate').value = StringUtils.convertMillisecondToShamsi((new Date()).getTime());
+        document.querySelector('#toDate').value = StringUtils.convertMillisecondToShamsi((new Date()).getTime());
+    };
 
     // Get the btnSubmit
     var btnSubmit = document.getElementById("btn-submit");

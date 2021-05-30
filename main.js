@@ -21,6 +21,8 @@ let userManagementWindow;
 let addHostNameWindow;
 let addFilingHostNameWindow;
 let filePrintWindow;
+let contactListWindow;
+let addContactWindow;
 let screenWidth = 0;
 let screenHeight = 0;
 let deviceId = undefined;
@@ -51,9 +53,13 @@ app.on('ready', function () {
     mainWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: false,
             width: 800,
             height: 600
         },
+    });
+    mainWindow.webContents.on('crashed', () => {
+        mainWindow.reload();
     });
     // Load html in window
     mainWindow.loadURL(url.format({
@@ -835,11 +841,15 @@ ipcMain.on('showError', function (e, errorMessage) {
 function createAddFileWindow() {
     addFileWindow = new BrowserWindow({
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
         },
         width: screenWidth,
         height: screenHeight,
         title: 'ثبت فایل'
+    });
+    addFileWindow.webContents.on('crashed', () => {
+        addFileWindow.reload();
     });
     addFileWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addFileWindow.html'),
@@ -856,11 +866,15 @@ function createAddFileWindow() {
 function createSearchFileWindow() {
     searchFileWindow = new BrowserWindow({
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
         },
         width: screenWidth,
         height: screenHeight,
         title: 'جستجو فایل'
+    });
+    searchFileWindow.webContents.on('crashed', () => {
+        searchFileWindow.reload();
     });
     searchFileWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'searchFileWindow.html'),
@@ -877,11 +891,15 @@ function createSearchFileWindow() {
 function createSearchFileTableWindow(responseData) {
     searchFileTableWindow = new BrowserWindow({
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
         },
         width: screenWidth,
         height: screenHeight,
         title: 'نمایش فایل ها'
+    });
+    searchFileTableWindow.webContents.on('crashed', () => {
+        searchFileTableWindow.reload();
     });
     searchFileTableWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'searchFileTableWindow.html'),
@@ -905,6 +923,9 @@ function createAddUserWindow() {
         height: screenHeight,
         title: 'ثبت کاربر'
     });
+    addUserWindow.webContents.on('crashed', () => {
+        addUserWindow.reload();
+    });
     addUserWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addUserWindow/addUserWindow.html'),
         protocol: 'file:',
@@ -926,6 +947,9 @@ function createContactListWindow() {
         width: 500,
         height: 400,
         title: 'لیست مخاطبین'
+    });
+    contactListWindow.webContents.on('crashed', () => {
+        contactListWindow.reload();
     });
     contactListWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'contactWindow.html'),
@@ -949,6 +973,9 @@ function createAddContactWindow() {
         height: 600,
         title: 'افزودن مخاطب'
     });
+    addContactWindow.webContents.on('crashed', () => {
+        addContactWindow.reload();
+    });
     addContactWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addContactWindow/addContactWindow.html'),
         protocol: 'file:',
@@ -970,6 +997,9 @@ function createSettingWindow() {
         width: 600,
         height: 500,
         title: 'تنظیمات'
+    });
+    settingWindow.webContents.on('crashed', () => {
+        settingWindow.reload();
     });
     settingWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'settingWindow.html'),
@@ -993,6 +1023,9 @@ function createUserManagementWindow() {
         height: screenHeight,
         title: 'لیست کاربران'
     });
+    userManagementWindow.webContents.on('crashed', () => {
+        userManagementWindow.reload();
+    });
     userManagementWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'userManagementWindow.html'),
         protocol: 'file:',
@@ -1012,8 +1045,11 @@ function createFilePrintWindow() {
             contextIsolation: false
         },
         width: 600,
-        height: 550,
+        height: 500,
         title: 'فایل'
+    });
+    filePrintWindow.webContents.on('crashed', () => {
+        filePrintWindow.reload();
     });
     filePrintWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'filePrintWindow.html'),
@@ -1037,6 +1073,9 @@ function createAddHostWindow() {
         height: 400,
         title: 'افزودن سرویس جدید'
     });
+    addHostNameWindow.webContents.on('crashed', () => {
+        addHostNameWindow.reload();
+    });
     addHostNameWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addHostNameWindow.html'),
         protocol: 'file:',
@@ -1058,6 +1097,9 @@ function createAddFilingHostNameWindow() {
         width: 500,
         height: 400,
         title: 'افزودن سرویس جدید'
+    });
+    addFilingHostNameWindow.webContents.on('crashed', () => {
+        addFilingHostNameWindow.reload();
     });
     addFilingHostNameWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addFilingHostNameWindow.html'),
