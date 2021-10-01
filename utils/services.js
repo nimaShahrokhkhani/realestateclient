@@ -30,7 +30,7 @@ function setAndResetSession(cookieList) {
 
 function loginFiling(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
-    return filingInstance.post(`/login`, {
+    return filingInstance.post(`/base/login`, {
         username: requestData.username,
         password: requestData.password,
     })
@@ -110,8 +110,8 @@ function getConfigs(requestData) {
 
 function getFilingConfigs(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
-    filingInstance.defaults.headers['Cookie'] = store.get('session');
-    return filingInstance.get(`/clientConfig/list`, requestData)
+    // filingInstance.defaults.headers['Cookie'] = store.get('session');
+    return filingInstance.get(`/base/clientConfig/list`, requestData)
 }
 
 function installDevice(requestData) {
@@ -139,14 +139,14 @@ function insertConfig(requestData) {
 
 function registerAgency(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
-    filingInstance.defaults.headers['Cookie'] = store.get('session');
-    return filingInstance.post(`/agency/registerAgency`, requestData)
+    // filingInstance.defaults.headers['Cookie'] = store.get('session');
+    return filingInstance.post(`/base/agency/registerAgency`, requestData)
 }
 
 function getFileFromFilling(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
-    filingInstance.defaults.headers['Cookie'] = store.get('session');
-    return filingInstance.post(`/clientFiles/getClientFileList`, requestData)
+    // filingInstance.defaults.headers['Cookie'] = store.get('session');
+    return filingInstance.post(`/base/clientFiles/getClientFileList`, requestData)
 }
 
 module.exports = {

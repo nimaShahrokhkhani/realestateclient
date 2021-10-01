@@ -29,6 +29,7 @@ let deviceId = undefined;
 let file = undefined;
 let user = undefined;
 let fileList = [];
+let fileValidationArray = [];
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -51,11 +52,12 @@ app.on('ready', function () {
     screenHeight = screen.getPrimaryDisplay().workAreaSize.height;
     // Create new window
     mainWindow = new BrowserWindow({
+        resizable: false,
+        width: 1024,
+        height: 768,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            width: 800,
-            height: 600
         },
     });
     mainWindow.webContents.on('crashed', () => {
@@ -72,7 +74,12 @@ app.on('ready', function () {
         app.quit();
     });
 
-    Menu.setApplicationMenu(Menu.buildFromTemplate(mainMenuTemplate));
+    // Build menu from template
+    const mainMenu = Menu.buildFromTemplate([]);
+    // Insert menu
+    Menu.setApplicationMenu(mainMenu);
+
+    //Menu.setApplicationMenu(Menu.buildFromTemplate(mainMenuTemplate));
 });
 
 // setRealStateName callback
@@ -106,6 +113,16 @@ ipcMain.on('setRealStateName', function (e, dataObject) {
         };
         new Notification(notification).show()
     });
+});
+
+// logout callback
+ipcMain.on('logout', function (e, requestBody) {
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'loginWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
 });
 
 // setUser callback
@@ -193,6 +210,32 @@ ipcMain.on('setFile', async function (e, requestArray) {
         new Notification(notification).show()
     }
 
+});
+
+// showFileValidationError callback
+ipcMain.on('showFileValidationError', async function (e, validationArray) {
+    fileValidationArray = validationArray;
+    fileValidationWindow = new BrowserWindow({
+        parent: addFileWindow,
+        modal: true,
+        width:300, height:400,
+        webPreferences: {
+            enableRemoteModule: true,
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
+    });
+    fileValidationWindow.loadFile('fileValidationModal.html');
+});
+
+// showFileValidationError callback
+ipcMain.on('closeFileValidationModal', async function (e) {
+    fileValidationWindow.close();
+});
+
+// getFileValidation callback
+ipcMain.on('getFileValidation', async function (e) {
+    fileValidationWindow.webContents.send('showFileValidation', fileValidationArray);
 });
 
 // registerDevice callback
@@ -375,7 +418,7 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
         services.loginFiling(loginDataObject).then((response) => {
             services.setAndResetSession(response.headers['set-cookie']);
             services.getConfigs().then((response) => {
-                if (response.data[0].realStateName) {
+                if (response.data && response.data[0] && response.data[0].realStateName) {
                     services.getDevices().then((response) => {
                         const Store = require('electron-store');
                         const store = new Store();
@@ -402,7 +445,7 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
                         slashes: true
                     }));
                 }
-            }).catch(() => {
+            }).catch((error) => {
                 mainWindow.webContents.send('hideLoading');
                 const notification = {
                     title: 'خطا',
@@ -410,6 +453,13 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
                 };
                 new Notification(notification).show()
             })
+        }).catch(error => {
+            mainWindow.webContents.send('hideLoading');
+            const notification = {
+                title: 'خطا',
+                body: 'خطا در ورود کاربر.'
+            };
+            new Notification(notification).show()
         })
     } else {
         services.login(loginDataObject).then((responseData) => {
@@ -511,7 +561,6 @@ ipcMain.on('listFile', function (e, requestBody) {
     const Store = require('electron-store');
     const store = new Store();
     store.set('fileSearchBody', requestBody);
-    searchFileWindow.close();
     createSearchFileTableWindow();
 
 });
@@ -538,6 +587,29 @@ ipcMain.on('getFileList', function (e, requestBody) {
         new Notification(notification).show()
     })
 
+});
+
+// showZonkanFiles callback
+ipcMain.on('showZonkanFiles', function (e, fileList, zoonkanName) {
+    let files = {};
+    files['data'] = fileList;
+    files['totalCount'] = fileList.length;
+
+    zonkanFileTableWindow = new BrowserWindow({
+        webPreferences: {
+            enableRemoteModule: true,
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+        width: screenWidth,
+        height: screenHeight,
+        title: 'نمایش فایل ها'
+    });
+    zonkanFileTableWindow.loadFile('zonkanFileTableWindow.html');
+
+    zonkanFileTableWindow.webContents.on("did-finish-load", function () {
+        zonkanFileTableWindow.webContents.send('getFileListFromMain', files, zoonkanName);
+    });
 });
 
 // getUserList callback
@@ -760,9 +832,23 @@ ipcMain.on('addToContactList', async function (e, contact) {
     var contactList = !_.isEmpty(store.get('contactList')) ? store.get('contactList') : [];
     contactList.push(contact);
     store.set('contactList', contactList);
-    addContactWindow.close();
     if (!_.isEmpty(contactListWindow)) {
         contactListWindow.reload();
+        const notification = {
+            body: 'اطلاعات با موفقیت ذخیره شد.'
+        };
+        new Notification(notification).show()
+    }
+});
+
+// contactDeleted callback
+ipcMain.on('contactDeleted', async function (e, contact) {
+    if (!_.isEmpty(contactListWindow)) {
+        contactListWindow.reload();
+        const notification = {
+            body: 'مخاطب پاک شد.'
+        };
+        new Notification(notification).show()
     }
 });
 
@@ -837,6 +923,44 @@ ipcMain.on('showError', function (e, errorMessage) {
     new Notification(notification).show()
 });
 
+// get print file callback
+ipcMain.on('zonkanFiles', async function (e, fileList) {
+    chooseZonkanWindow = new BrowserWindow({
+        parent: searchFileTableWindow,
+        modal: true,
+        width:300, height:200,
+        webPreferences: {
+            enableRemoteModule: true,
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
+    });
+    chooseZonkanWindow.loadFile('chooseZonkanWindow.html');
+
+    chooseZonkanWindow.webContents.on("did-finish-load", function () {
+        chooseZonkanWindow.webContents.send('sendZonkanFilesFromMain', fileList);
+    })
+});
+
+// get print file callback
+ipcMain.on('contactInfo', async function (e, contactInfo) {
+    contactInfoWindow = new BrowserWindow({
+        parent: contactListWindow,
+        modal: true,
+        width:800, height:200,
+        webPreferences: {
+            enableRemoteModule: true,
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
+    });
+    contactInfoWindow.loadFile('contactInfoWindow.html');
+
+    contactInfoWindow.webContents.on("did-finish-load", function () {
+        contactInfoWindow.webContents.send('sendContactInfoFromMain', contactInfo);
+    })
+});
+
 // create add file window
 function createAddFileWindow() {
     addFileWindow = new BrowserWindow({
@@ -844,8 +968,9 @@ function createAddFileWindow() {
             nodeIntegration: true,
             contextIsolation: false,
         },
-        width: screenWidth,
-        height: screenHeight,
+        resizable: false,
+        width: 1024,
+        height: 740,
         title: 'ثبت فایل'
     });
     addFileWindow.webContents.on('crashed', () => {
@@ -869,8 +994,9 @@ function createSearchFileWindow() {
             nodeIntegration: true,
             contextIsolation: false,
         },
-        width: screenWidth,
-        height: screenHeight,
+        resizable: false,
+        width: 1024,
+        height: 768,
         title: 'جستجو فایل'
     });
     searchFileWindow.webContents.on('crashed', () => {
@@ -888,7 +1014,7 @@ function createSearchFileWindow() {
 }
 
 // create search file table window
-function createSearchFileTableWindow(responseData) {
+function createSearchFileTableWindow() {
     searchFileTableWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true,
@@ -944,8 +1070,9 @@ function createContactListWindow() {
             nodeIntegration: true,
             contextIsolation: false
         },
-        width: 500,
-        height: 400,
+        resizable: false,
+        width: 1024,
+        height: 768,
         title: 'لیست مخاطبین'
     });
     contactListWindow.webContents.on('crashed', () => {
@@ -1012,6 +1139,33 @@ function createSettingWindow() {
     });
 }
 
+// create add user window
+function createZoncanWindow() {
+    zoncanWindow = new BrowserWindow({
+        webPreferences: {
+            enableRemoteModule: true,
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 800,
+        height: 600,
+        title: 'زونکن'
+    });
+    zoncanWindow.webContents.on('crashed', () => {
+        zoncanWindow.destroy();
+        createZoncanWindow();
+    });
+    zoncanWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'zonkanWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    zoncanWindow.on('close', function () {
+        zoncanWindow = null;
+    });
+}
+
 // create search user window
 function createUserManagementWindow() {
     userManagementWindow = new BrowserWindow({
@@ -1044,8 +1198,9 @@ function createFilePrintWindow() {
             nodeIntegration: true,
             contextIsolation: false
         },
+        resizable: false,
         width: 600,
-        height: 500,
+        height: 420,
         title: 'فایل'
     });
     filePrintWindow.webContents.on('crashed', () => {
@@ -1124,7 +1279,17 @@ ipcMain.on('searchFile', function (e) {
 
 //add user menu press
 ipcMain.on('addUser', function (e) {
-    createAddUserWindow();
+    const Store = require('electron-store');
+    const store = new Store();
+    if (store.get('userData').userRole === 'مدیر سیستم') {
+        createAddUserWindow();
+    } else {
+        const notification = {
+            title: 'خطا',
+            body: 'دسترسی وجود ندارد.'
+        };
+        new Notification(notification).show()
+    }
 });
 
 //add user menu press
@@ -1142,9 +1307,24 @@ ipcMain.on('setting', function (e) {
     createSettingWindow();
 });
 
+//zoncan menu press
+ipcMain.on('zoncan', function (e) {
+    createZoncanWindow();
+});
+
 //search user menu press
 ipcMain.on('searchUser', function (e) {
-    createUserManagementWindow();
+    const Store = require('electron-store');
+    const store = new Store();
+    if (store.get('userData').userRole === 'مدیر سیستم') {
+        createUserManagementWindow();
+    } else {
+        const notification = {
+            title: 'خطا',
+            body: 'دسترسی وجود ندارد.'
+        };
+        new Notification(notification).show()
+    }
 });
 
 //addService
@@ -1153,7 +1333,7 @@ ipcMain.on('addHostName', function (e) {
 });
 
 // Create menu template
-const mainMenuTemplate = [{
+/*const mainMenuTemplate = [{
     label: "Application",
     submenu: [
         { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
@@ -1194,4 +1374,4 @@ if (process.env.NODE_ENV !== 'production') {
             }
         ]
     });
-}
+}*/

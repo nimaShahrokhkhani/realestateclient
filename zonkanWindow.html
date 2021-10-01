@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <script src="libraries/jquery-1.12.4.js"></script>
+    <script src="libraries/jquery-ui.js"></script>
+    <script src="libraries/jquery-editable-select.min.js"></script>
+    <link href="libraries/jquery-editable-select.min.css"
+          rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <link rel="stylesheet" type="text/css" href="css/zonkan.css" />
+    <link rel="stylesheet" type="text/css" href="css/styleguide.css" />
+    <link rel="stylesheet" type="text/css" href="css/globals.css" />
+    <meta name="author" content="AnimaApp.com - Design to code, Automated." />
+    <style>
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobileFaNum-Bold;
+            src: url("./fonts/IRANSansMobileFaNum-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Bold.ttf") format('truetype');
+        }
+
+        body {
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            float: none;
+            font-size: 12px;
+            height: 100%;
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+            padding: 20px;
+        }
+
+        .container span {
+            margin-top: 10px;
+        }
+
+        .inner-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            float: none;
+            font-size: 12px;
+            width: 100vw;
+            height: auto;
+            list-style-type:none;
+            font-family: IRANSansMobileFaNum-Bold;
+            margin-right: 20px;
+            flex-wrap: wrap;
+        }
+
+        .group-div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .group-div img{
+            cursor: pointer;
+        }
+
+        .inner-container li {
+            color: #7d0000;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            border: 0;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .font-text-light {
+            font-family: IRANSans-Light;
+        }
+
+        .textInput {
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            width: -webkit-fill-available;
+            background-image: linear-gradient(
+                    89deg, #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+    </style>
+</head>
+<body style="margin: 0; background: #ffffff; height: 100%; overflow: hidden">
+<input type="hidden" id="anPageName" name="page" value="zonkan" />
+<div class="container-center-horizontal">
+    <div class="zonkan screen">
+        <div class="overlap-group1">
+            <div class="rectangle-180 border-1px-dove-gray"></div>
+            <div class="rectangle-152 border-1px-dove-gray"></div>
+            <div class="text-69 iransans-light-white-17px">زونکن فایل</div>
+            <div class="group-27">
+                <input class="rectangle-66 border-1px-navy-blue" id="name"/>
+                <div class="text-70 iransans-light-black-15px">: نام زونکن</div>
+            </div>
+            <img class="path-magnify" src="img/path---magnify@1x.png" onclick="onSearchZonkanClick()" style="cursor: pointer"/>
+        </div>
+        <div class="overlap-group border-1px-dove-gray">
+
+            <div id="inner-container" class="inner-container">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const _ = require('underscore');
+    const Store = require('electron-store');
+    const store = new Store();
+    const { remote } = require('electron');
+    let zonkanTitleList = [];
+
+    let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
+    if (!_.isEmpty(zonkanObject)) {
+        let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+        if (!_.isEmpty(currentUserZonkanObject)) {
+            zonkanTitleList = Object.keys(currentUserZonkanObject);
+            showZonkan(zonkanTitleList);
+        }
+    }
+
+    function onSearchZonkanClick() {
+        let name = !_.isEmpty(document.getElementById("name").value) ? document.getElementById("name").value: '';
+        let tempZonkanTitleList = [...zonkanTitleList];
+        tempZonkanTitleList = tempZonkanTitleList.filter(zonkan => zonkan .includes(name));
+        showZonkan(tempZonkanTitleList);
+    }
+
+    function showZonkan(zonkanTitleList) {
+        let innerContainer = document.getElementById('inner-container');
+        innerContainer.innerHTML = '';
+        for (let title of zonkanTitleList) {
+            let groupDiv = document.createElement('div');
+            let groupImage = document.createElement('img');
+            let deleteImage = document.createElement('img');
+            let grouptitle = document.createElement('label');
+
+            groupImage.src = "images/zonkan.png";
+            groupImage.width = 80;
+            groupImage.height = 80;
+
+            deleteImage.src = "img/path---minus-circle-outline@1x.png";
+            deleteImage.width = 20;
+            deleteImage.height = 20;
+            deleteImage.style = "align-self: flex-start";
+
+            grouptitle.innerHTML = title;
+
+            groupDiv.appendChild(deleteImage);
+            groupDiv.appendChild(groupImage);
+            groupDiv.appendChild(grouptitle);
+            groupDiv.className = 'group-div';
+            groupImage.id = title;
+            deleteImage.id = 'dl-' + title;
+            groupImage.addEventListener("click", function () {
+                let fileList = [];
+                let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
+                if (!_.isEmpty(zonkanObject)) {
+                    let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+                    if (!_.isEmpty(currentUserZonkanObject)) {
+                        fileList = currentUserZonkanObject[this.id];
+                    }
+                }
+
+
+                ipcRenderer.send('showZonkanFiles', fileList, this.id);
+            });
+            deleteImage.addEventListener("click", function () {
+                let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
+                if (!_.isEmpty(zonkanObject)) {
+                    let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+                    if (!_.isEmpty(currentUserZonkanObject)) {
+                        delete currentUserZonkanObject[this.id.split('dl-')[1]];
+                        store.set('zonkan', zonkanObject);
+                    }
+                }
+
+                remote.getCurrentWindow().reload();
+            });
+
+            innerContainer.appendChild(groupDiv);
+        }
+    }
+
+</script>
+</body>
+</html>

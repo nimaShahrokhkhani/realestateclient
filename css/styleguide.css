@@ -1,0 +1,116 @@
+:root {
+    --black: #000000;
+    --blizzard-blue: #a7eaef;
+    --chocolate: #3b0404;
+    --denim: #175fcd;
+    --dove-gray: #707070;
+    --havelock-blue: #4f89e1;
+    --licorice: #131212;
+    --navy-blue: #175fdc;
+    --perano: #9bbcee;
+    --red: #ff0404;
+    --red-devil: #880315;
+    --soapstone: #fffbfb;
+    --white: #ffffff;
+
+
+    --font-size-l: 15px;
+    --font-size-m: 13px;
+    --font-size-xl: 19px;
+    --font-size-xxl: 25px;
+
+
+    --font-family-iransans-light: "IRANSans-Light", Helvetica;
+    --font-family-segoeui-regular: "SegoeUI-Regular", Helvetica;
+    --font-family-segoeui-semibold: "SegoeUI-Semibold", Helvetica;
+
+}
+
+@font-face {
+    font-family: IRANSansMobileFaNum-Light;
+    src: url("../fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+    url("../fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+    url("../fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+}
+
+.iransans-light-black-13px {
+    display: flex;
+    align-items: center;
+    color: var(--black);
+    font-family: var(--font-family-iransans-light);
+    font-size: var(--font-size-m);
+    font-style: normal;
+    font-weight: 300;
+}
+
+.iransans-light-red-devil-13px {
+    color: var(--red-devil);
+    font-family: var(--font-family-iransans-light);
+    font-size: var(--font-size-m);
+    font-style: normal;
+    font-weight: 300;
+}
+
+.iransans-light-chocolate-13px {
+    color: var(--chocolate);
+    font-family: var(--font-family-iransans-light);
+    font-size: var(--font-size-m);
+    font-style: normal;
+    font-weight: 300;
+}
+
+.segoeui-regular-normal-black-19px {
+    color: var(--black);
+    font-family: var(--font-family-segoeui-regular);
+    font-size: var(--font-size-xl);
+    font-style: normal;
+    font-weight: 400;
+}
+
+.iransans-light-red-13px {
+    color: var(--red);
+    font-family: var(--font-family-iransans-light);
+    font-size: var(--font-size-m);
+    font-style: normal;
+    font-weight: 300;
+}
+
+.iransans-light-black-19px {
+    color: var(--black);
+    font-family: var(--font-family-iransans-light);
+    font-size: var(--font-size-xl);
+    font-style: normal;
+    font-weight: 300;
+}
+
+.segoeui-regular-normal-black-13px {
+    color: var(--black);
+    font-family: var(--font-family-segoeui-regular);
+    font-size: var(--font-size-m);
+    font-style: normal;
+    font-weight: 400;
+}
+
+.border-1px-navy-blue {
+    direction: rtl;
+    font-family: IRANSansMobileFaNum-Light;
+    border: 1px solid var(--navy-blue);
+}
+
+.border-1px-dove-gray {
+    margin: 0;
+    border: 1px solid var(--dove-gray);
+}
+
+.border-1px-denim {
+    margin: 0;
+    border: 1px solid var(--denim);
+}
+
+.border-2px-licorice {
+    border: 2px solid var(--licorice);
+}
+
+.border-1px-black {
+    border: 1px solid var(--black);
+}

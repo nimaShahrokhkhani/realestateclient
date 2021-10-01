@@ -1,76 +1,31 @@
+<!DOCTYPE html>
 <html>
-
 <head>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024, maximum-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <link rel="stylesheet" type="text/css" href="css/home-page.css" />
+    <link rel="stylesheet" type="text/css" href="css/styleguide.css" />
+    <link rel="stylesheet" type="text/css" href="css/globals.css" />
+    <meta name="author" content="AnimaApp.com - Design to code, Automated." />
     <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-
-        main {
-            flex: 1 0 auto;
-        }
-
-        body {
-            background: #fff;
-            font-family: IRANSansMobileFaNum-Light;
-        }
-
-        .input-field {
-            direction: rtl;
-        }
-
-        .input-field input[type=date]:focus + label,
-        .input-field input[type=text]:focus + label,
-        .input-field input[type=password]:focus + label {
-            color: #e91e63;
-        }
-
-        .input-field input[type=date]:focus,
-        .input-field input[type=text]:focus,
-        .input-field input[type=password]:focus {
-            border-bottom: 2px solid #e91e63;
-            box-shadow: none;
-        }
-
         @font-face {
-            font-family: IRANSans-Light;
-            src: url("./fonts/IRANSans-Light.eot") format('eot'),
-            url("./fonts/IRANSans-Light.woff") format('woff'),
-            url("./fonts/IRANSans-Light.ttf") format('truetype');
+            font-family: IRANSansMobileFaNum-Bold;
+            src: url("./fonts/IRANSansMobileFaNum-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Bold.ttf") format('truetype');
         }
 
-        @font-face {
-            font-family: IRANSansMobile-Bold;
-            src: url("./fonts/IRANSansMobile-Bold.eot") format('eot'),
-            url("./fonts/IRANSansMobile-Bold.woff") format('woff'),
-            url("./fonts/IRANSansMobile-Bold.ttf") format('truetype');
+        #username {
+            font-family: IRANSansMobileFaNum-Bold;
+            margin-left: 5px;
+            color: darkgreen;
         }
 
-        @font-face {
-            font-family: IRANSansMobileFaNum-Light;
-            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
-            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
-            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
-        }
-
-        .font-text-light {
-            font-family: IRANSans-Light;
-        }
-
-        .font-text-bold {
-            font-family: IRANSansMobile-Bold;
-        }
-
-        .placeholder {
-            direction: rtl;
-            text-align: right;
-            float: right;
-            width: 100%;
+        #welcome {
+            font-family: IRANSansMobileFaNum-Bold;
         }
 
         #loading {
@@ -92,153 +47,385 @@
             left: 300px;
             z-index: 100;
         }
-
-        .menu-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: IRANSans-Light;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .menu-item span {
-            margin-top: 10px;
-        }
-
-        .container {
-            background-image: url("./New-icon-png/Background.png");
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            justify-content: center;
-            flex: 1;
-            width: 100%;
-            padding: 20px;
-        }
-
-        .top-container {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            justify-content: center;
-            flex: 1;
-        }
-
-        .top-container div {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #miladi-date {
-            font-family: IRANSans-Light;
-            padding: 10px;
-        }
-
-        #shamsi-date {
-            font-family: IRANSansMobileFaNum-Light;
-            padding: 10px;
-        }
-
-        .calculatorContainer {
-            display: flex;
-            justify-content: flex-end;
-            padding-right: 50px;
-        }
-
-        #welcome {
-            font-family: IRANSansMobileFaNum-Light;
-        }
-
-        #username {
-            font-family: IRANSansMobile-Bold;
-            margin-left: 5px;
-            color: darkgreen;
-        }
-
-        row {
-            margin-bottom: 0 !important;
-        }
     </style>
 </head>
-
-<body>
+<body style="margin: 0; height: 100%; overflow: hidden">
 <script src="libraries/jalali-moment.browser.js"></script>
 <div id="loading">
     <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
 </div>
-<main class="container">
-    <div style="display: flex; flex-direction: column; flex: 0;  height: 500px">
-        <div style="flex: 1; margin-top: -30px">
-            <img src="New-icon-png/Gilanfile.png" width="180">
+
+
+<input type="hidden" id="anPageName" name="page" value="home-page" />
+<div class="container-center-horizontal">
+    <div class="home-page screen">
+        <div class="overlap-group11">
+            <div class="icon">
+                <img class="path-account-outline" src="img/path---wallet@1x.png" id="services"/><img
+                    class="path-cog-outline"
+                    src="img/path---cog-outline@1x.png"
+                    id="setting"
+            /><img class="path-power" src="img/path---power@1x.png" id="logout"/>
+            </div>
         </div>
-        <div style="display: flex; flex: 1; align-items: flex-end; justify-content: center; margin-bottom: -30px">
-            <img src="New-icon-png/insta2.png" width="40">
-            <img src="New-icon-png/whatsApp2.png" width="40">
-            <img src="New-icon-png/telegram2.png" width="40">
+        <div class="overlap-group10">
+            <div class="rectangle-121"></div>
+            <div class="mdi-file-search-outline" id="searchFile"></div>
+            <div class="text-1 iransans-light-black-19px">جستجو فایل</div>
+        </div>
+        <div class="overlap-group8">
+            <div class="rectangle-111"></div>
+            <img class="path-file-plus-outline" src="img/path---file-plus-outline@1x.png" id="addFile" />
+            <div class="text-2 iransans-light-black-19px">ثبت فایل</div>
+        </div>
+        <div class="overlap-group13">
+            <div class="rectangle-131"></div>
+            <img class="path-folder-outline" src="img/path---folder-outline@1x.png" id="zoncan"/>
+            <div class="text-3 iransans-light-black-19px">زونکن</div>
+        </div>
+        <div class="overlap-group15">
+            <div class="rectangle-124"></div>
+            <img class="path-cloud-download-outline" src="img/path---cloud-download-outline@1x.png" />
+            <div class="text-4 iransans-light-black-19px">دریافت فایل</div>
+        </div>
+        <div class="overlap-group5">
+            <div class="rectangle-127"></div>
+            <img class="path-message-re-ly-text-outline" src="img/path---message-reply-text-outline@1x.png" />
+            <div class="text-5 iransans-light-black-19px">پیغام ها</div>
+        </div>
+        <div class="overlap-group6">
+            <div class="rectangle-128"></div>
+            <img class="path-contacts-outline" src="img/path---contacts-outline@1x.png" id="contactList"/>
+            <div class="text-6 iransans-light-black-19px">دفترچه تلفن</div>
+        </div>
+        <div class="overlap-group7">
+            <div class="rectangle-123"></div>
+            <img class="path-account-plus-outline" src="img/path---account-plus-outline@1x.png" id="addUser"/>
+            <div class="text-7 iransans-light-black-19px">ثبت کاربر</div>
+        </div>
+        <div class="overlap-group9">
+            <div class="rectangle-126"></div>
+            <img class="path-account-search-outline" src="img/path---account-search-outline@1x.png" id="searchUser"/>
+            <div class="text-8 iransans-light-black-19px">جستجو کاربر</div>
+        </div>
+        <div class="overlap-group16">
+            <div class="rectangle-125"></div>
+            <img class="path-home-search-outline" src="img/path---home-search-outline@1x.png" id="searchAgency"/>
+            <div class="text-9 iransans-light-black-19px">جستجو آژانس</div>
+        </div>
+        <div class="overlap-group12">
+            <div class="rectangle-122"></div>
+            <img class="path-home-plus-outline" src="img/path---home-plus-outline@1x.png" id="addAgency"/>
+            <div class="text-10 iransans-light-black-19px">ثبت آژانس</div>
+        </div>
+        <div class="overlap-group14">
+            <h1 class="title">ADS</h1>
+            <div class="text-11 iransans-light-black-19px">آگهی</div>
+        </div>
+        <div class="overlap-group3">
+            <div class="rectangle-129"></div>
+            <img class="path-magnify" src="img/path---magnify@1x.png" />
+            <div class="ads">ADS</div>
+            <div class="text-12 iransans-light-black-19px">جستجو آگهی</div>
+        </div>
+        <div class="overlap-group-3">
+            <img class="path-54" src="img/path-54@1x.png" />
+            <div class="rectangle-119 border-2px-licorice"></div>
+            <div class="rectangle-120"></div>
+            <div class="rectangle-119-1 border-2px-licorice"></div>
+            <div class="rectangle-120-1 border-2px-licorice"></div>
+            <div class="rectangle-119-2 border-2px-licorice"></div>
+            <div class="rectangle-120-2 border-2px-licorice"></div>
+            <div class="rectangle-119-3"></div>
+            <div class="rectangle-120-3 border-2px-licorice"></div>
+            <img class="path-55" src="img/path-55@1x.png" /><img class="path-56" src="img/path-56@1x.png" /><img
+                class="line-2"
+                src="img/line-2@1x.png"
+        /><img class="line-3" src="img/line-3@1x.png" /><img class="line-4" src="img/line-39@1x.png" /><img
+                class="line-5"
+                src="img/line-5@1x.png"
+        /><img class="line-6" src="img/line-6@1x.png" /><img class="line-7" src="img/line-5@1x.png" /><img
+                class="line-8"
+                src="img/line-8@1x.png"
+        /><img class="line-9" src="img/line-9@1x.png" />
+            <div class="tree-001">
+                <div class="overlap-group">
+                    <div class="rectangle-135 border-1px-black"></div>
+                    <img class="line-21" src="img/line-21-1@1x.png" /><img class="line-22" src="img/line-22-1@1x.png" /><img
+                        class="line-23"
+                        src="img/line-23-2@1x.png"
+                />
+                </div>
+            </div>
+            <div class="tree-001-1">
+                <div class="overlap-group-1">
+                    <div class="rectangle-135-1 border-1px-black"></div>
+                    <img class="line-21-1" src="img/line-21-4@1x.png" /><img
+                        class="line-22-1"
+                        src="img/line-22-1@1x.png"
+                /><img class="line-23-1" src="img/line-23-2@1x.png" />
+                </div>
+            </div>
+            <img class="path-66" src="img/path-66@1x.png" /><img class="line-25" src="img/line-25-1@1x.png" />
+            <div class="rectangle-137 border-1px-dove-gray"></div>
+            <div class="rectangle-137-1 border-1px-dove-gray"></div>
+            <div class="rectangle-137-2 border-1px-dove-gray"></div>
+            <div class="bild006">
+                <div class="overlap-group19">
+                    <img class="line-28" src="img/line-28@1x.png" /><img class="line-29" src="img/line-29@1x.png" /><img
+                        class="line-30"
+                        src="img/line-29@1x.png"
+                /><img class="line-31" src="img/line-31@1x.png" /><img class="line-32" src="img/line-32@1x.png" /><img
+                        class="line-37"
+                        src="img/line-29@1x.png"
+                /><img class="line-33" src="img/line-33@1x.png" /><img class="line-34" src="img/line-34@1x.png" /><img
+                        class="line-36"
+                        src="img/line-34@1x.png"
+                /><img class="line-40" src="img/line-40@1x.png" /><img class="line-38" src="img/line-38@1x.png" /><img
+                        class="line-39"
+                        src="img/line-39@1x.png"
+                />
+                    <div class="rectangle-141 border-1px-black"></div>
+                </div>
+            </div>
+            <div class="sandali">
+                <img class="line-42" src="img/line-42-1@1x.png" /><img class="path-69" src="img/line-42-1@1x.png" /><img
+                    class="line-41"
+                    src="img/line-41-1@1x.png"
+            />
+                <div class="flex-row">
+                    <img class="line-43" src="img/line-43-1@1x.png" /><img class="line-44" src="img/line-43-1@1x.png" />
+                </div>
+            </div>
+            <div class="bild-008">
+                <div class="overlap-group20">
+                    <div class="rectangle-142 border-1px-black"></div>
+                    <div class="rectangle-143 border-1px-black"></div>
+                    <div class="rectangle-144 border-2px-licorice"></div>
+                    <div class="rectangle-144-1 border-2px-licorice"></div>
+                    <div class="rectangle-144-2 border-2px-licorice"></div>
+                    <div class="rectangle-144-3 border-2px-licorice"></div>
+                    <div class="rectangle-144-4 border-2px-licorice"></div>
+                    <div class="rectangle-144-5 border-2px-licorice"></div>
+                    <div class="rectangle-145 border-1px-dove-gray"></div>
+                    <div class="rectangle-146 border-1px-dove-gray"></div>
+                    <img class="line-45" src="img/line-45@1x.png" /><img class="line-46" src="img/line-45@1x.png" /><img
+                        class="line-47"
+                        src="img/line-45@1x.png"
+                />
+                </div>
+            </div>
+            <div class="bild007">
+                <div class="overlap-group21">
+                    <img class="path-59" src="img/path-59@1x.png" /><img class="path-67" src="img/path-67@1x.png" /><img
+                        class="line-26"
+                        src="img/line-26@1x.png"
+                />
+                    <div class="rectangle-138 border-1px-black"></div>
+                    <img class="line-27" src="img/line-27-1@1x.png" /><img class="line-27-1" src="img/line-27-1@1x.png" /><img
+                        class="path-68"
+                        src="img/line-27-3@1x.png"
+                /><img class="line-27-2" src="img/line-27-1@1x.png" /><img
+                        class="line-27-3"
+                        src="img/line-27-3@1x.png"
+                /><img class="line-27-4" src="img/line-27-1@1x.png" /><img
+                        class="line-27-5"
+                        src="img/line-27-3@1x.png"
+                /><img class="line-27-6" src="img/line-27-1@1x.png" />
+                </div>
+            </div>
+            <div class="sandali-1">
+                <img class="line-42" src="img/line-42-1@1x.png" /><img class="path-69" src="img/line-42-1@1x.png" /><img
+                    class="line-41"
+                    src="img/line-41-1@1x.png"
+            />
+                <div class="flex-row">
+                    <img class="line-43" src="img/line-43-1@1x.png" /><img class="line-44" src="img/line-43-1@1x.png" />
+                </div>
+            </div>
+            <div class="bild-004">
+                <div class="overlap-group22">
+                    <img class="path-66-1" src="img/path-66-1@1x.png" /><img class="line-25-1" src="img/line-25-1@1x.png" />
+                    <div class="rectangle-137-3 border-1px-dove-gray"></div>
+                    <div class="rectangle-137-4 border-1px-dove-gray"></div>
+                    <div class="rectangle-137-5 border-1px-dove-gray"></div>
+                </div>
+            </div>
+            <div class="cload">
+                <img class="path-70" src="img/path-70@1x.png" /><img class="path-71" src="img/path-71@1x.png" /><img
+                    class="path-74"
+                    src="img/path-74@1x.png"
+            /><img class="path-72" src="img/path-72@1x.png" /><img class="path-75" src="img/path-75@1x.png" /><img
+                    class="path-79"
+                    src="img/path-79@1x.png"
+            /><img class="path-76" src="img/path-71@1x.png" /><img class="path-77" src="img/path-77@1x.png" /><img
+                    class="path-78"
+                    src="img/path-78@1x.png"
+            />
+            </div>
+            <div class="news">
+                <div style="display: flex; align-items: center; flex: 1; justify-content: flex-end">
+                    <span id="welcome">خوش آمدید</span>
+                    <span id="username"></span>
+                </div>
+                <div class="rectangle-147"></div>
+                <div class="overlap-group23">
+                    <img class="line-51" src="img/line-51@1x.png" />
+                    <div class="rectangle-148 border-1px-dove-gray"></div>
+                    <div class="text-14 iransans-light-black-19px">اخبار</div>
+                </div>
+            </div>
+        </div>
+        <div class="overlap-group2-1">
+            <img class="path-61" src="img/path-61@1x.png" /><img class="path-63" src="img/path-63@1x.png" /><img
+                class="path-64"
+                src="img/path-64@1x.png"
+        />
+            <div class="rectangle-132"></div>
+            <img class="line-15" src="img/line-15-1@1x.png" /><img class="path-65" src="img/path-65-1@1x.png" /><img
+                class="path-65-1"
+                src="img/path-65-1@1x.png"
+        /><img class="line-15-1" src="img/line-15-1@1x.png" /><img class="line-15-2" src="img/line-15-1@1x.png" /><img
+                class="line-15-3"
+                src="img/line-15-1@1x.png"
+        />
+            <div class="rectangle-133 border-1px-dove-gray"></div>
+            <img class="line-20" src="img/line-20@1x.png" />
+        </div>
+        <div class="bild3">
+            <div class="overlap-group2">
+                <img class="line-16" src="img/line-16-1@1x.png" /><img class="line-17" src="img/line-17-1@1x.png" /><img
+                    class="line-19"
+                    src="img/line-19-1@1x.png"
+            /><img class="line-18" src="img/line-18-1@1x.png" />
+                <div class="rectangle-134 border-1px-black"></div>
+            </div>
+        </div>
+        <div class="tree-001-2">
+            <div class="overlap-group">
+                <div class="rectangle-135 border-1px-black"></div>
+                <img class="line-21" src="img/line-21-1@1x.png" /><img class="line-22" src="img/line-22-1@1x.png" /><img
+                    class="line-23"
+                    src="img/line-23-2@1x.png"
+            />
+            </div>
+        </div>
+        <div class="tree-001-3">
+            <div class="overlap-group26">
+                <div class="rectangle-135-2 border-1px-black"></div>
+                <img class="line-21" src="img/line-21-1@1x.png" /><img class="line-22-3" src="img/line-22-1@1x.png" /><img
+                    class="line-23"
+                    src="img/line-23-1@1x.png"
+            />
+            </div>
+        </div>
+        <div class="tree-001-4">
+            <div class="overlap-group-2">
+                <div class="ellipse-5"></div>
+                <img class="line-21-2" src="img/line-21-3@1x.png" /><img class="line-22-2" src="img/line-22-1@1x.png" /><img
+                    class="line-23-2"
+                    src="img/line-23-1@1x.png"
+            />
+            </div>
+        </div>
+        <div class="tree-001-5">
+            <div class="overlap-group-1">
+                <div class="rectangle-135-1 border-1px-black"></div>
+                <img class="line-21-1" src="img/line-21-4@1x.png" /><img class="line-22-1" src="img/line-22-1@1x.png" /><img
+                    class="line-23-1"
+                    src="img/line-23-2@1x.png"
+            />
+            </div>
+        </div>
+        <div class="overlap-group1">
+            <div class="gilanfile-l">
+                <div class="overlap-group17">
+                    <div class="rectangle-136 border-1px-black"></div>
+                    <div class="text-13 iransans-light-black-19px">گیلان فایل</div>
+                    <img class="line-24" src="img/line-24@1x.png" />
+                </div>
+            </div>
+            <div class="sandali-2">
+                <img class="line-42" src="img/line-42-1@1x.png" /><img class="path-69" src="img/line-42-1@1x.png" /><img
+                    class="line-41"
+                    src="img/line-41-1@1x.png"
+            />
+                <div class="flex-row">
+                    <img class="line-43" src="img/line-43-1@1x.png" /><img class="line-44" src="img/line-43-1@1x.png" />
+                </div>
+            </div>
+            <div class="tree-001-6">
+                <div class="overlap-group-2">
+                    <div class="ellipse-5"></div>
+                    <img class="line-21-2" src="img/line-21-3@1x.png" /><img
+                        class="line-22-2"
+                        src="img/line-22-1@1x.png"
+                /><img class="line-23-2" src="img/line-23-1@1x.png" />
+                </div>
+            </div>
+            <div class="line">
+                <img class="line-48" src="img/line-48@1x.png" /><img class="line-49" src="img/line-49@1x.png" /><img
+                    class="line-50"
+                    src="img/line-50@1x.png"
+            />
+            </div>
+        </div>
+        <div class="overlap-group4">
+            <div class="flex-row-1">
+                <div class="flex-col">
+                    <div class="rectangle-139-1"></div>
+                    <div class="rectangle-139 border-2px-licorice"></div>
+                </div>
+                <div class="flex-col-1">
+                    <div class="rectangle-139-2 border-2px-licorice"></div>
+                    <div class="rectangle-139 border-2px-licorice"></div>
+                </div>
+            </div>
+            <div class="rectangle-140 border-1px-black"></div>
+        </div>
+        <div class="bild3-1">
+            <div class="overlap-group2">
+                <img class="line-16" src="img/line-16-1@1x.png" /><img class="line-17" src="img/line-17-1@1x.png" /><img
+                    class="line-19"
+                    src="img/line-19-1@1x.png"
+            /><img class="line-18" src="img/line-18-1@1x.png" />
+                <div class="rectangle-134-1 border-1px-black"></div>
+            </div>
+        </div>
+        <div class="tree-001-7">
+            <div class="overlap-group">
+                <div class="rectangle-135 border-1px-black"></div>
+                <img class="line-21" src="img/line-21-1@1x.png" /><img class="line-22" src="img/line-22-1@1x.png" /><img
+                    class="line-23"
+                    src="img/line-23-1@1x.png"
+            />
+            </div>
         </div>
     </div>
-
-    <div style="flex: 1;">
-        <div style="display: flex; padding: 0px 55px 0 40px">
-            <div style="flex: 1">
-                <span id="shamsi-date"></span>
-            </div>
-            <div style="display: flex; align-items: center; flex: 1; justify-content: flex-end">
-                <span id="welcome">خوش آمدید</span>
-                <span id="username"></span>
-            </div>
-        </div>
-        <div style="display: block; padding: 20px 48px 0 48px">
-
-            <div class="row">
-                <div class="col s3">
-                    <img src="New-icon-png/Massaege.png" width="100">
-                </div>
-                <div class="col s3" style="margin-top: 3px">
-                    <img id="addUser" src="New-icon-png/Add-Users.png" width="100">
-                </div>
-                <div class="col s3" style="margin-top: 6px">
-                    <img id="setting" src="New-icon-png/Setting.png" width="100">
-                </div>
-                <div class="col s3">
-                    <img id="addFile" src="New-icon-png/Add-File.png" width="100">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col s3">
-                    <img id="contactList" src="New-icon-png/PhoneBook.png" width="100">
-                </div>
-                <div class="col s3">
-                    <img id="searchUser" src="New-icon-png/Search-Users.png" width="100">
-                </div>
-                <div class="col s3">
-                    <img id="zoncan" src="New-icon-png/Zoncan.png" width="100">
-                </div>
-                <div class="col s3">
-                    <img id="searchFile" src="New-icon-png/search-file.png" width="100">
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</main>
+</div>
 
 <script type="text/javascript" src="libraries/jquery.min.js"></script>
-<script type="text/javascript"
-        src="libraries/materialize.min.js"></script>
 
 <script>
     const electron = require('electron');
     const {ipcRenderer} = electron;
     const Store = require('electron-store');
     const store = new Store();
+    const { remote } = require('electron');
+    const { Menu } = remote;
+
+    const markdownContextMenu = Menu.buildFromTemplate([
+        { type: 'separator' },
+        { label: 'Cut', role: 'cut' },
+        { label: 'Copy', role: 'copy' },
+        { label: 'Paste', role: 'paste' },
+        { label: 'Select All', role: 'selectall' },
+    ]);
+
+    document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        markdownContextMenu.popup();
+    });
 
     document.querySelector('#username').innerText = store.get('userData').name;
 
@@ -248,7 +435,7 @@
     var miladi_day = miladi_days[(new Date()).getDay()];
     var shamsi_day = shamsi_days[(new Date()).getDay()];
 
-    document.querySelector('#shamsi-date').innerText = moment(new Date(), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD') + ' ' + shamsi_day;
+    // document.querySelector('#shamsi-date').innerText = moment(new Date(), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD') + ' ' + shamsi_day;
     // document.querySelector('#miladi-date').innerText = moment(new Date()).format('YYYY/MM/DD') + ' ' + miladi_day;
 
     document.querySelector('#addFile').addEventListener("click", function () {
@@ -275,6 +462,14 @@
         ipcRenderer.send('contactList');
     });
 
+    document.querySelector('#zoncan').addEventListener("click", function () {
+        ipcRenderer.send('zoncan');
+    });
+
+    document.querySelector('#logout').addEventListener("click", function () {
+        ipcRenderer.send('logout');
+    });
+
     ipcRenderer.on('showLoading', function () {
         var loading = document.getElementById("loading");
         loading.style.display = "block";
@@ -286,6 +481,6 @@
         loading.style.display = "none";
     });
 </script>
-</body>
 
+</body>
 </html>

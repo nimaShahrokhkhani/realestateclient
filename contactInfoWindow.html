@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <script src="libraries/jquery-1.12.4.js"></script>
+    <script src="libraries/jquery-ui.js"></script>
+    <script src="libraries/jquery-editable-select.min.js"></script>
+    <link href="libraries/jquery-editable-select.min.css"
+          rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobileFaNum-Bold;
+            src: url("./fonts/IRANSansMobileFaNum-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Bold.ttf") format('truetype');
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            float: none;
+            font-size: 12px;
+            background-color: #007bff;
+            height: 100%;
+            /*height: 500px;*/
+            /*width: 300px;*/
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .container span {
+            margin-top: 10px;
+        }
+
+        .inner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            float: none;
+            font-size: 12px;
+            height: 100%;
+            background-color: #00bfa5;
+            width: 220px;
+            list-style-type: none;
+            font-family: IRANSansMobileFaNum-Bold;
+        }
+
+        .inner-container li {
+            color: #7d0000;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            border: 0;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        canvas{
+
+            width:800px !important;
+            height:400px !important;
+
+        }
+
+        #contacts {
+            border-collapse: collapse;
+            width: 100%;
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        #contacts td, #contacts th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        #contacts tr:nth-child(even){background-color: #f2f2f2;}
+
+        #contacts tr:hover {background-color: #ddd;}
+
+        #contacts th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            background: linear-gradient(180deg, rgba(35, 17, 214, 0.88) 0%, #64d4f2 100%);
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+        <table id="contacts">
+            <tr>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>شرکت</th>
+                <th>شماره تلفن</th>
+                <th>تلفن شرکت</th>
+                <th>موبایل</th>
+                <th>ایمیل</th>
+                <th>وبسایت</th>
+            </tr>
+        </table>
+    <div style="display: flex; height: 100%; align-items: flex-end">
+        <button id="btn-submit" class="btn-submit" style="margin-left: 10px; background-color: #ff4038">حذف</button>
+        <button id="btn-cancel" class="btn-submit">انصراف</button>
+    </div>
+</div>
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const _ = require('underscore');
+    const Store = require('electron-store');
+    const store = new Store();
+    const {remote} = require('electron');
+    var contactList = !_.isEmpty(store.get('contactList')) ? store.get('contactList') : [];
+    let contactInfo = undefined;
+    var showContactTitle = [
+        {key: 'name', value: 'نام'},
+        {key: 'lastname', value: 'نام خانوادگی'},
+        {key: 'company', value: 'شرکت'},
+        {key: 'telephone', value: 'شماره تلفن'},
+        {key: 'companyTelephone', value: 'تلفن شرکت'},
+        {key: 'mobileNumber', value: 'موبایل'},
+        {key: 'email', value: 'ایمیل'},
+        {key: 'website', value: 'وبسایت'}
+    ];
+
+    ipcRenderer.on('sendContactInfoFromMain', function (event, contact) {
+        contactInfo = contact;
+
+        var tableContent = document.getElementById("contacts");
+
+        var rowContainer = document.createElement("TR");
+        for (var j = 0, k = showContactTitle.length; j < k; j++) {
+            var columnContainer = document.createElement("TD");
+            columnContainer.innerHTML = contactInfo[showContactTitle[j].key];
+            rowContainer.appendChild(columnContainer);
+        }
+        tableContent.appendChild(rowContainer);
+
+    });
+
+    var btnSubmit = document.getElementById("btn-submit");
+    btnSubmit.addEventListener("click", function () {
+        let filterContactList = contactList.filter(contact => (contact.name !== contactInfo.name) ||
+            (contact.lastname !== contactInfo.lastname) ||
+            (contact.company !== contactInfo.company) ||
+            (contact.telephone !== contactInfo.telephone) ||
+            (contact.companyTelephone !== contactInfo.companyTelephone) ||
+            (contact.mobileNumber !== contactInfo.mobileNumber) ||
+            (contact.email !== contactInfo.email) ||
+            (contact.website !== contactInfo.website));
+        store.set('contactList', filterContactList);
+        ipcRenderer.send('contactDeleted');
+        remote.getCurrentWindow().close();
+    });
+
+    var btnCancel = document.getElementById("btn-cancel");
+    btnCancel.addEventListener("click", function () {
+        remote.getCurrentWindow().close();
+    });
+
+</script>
+</body>
+</html>

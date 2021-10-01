@@ -8,8 +8,7 @@
         if (typeof module === 'object') {window.module = module; module = undefined;}
     </script>
 
-
-    <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery.steps.js"></script>
     <script src="js/main.js"></script>
 
@@ -76,7 +75,7 @@
 											<select name="userType" id="userType" style="border: 0; background: none">
 												<option value="مدیر سیستم" disabled selected>مدیر سیستم</option>
 												<option value="اپراتور">اپراتور</option>
-												<option value="مشاور">مشاور</option>
+												<option value="کارشناس">کارشناس</option>
 											</select>
 										</fieldset>
 									</div>
@@ -217,70 +216,72 @@
 										</div>
 									</div>
 								</div>
-								<!--<div class="group-input-container">-->
-									<!--<div class="input-container">-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">فروش</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">اجاره</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">رهن</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">مشارکت</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">معاوضه</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-									<!--</div>-->
-								<!--</div>-->
-								<!--<div class="group-input-container">-->
-									<!--<div class="input-container">-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">آپارتمان</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">ویلا</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">مستغلات</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">دفترکار</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-									<!--</div>-->
-								<!--</div>-->
-								<!--<div class="group-input-container">-->
-									<!--<div class="input-container">-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">سوییت</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">خانه</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">مغازه</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-										<!--<div class="checkbox-item">-->
-											<!--<label class="active font-text-light placeholder" style="margin-right: 10px">کلنگی</label>-->
-											<!--<input type="checkbox" class="radio" value="1" name="saleType[1][]"/>-->
-										<!--</div>-->
-									<!--</div>-->
-								<!--</div>-->
+								<hr/>
+								<div class="group-input-container">
+									<div class="input-container">
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px; color: #9a184c">فروش</label>
+											<input type="checkbox" class="radio" value="1" id="sale" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px; color: #005dbf">اجاره</label>
+											<input type="checkbox" class="radio" value="1" id="rent" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px; color: #0c5460">رهن</label>
+											<input type="checkbox" class="radio" value="1" id="mortgage" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px; color: #3e2723">مشارکت</label>
+											<input type="checkbox" class="radio" value="1" id="partnership" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px; color: #493291">معاوضه</label>
+											<input type="checkbox" class="radio" value="1" id="exchange" checked/>
+										</div>
+									</div>
+								</div>
+								<hr/>
+								<div class="group-input-container">
+									<div class="input-container">
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">آپارتمان</label>
+											<input type="checkbox" class="radio" value="1" id="apartment" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">ویلا</label>
+											<input type="checkbox" class="radio" value="1" id="villa" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">مستغلات</label>
+											<input type="checkbox" class="radio" value="1" id="mostaghelat" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">دفترکار</label>
+											<input type="checkbox" class="radio" value="1" id="daftarKar" checked/>
+										</div>
+									</div>
+								</div>
+								<div class="group-input-container">
+									<div class="input-container">
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">سوییت</label>
+											<input type="checkbox" class="radio" value="1" id="suit" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">زمین</label>
+											<input type="checkbox" class="radio" value="1" id="land" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">مغازه</label>
+											<input type="checkbox" class="radio" value="1" id="store" checked/>
+										</div>
+										<div class="checkbox-item">
+											<label class="active font-text-light placeholder" style="margin-right: 10px">کلنگی</label>
+											<input type="checkbox" class="radio" value="1" id="kolangi" checked/>
+										</div>
+									</div>
+								</div>
 							</div>
 			            </section>
 		        	</div>

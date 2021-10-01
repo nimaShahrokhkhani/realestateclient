@@ -24,8 +24,12 @@
             url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
         }
 
+        body {
+            margin: 0;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
         table {
-            font-family: IRANSans-Light;
             border-collapse: collapse;
             width: 100%;
             direction: rtl;
@@ -57,6 +61,23 @@
             z-index: 99;
             text-align: center;
         }
+
+        #tableContent {
+            margin-bottom: 50px;
+        }
+
+        .btn-submit {
+            margin-right: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            background-image: linear-gradient(rgb(45 47 146), white);
+            border: 0;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobile-Bold;
+        }
     </style>
 </head>
 </head>
@@ -68,7 +89,11 @@
     <tr id="title">
     </tr>
 </table>
+<div style="display: flex; justify-content: flex-end; position: fixed; bottom: 0; height: 50px; width: 100%; background-color: #007bff">
+    <button id="btn-zonkan" class="btn-submit">زونکن</button>
+</div>
 <script>
+    const _ = require('underscore');
     const StringUtils = require('./utils/StringUtils');
     const electron = require('electron');
     const {ipcRenderer} = electron;
@@ -76,6 +101,35 @@
     const store = new Store();
     var totalFilesCount = 0;
     var fileList = [];
+    const {remote} = require('electron');
+    const {Menu} = remote;
+    let isRendering = false;
+    let selectList = [];
+    let isAllSelected = false;
+
+    const markdownContextMenu = Menu.buildFromTemplate([
+        {type: 'separator'},
+        {label: 'Cut', role: 'cut'},
+        {label: 'Copy', role: 'copy'},
+        {label: 'Paste', role: 'paste'},
+        {label: 'Select All', role: 'selectall'},
+    ]);
+
+    document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        markdownContextMenu.popup();
+    });
+
+    var btnZonkan = document.getElementById("btn-zonkan");
+    btnZonkan.addEventListener("click", function () {
+        if (!_.isEmpty(selectList)) {
+            let selectedFiles = [];
+            for (let i in selectList) {
+                selectedFiles.push(fileList.filter(file => file.Id === selectList[i])[0]);
+            }
+            ipcRenderer.send('zonkanFiles', selectedFiles);
+        }
+    });
 
     ipcRenderer.on('showLoading', function () {
         var loading = document.getElementById("loading");
@@ -91,9 +145,8 @@
 
     ipcRenderer.on('getFileListFromMain', function (event, files) {
         totalFilesCount = files.totalCount;
-        fileList.push(...files.data);
-
         var showFilesTitle = [
+            {key: 'select', value: 'انتخاب'},
             {key: 'Id', value: 'کد'},
             {key: 'date', value: 'تاریخ'},
             {key: 'owner', value: 'مالک'},
@@ -107,47 +160,108 @@
             {key: 'age', value: 'سن'},
             {key: 'address', value: 'آدرس'}
         ];
-
-        if (store.get('showFilesTitle') !== undefined && store.get('showFilesTitle') !== null) {
-            showFilesTitle = store.get('showFilesTitle');
-        }
         var tableContent = document.getElementById("tableContent");
-        var titleList = document.getElementById("title");
-        for (var i = 0, n = showFilesTitle.length; i < n; i++) {
-            var titleField = document.createElement("TH");
-            titleField.innerHTML = showFilesTitle[i].value;
-            titleList.appendChild(titleField);
+
+        if (_.isEmpty(fileList)) {
+            if (store.get('showFilesTitle') !== undefined && store.get('showFilesTitle') !== null) {
+                showFilesTitle = store.get('showFilesTitle');
+                showFilesTitle.unshift({key: 'select', value: 'انتخاب'});
+            }
+            var titleList = document.getElementById("title");
+            for (var i = 0, n = showFilesTitle.length; i < n; i++) {
+                var titleField = document.createElement("TH");
+                titleField.innerHTML = showFilesTitle[i].value;
+                if (showFilesTitle[i].key === 'select') {
+                    titleField.style.cursor = 'pointer';
+                    titleField.onclick = function () {
+                        isAllSelected = !isAllSelected;
+                        for (var i = 0, n = files.data.length; i < n; i++) {
+                            var select = document.getElementById('checkbox_' + files.data[i].Id);
+                            select.checked = isAllSelected;
+                            isAllSelected && selectList.push(files.data[i].Id);
+                        }
+                    }
+                }
+                titleList.appendChild(titleField);
+            }
         }
-        for (var i = 0, n = fileList.length; i < n; i++) {
+
+        fileList.push(...files.data);
+        for (var i = 0, n = files.data.length; i < n; i++) {
             var rowContainer = document.createElement("TR");
             for (var j = 0, k = showFilesTitle.length; j < k; j++) {
                 var columnContainer = document.createElement("TD");
-                if (showFilesTitle[j].key.includes("/")) {
-                    columnContainer.innerHTML = fileList[i][showFilesTitle[j].key.split("/")[0]] ? fileList[i][showFilesTitle[j].key.split("/")[0]] : fileList[i][showFilesTitle[j].key.split("/")[1]];
+                if (showFilesTitle[j].key === 'select') {
+                    var selectInput = document.createElement("INPUT");
+                    selectInput.type = 'checkbox';
+                    selectInput.id = 'checkbox_' + files.data[i].Id;
+                    selectInput.name = files.data[i].Id;
+                    selectInput.onclick = function (event) {
+                        if (this.checked) {
+                            selectList.push(this.name)
+                        } else {
+                            selectList = selectList.filter(item => item !== this.name);
+                        }
+                        event.stopPropagation();
+                    };
+                    columnContainer.appendChild(selectInput);
+                } else if (showFilesTitle[j].key.includes("/")) {
+                    columnContainer.innerHTML = files.data[i][showFilesTitle[j].key.split("/")[0]] ? files.data[i][showFilesTitle[j].key.split("/")[0]] : files.data[i][showFilesTitle[j].key.split("/")[1]];
                 } else if (showFilesTitle[j].key.includes("date")) {
-                    columnContainer.innerHTML = StringUtils.convertMillisecondToShamsi(fileList[i][showFilesTitle[j].key]);
+                    columnContainer.innerHTML = StringUtils.convertMillisecondToShamsi(files.data[i][showFilesTitle[j].key]);
+                } else if (showFilesTitle[j].key === 'type') {
+                    columnContainer.innerHTML = getFileType(files.data[i])
                 } else {
-                    columnContainer.innerHTML = fileList[i][showFilesTitle[j].key];
+                    columnContainer.innerHTML = files.data[i][showFilesTitle[j].key];
                 }
                 rowContainer.appendChild(columnContainer);
             }
-            rowContainer.id = fileList[i].Id;
+            rowContainer.id = files.data[i].Id;
             rowContainer.onclick = function () {
                 ipcRenderer.send('getFileForEditing', this.id);
             };
             tableContent.appendChild(rowContainer);
         }
+        isRendering = false;
     });
 
-    window.onscroll = function() {myFunction()};
+    function getFileType(file) {
+        var noeMelkValue = "";
+        if (file.apartment) {
+            noeMelkValue += "آپارتمان "
+        }
+        if (file.vila) {
+            noeMelkValue += "ویلا "
+        }
+        if (file.land) {
+            noeMelkValue += "زمین "
+        }
+        if (file.building) {
+            noeMelkValue += "مستغلات "
+        }
+        if (file.oldHouse) {
+            noeMelkValue += "کلنگی "
+        }
+        if (file.office) {
+            noeMelkValue += "دفتر کار "
+        }
+        if (file.store) {
+            noeMelkValue += "مغازه "
+        }
+        if (file.suit) {
+            noeMelkValue += "سوییت "
+        }
+        return noeMelkValue;
+    }
 
-    function myFunction() {
-        if (document.body.offsetHeight + document.body.scrollTop >= document.body.scrollHeight) {
+    window.onscroll = function (ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !isRendering) {
             if (totalFilesCount > fileList.length) {
-                ipcRenderer.send('getFileList', {offset: fileList.length - 1, length: fileList.length + 50});
+                isRendering = true;
+                ipcRenderer.send('getFileList', {offset: fileList.length, length: fileList.length + 50});
             }
         }
-    }
+    };
 
 </script>
 </body>

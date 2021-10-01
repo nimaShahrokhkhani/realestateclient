@@ -1,0 +1,131 @@
+/* screen - zonkan */
+
+.zonkan {
+  align-items: flex-end;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  padding: 3px 3.0px;
+  width: 800px;
+}
+
+.zonkan .overlap-group1 {
+  height: 119px;
+  margin-right: 4.0px;
+  position: relative;
+  width: 790px;
+}
+
+.zonkan .rectangle-180 {
+  background-color: var(--white);
+  border-radius: 5px;
+  height: 114px;
+  left: 4px;
+  opacity: 0.5;
+  position: absolute;
+  top: 5px;
+  width: 786px;
+}
+
+.zonkan .rectangle-152 {
+  background: linear-gradient(180deg, rgba(35, 17, 214, 0.88) 0%, #64d4f2 100%);
+  border-radius: 5px;
+  box-shadow: 0px 3px 6px #00000029;
+  height: 32px;
+  left: 12px;
+  position: absolute;
+  top: 13px;
+  width: 771px;
+}
+
+.zonkan .text-69 {
+  cursor: pointer;
+  left: 360px;
+  letter-spacing: 0;
+  line-height: 14px;
+  position: absolute;
+  text-align: right;
+  top: 17px;
+  white-space: nowrap;
+}
+
+.zonkan .group-27 {
+  align-items: flex-end;
+  display: flex;
+  height: 28px;
+  left: 233px;
+  min-width: 391px;
+  position: absolute;
+  top: 68px;
+}
+
+.zonkan .rectangle-66 {
+  background-color: var(--white);
+  border-radius: 5px;
+  box-shadow: 0px 3px 6px #00000029;
+  height: 28px;
+  width: 314px;
+}
+
+.zonkan .text-70 {
+  cursor: pointer;
+  letter-spacing: 0;
+  line-height: 14px;
+  margin-bottom: -2.01px;
+  margin-left: 10px;
+  min-height: 26px;
+  min-width: 67px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.zonkan .path-magnify {
+  height: 26px;
+  left: 190px;
+  object-fit: cover;
+  position: absolute;
+  top: 69px;
+  width: 26px;
+}
+
+.zonkan .overlap-group {
+  background: linear-gradient(180deg, #eff9f9 61.21%, #ffffff 100%);
+  border-radius: 5px;
+  height: 466px;
+  margin-right: 4.0px;
+  margin-top: 5px;
+  position: relative;
+  width: 786px;
+  direction: rtl;
+}
+
+.zonkan .path-folder-outline {
+  height: 42px;
+  left: 699px;
+  object-fit: cover;
+  position: absolute;
+  top: 48px;
+  width: 45px;
+}
+
+.zonkan .mdi-minus-circle-outline {
+  align-items: center;
+  background-image: url(../img/boundary@1x.png);
+  background-position: 50% 50%;
+  background-size: cover;
+  display: flex;
+  height: 22px;
+  left: 722px;
+  min-width: 22px;
+  opacity: 0.6;
+  padding: 0 2px;
+  position: absolute;
+  top: 26px;
+}
+
+.zonkan .path-minus-circle-outline {
+  height: 18px;
+  object-fit: cover;
+  width: 18px;
+}

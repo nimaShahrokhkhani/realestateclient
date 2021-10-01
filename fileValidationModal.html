@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobileFaNum-Bold;
+            src: url("./fonts/IRANSansMobileFaNum-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Bold.ttf") format('truetype');
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            float: none;
+            font-size: 12px;
+            background-color: #007bff;
+            height: 100%;
+            /*height: 500px;*/
+            /*width: 300px;*/
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .container span {
+            margin-top: 10px;
+        }
+
+        .inner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            float: none;
+            font-size: 12px;
+            height: 100%;
+            /*margin-left: 10px;*/
+            /*margin-right: 10px;*/
+            background-color: #00bfa5;
+            /*height: 500px;*/
+            width: 220px;
+            list-style-type:none;
+            font-family: IRANSansMobileFaNum-Bold;
+        }
+
+        .inner-container li {
+            color: #7d0000;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            border: 0;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <span>موارد الزامی وارد نشده است.</span>
+    <ul id="fileValidationList" class="inner-container">
+
+    </ul>
+    <button id="btn-submit" class="btn-submit">اصلاح</button>
+</div>
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const _ = require('underscore');
+
+    ipcRenderer.send('getFileValidation');
+
+    ipcRenderer.on('showFileValidation', function (event, fileValidationArray) {
+        let fileValidationList = document.getElementById("fileValidationList");
+        for (let fileValidation of fileValidationArray) {
+            let fileValidationLi = document.createElement('li');
+            fileValidationLi.innerHTML = fileValidation;
+            fileValidationList.appendChild(fileValidationLi);
+        }
+    });
+
+    var btnSubmit = document.getElementById("btn-submit");
+    btnSubmit.addEventListener("click", function () {
+        ipcRenderer.send('closeFileValidationModal');
+    })
+
+</script>
+</body>
+</html>

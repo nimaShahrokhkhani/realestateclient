@@ -1,9 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>سرویس ها</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024, maximum-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
+    <meta name="og:type" content="website" />
+    <meta name="twitter:card" content="photo" />
+    <link rel="stylesheet" type="text/css" href="css/phonebook.css" />
+    <link rel="stylesheet" type="text/css" href="css/styleguide.css" />
+    <link rel="stylesheet" type="text/css" href="css/globals.css" />
+    <meta name="author" content="AnimaApp.com - Design to code, Automated." />
     <style>
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
         canvas{
 
             width:800px !important;
@@ -18,10 +36,10 @@
         }
 
         #contacts {
-            font-family: Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             width: 100%;
             direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
         }
 
         #contacts td, #contacts th {
@@ -37,9 +55,10 @@
         #contacts th {
             padding-top: 12px;
             padding-bottom: 12px;
-            background-color: #4CAF50;
+            background: linear-gradient(180deg, rgba(35, 17, 214, 0.88) 0%, #64d4f2 100%);
             color: white;
             text-align: center;
+            border-radius: 5px;
         }
 
         #loading {
@@ -71,22 +90,75 @@
         }
     </style>
 </head>
-<body>
-<div class="chart-container">
-    <div style="display: flex; align-items: center; width: 100%">
-        <input id="searchButton" type="image" src="images/search-contact.png" style="width: 20px; height: 20px"
-               onclick="onSearchContactClick()"/>
-        <input type="text" class="textInput" id="search-contact">
-        <input id="addTableButton" type="image" src="images/plus.png" style="width: 20px; height: 20px"
-               onclick="onAddTableClick()"/>
+<body style="margin: 0; background: #f7f7f7; font-family: IRANSansMobileFaNum-Light">
+<input type="hidden" id="anPageName" name="page" value="phonebook" />
+<div class="container-center-horizontal">
+    <div class="phonebook screen">
+        <div class="overlap-group-1">
+            <div class="icon">
+                <div class="overlap-group1">
+                    <img class="path-51" src="img/path-51@1x.png" />
+                    <div class="mdi-file-restore">
+                        <img class="path-file-restore" src="img/path---file-restore-1@1x.png" style="cursor: pointer" onclick="onRestoreContactClick()"/>
+                    </div>
+                    <div class="mdi-file-search"><img class="path-file-search" src="img/path---file-search@1x.png" style="cursor: pointer" onclick="onSearchContactClick()"/></div>
+                </div>
+            </div>
+            <img class="path-file-plus" src="img/path---file-plus@1x.png" style="cursor: pointer" onclick="addContact()"/>
+        </div>
+        <div class="jostojo">
+            <div class="overlap-group">
+                <div class="rectangle-64 border-1px-dove-gray"></div>
+                <div class="rectangle-51 border-1px-navy-blue">
+                    <table id="contacts">
+                        <tr>
+                            <th>نام</th>
+                            <th>شماره تلفن</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="rectangle border-1px-dove-gray"></div>
+                <div class="text-115 iransans-light-white-17px">جستجو مخاطب</div>
+                <input class="rectangle-9 border-1px-navy-blue" id="nameSearch"/>
+                <input class="rectangle-9-1 border-1px-navy-blue" id="lastnameSearch"/>
+                <input class="rectangle-9-2 border-1px-navy-blue" id="companySearch"/>
+                <div class="text-116 iransans-light-black-13px">: نام</div>
+                <div class="text-117 iransans-light-black-13px">: نام خانوادگی</div>
+                <div class="text-118 iransans-light-black-13px">: نام شرکت</div>
+            </div>
+        </div>
+        <div class="sabt">
+            <div class="overlap-group">
+                <div class="rectangle-65 border-1px-dove-gray"></div>
+                <div class="rectangle border-1px-dove-gray"></div>
+                <div class="text-119 iransans-light-white-17px">ثبت اطلاعات مخاطب</div>
+                <div class="group-11">
+                    <input class="rectangle-6 border-1px-navy-blue" id="name"/>
+                    <input class="rectangle-6-1 border-1px-navy-blue" id="lastname"/>
+                    <input class="rectangle-6-1 border-1px-navy-blue" id="company"/>
+                </div>
+                <div class="group-12">
+                    <input class="rectangle-6 border-1px-navy-blue" id="telephone"/>
+                    <input class="rectangle-6-1 border-1px-navy-blue" id="companyTelephone"/>
+                    <input class="rectangle-6-1 border-1px-navy-blue" id="mobileNumber"/>
+                </div>
+                <div class="group-13">
+                    <input class="rectangle-6 border-1px-navy-blue" id="email"/>
+                    <input class="rectangle-6-1 border-1px-navy-blue" id="website"/>
+                </div>
+                <input class="rectangle-66 border-1px-navy-blue" id="fax"/>
+                <div class="text-120 iransans-light-black-15px">: نام</div>
+                <div class="text-121 iransans-light-black-15px">: نام خانوادگی</div>
+                <div class="text-122 iransans-light-black-15px">: نام شرکت</div>
+                <div class="text-123 iransans-light-black-15px">: تلفن</div>
+                <div class="text-124 iransans-light-black-15px">: تلفن شرکت</div>
+                <div class="text-125 iransans-light-black-15px">: فکس</div>
+                <div class="text-126 iransans-light-black-15px">: ایمیل</div>
+                <div class="text-127 iransans-light-black-15px">:وب سایت</div>
+                <div class="text-128 iransans-light-black-15px">: موبایل</div>
+            </div>
+        </div>
     </div>
-
-    <table id="contacts">
-        <tr>
-            <th>نام</th>
-            <th>شماره تلفن</th>
-        </tr>
-    </table>
 </div>
 <script>
     const electron = require('electron');
@@ -94,26 +166,40 @@
     const _ = require('underscore');
     const Store = require('electron-store');
     const store = new Store();
-    var contactList = store.get('contactList');
+    var contactList = !_.isEmpty(store.get('contactList')) ? store.get('contactList') : [];
     var showContactTitle = [
         {key: 'name', value: 'نام'},
-        {key: 'tel', value: 'شماره تلفن'}
+        {key: 'telephone', value: 'شماره تلفن'}
     ];
+    const { remote } = require('electron');
+    const { Menu } = remote;
 
-    function onAddTableClick() {
-        ipcRenderer.send('addContact');
+    const markdownContextMenu = Menu.buildFromTemplate([
+        { type: 'separator' },
+        { label: 'Cut', role: 'cut' },
+        { label: 'Copy', role: 'copy' },
+        { label: 'Paste', role: 'paste' },
+        { label: 'Select All', role: 'selectall' },
+    ]);
+
+    document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        markdownContextMenu.popup();
+    });
+
+    function onRestoreContactClick() {
+        remote.getCurrentWindow().reload();
     }
 
     function onSearchContactClick() {
-        var searchContact = document.getElementById('search-contact').value;
+        var nameSearch = document.getElementById('nameSearch').value;
+        var lastnameSearch = document.getElementById('lastnameSearch').value;
+        var companySearch = document.getElementById('companySearch').value;
         var tableContent = document.getElementById("contacts");
-        var newContactList = [];
         tableContent.innerHTML = '';
-        if (isNaN(searchContact)) {
-            newContactList = contactList.filter(contact => (contact.name) && (contact.name).includes(searchContact));
-        } else {
-            newContactList = contactList.filter(contact => (contact.tel) && (contact.tel).includes(searchContact));
-        }
+        var newContactList = contactList.filter(contact => ((contact.name) && (contact.name).includes(nameSearch)) &&
+            ((contact.lastname) && (contact.lastname).includes(lastnameSearch)) &&
+            ((contact.company) && (contact.company).includes(companySearch)));
 
         for (var i = 0, n = newContactList.length; i < n; i++) {
             var rowContainer = document.createElement("TR");
@@ -122,6 +208,10 @@
                 columnContainer.innerHTML = newContactList[i][showContactTitle[j].key];
                 rowContainer.appendChild(columnContainer);
             }
+            rowContainer.id = i;
+            rowContainer.onclick = function () {
+                ipcRenderer.send('contactInfo', contactList[parseInt(this.id)]);
+            };
             tableContent.appendChild(rowContainer);
         }
     }
@@ -135,7 +225,23 @@
             columnContainer.innerHTML = contactList[i][showContactTitle[j].key];
             rowContainer.appendChild(columnContainer);
         }
+        rowContainer.id = i;
+        rowContainer.onclick = function () {
+            ipcRenderer.send('contactInfo', contactList[parseInt(this.id)]);
+        };
         tableContent.appendChild(rowContainer);
+    }
+
+    function addContact() {
+        var name = document.getElementById('name').value;
+        var telephone = document.getElementById('telephone').value;
+        var lastname = document.getElementById('lastname').value;
+        var company = document.getElementById('company').value;
+        var companyTelephone = document.getElementById('companyTelephone').value;
+        var mobileNumber = document.getElementById('mobileNumber').value;
+        var email = document.getElementById('email').value;
+        var website = document.getElementById('website').value;
+        ipcRenderer.send('addToContactList', {name, telephone, lastname, company, companyTelephone, mobileNumber, email, website});
     }
 </script>
 </body>

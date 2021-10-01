@@ -1963,6 +1963,8 @@ var defaults = $.fn.steps.defaults = {
             insertFile: document.querySelector('#insertFile').checked,
             editFile: document.querySelector('#editFile').checked,
             deleteFile: document.querySelector('#deleteFile').checked,
+            saleTypePermission: getSaleTypePermissionList(),
+            noeMelkPermission: getNoeMelkPermissionList(),
         };
         if (requestBody.username === "" || requestBody.password === "") {
             ipcRenderer.send('showError', 'نام کاربری یا رمز عبور وارد نشده.');
@@ -1970,6 +1972,57 @@ var defaults = $.fn.steps.defaults = {
             ipcRenderer.send('showError', 'رمز عبور و تکرار رمز عبور یکسان نیستند.');
         } else {
             (isEdit ? ipcRenderer.send('editUser', requestBody) : ipcRenderer.send('setUser', requestBody));
+        }
+
+        function getSaleTypePermissionList() {
+            let saleTypeArray = [];
+            if (document.querySelector('#sale').checked) {
+                saleTypeArray.push('فروش')
+            }
+            if (document.querySelector('#rent').checked) {
+                saleTypeArray.push('اجاره')
+            }
+            if (document.querySelector('#mortgage').checked) {
+                saleTypeArray.push('رهن')
+            }
+            if (document.querySelector('#partnership').checked) {
+                saleTypeArray.push('مشارکت')
+            }
+            if (document.querySelector('#exchange').checked) {
+                saleTypeArray.push('معاوضه')
+            }
+
+            return saleTypeArray;
+        }
+
+        function getNoeMelkPermissionList() {
+            let noeMelkArray = [];
+            if (document.querySelector('#apartment').checked) {
+                noeMelkArray.push('آپارتمان')
+            }
+            if (document.querySelector('#villa').checked) {
+                noeMelkArray.push('ویلا')
+            }
+            if (document.querySelector('#mostaghelat').checked) {
+                noeMelkArray.push('مستغلات')
+            }
+            if (document.querySelector('#daftarKar').checked) {
+                noeMelkArray.push('دفترکار')
+            }
+            if (document.querySelector('#suit').checked) {
+                noeMelkArray.push('سوییت')
+            }
+            if (document.querySelector('#land').checked) {
+                noeMelkArray.push('زمین')
+            }
+            if (document.querySelector('#store').checked) {
+                noeMelkArray.push('مغازه')
+            }
+            if (document.querySelector('#kolangi').checked) {
+                noeMelkArray.push('کلنگی')
+            }
+
+            return noeMelkArray;
         }
     },
 
@@ -2017,6 +2070,21 @@ var defaults = $.fn.steps.defaults = {
                 document.querySelector('#insertFile').checked = user.insertFile;
                 document.querySelector('#editFile').checked = user.editFile;
                 document.querySelector('#deleteFile').checked = user.deleteFile;
+
+                document.querySelector('#sale').checked = user.saleTypePermission.includes('فروش');
+                document.querySelector('#rent').checked = user.saleTypePermission.includes('اجاره');
+                document.querySelector('#mortgage').checked = user.saleTypePermission.includes('رهن');
+                document.querySelector('#partnership').checked = user.saleTypePermission.includes('مشارکت');
+                document.querySelector('#exchange').checked = user.saleTypePermission.includes('معاوضه');
+
+                document.querySelector('#apartment').checked = user.noeMelkPermission.includes('آپارتمان');
+                document.querySelector('#villa').checked = user.noeMelkPermission.includes('ویلا');
+                document.querySelector('#mostaghelat').checked = user.noeMelkPermission.includes('مستغلات');
+                document.querySelector('#daftarKar').checked = user.noeMelkPermission.includes('دفترکار');
+                document.querySelector('#suit').checked = user.noeMelkPermission.includes('سوییت');
+                document.querySelector('#land').checked = user.noeMelkPermission.includes('زمین');
+                document.querySelector('#store').checked = user.noeMelkPermission.includes('مغازه');
+                document.querySelector('#kolangi').checked = user.noeMelkPermission.includes('کلنگی');
             }
         });
     },

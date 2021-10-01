@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <script src="libraries/jquery-1.12.4.js"></script>
+    <script src="libraries/jquery-ui.js"></script>
+    <script src="libraries/jquery-editable-select.min.js"></script>
+    <link href="libraries/jquery-editable-select.min.css"
+          rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        @font-face {
+            font-family: IRANSansMobileFaNum-Bold;
+            src: url("./fonts/IRANSansMobileFaNum-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Bold.ttf") format('truetype');
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            float: none;
+            font-size: 12px;
+            background-color: #007bff;
+            height: 100%;
+            /*height: 500px;*/
+            /*width: 300px;*/
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .container span {
+            margin-top: 10px;
+        }
+
+        .inner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            float: none;
+            font-size: 12px;
+            height: 100%;
+            background-color: #00bfa5;
+            width: 220px;
+            list-style-type:none;
+            font-family: IRANSansMobileFaNum-Bold;
+        }
+
+        .inner-container li {
+            color: #7d0000;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            border: 0;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .font-text-light {
+            font-family: IRANSans-Light;
+        }
+
+        .textInput {
+            margin-left: 2.5px;
+            margin-right: 2.5px;
+            width: -webkit-fill-available;
+            background-image: linear-gradient(
+                    89deg, #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <span>گروه مورد نظر را انتخاب کنید</span>
+    <div class="inner-container">
+        <select class="validate textInput font-text-light" name="group" id="group" style="margin-top: 10px">
+        </select>
+    </div>
+    <div style="display: flex;">
+        <button id="btn-submit" class="btn-submit" style="margin-left: 10px">ثبت</button>
+        <button id="btn-cancel" class="btn-submit">انصراف</button>
+    </div>
+</div>
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const _ = require('underscore');
+    const Store = require('electron-store');
+    const store = new Store();
+    const { remote } = require('electron');
+    let zonkanFileArray = [];
+
+    if (!_.isEmpty(store.get('zonkan')) && !_.isEmpty(store.get('zonkan')[store.get('userData').username])
+        && !_.isEmpty(store.get('zonkan')[store.get('userData').username])) {
+        var groupSelect = document.getElementById("group");
+        let zonkanTitleList = Object.keys(store.get('zonkan')[store.get('userData').username]);
+        for (var i = 0; i < zonkanTitleList.length; i++) {
+            var optionGroup = document.createElement('option');
+            optionGroup.value = zonkanTitleList[i];
+            optionGroup.innerHTML = zonkanTitleList[i];
+            groupSelect.appendChild(optionGroup);
+        }
+    }
+
+    $('#group').editableSelect();
+
+    ipcRenderer.on('sendZonkanFilesFromMain', function (event, fileArray) {
+        zonkanFileArray = fileArray;
+    });
+
+    var btnSubmit = document.getElementById("btn-submit");
+    btnSubmit.addEventListener("click", function () {
+        let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
+        if (!_.isEmpty(zonkanObject)) {
+            let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+            if (!_.isEmpty(currentUserZonkanObject)) {
+                let zonkanArray = !_.isEmpty(currentUserZonkanObject[document.querySelector('#group').value]) ? currentUserZonkanObject[document.querySelector('#group').value] : [];
+                zonkanArray = [...zonkanArray, ...zonkanFileArray];
+                currentUserZonkanObject[document.querySelector('#group').value] = zonkanArray;
+                store.set('zonkan', zonkanObject);
+            } else {
+                store.get('zonkan')[store.get('userData').username] = {};
+                currentUserZonkanObject[document.querySelector('#group').value] = zonkanFileArray;
+                store.set('zonkan', zonkanObject);
+            }
+        } else {
+            let finalObject = {};
+            finalObject[store.get('userData').username] = {};
+            finalObject[store.get('userData').username][document.querySelector('#group').value] = zonkanFileArray;
+            store.set('zonkan', finalObject);
+        }
+        remote.getCurrentWindow().close();
+    });
+
+    var btnCancel = document.getElementById("btn-cancel");
+    btnCancel.addEventListener("click", function () {
+        remote.getCurrentWindow().close();
+    });
+
+</script>
+</body>
+</html>
