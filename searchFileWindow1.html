@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        var $ = jQuery = require("jquery")
+    </script>
+    <script src="libraries/jquery-1.12.4.js"></script>
+    <script src="libraries/jquery-ui.js"></script>
+    <script src="node_modules/persian-date/dist/persian-date.js" type="text/javascript"></script>
+    <script src="node_modules/persian-datepicker/dist/js/persian-datepicker.js" type="text/javascript"></script>
+    <script src="libraries/jquery-editable-select.min.js"></script>
+    <link href="libraries/jquery-editable-select.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
+    <style>
+        @font-face {
+            font-family: IRANSansMobileFaNum-Light;
+            src: url("./fonts/IRANSansMobileFaNum-Light.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Light.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
+        }
+
+        body {
+            background: #fff;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            float: none;
+            font-size: 12px;
+        }
+
+        .container-row {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .container-border {
+            border-style: groove;
+            border-width: 0.5px;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            margin: 2px;
+        }
+
+        .container .left-container {
+            width: 33%;
+        }
+
+        .container .right-container {
+            width: 75%;
+        }
+
+        div fieldset legend {
+            text-align: right;
+        }
+
+        .date-inner {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .to-date {
+            flex: 1;
+        }
+
+        .prev-week {
+            flex: 1;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button5 {
+            border-radius: 50%;
+        }
+
+        .sale-type-label {
+            font-size: 15px;
+            color: crimson;
+            margin-right: 10px;
+            margin-left: 20px;
+        }
+
+        .type-inner {
+            display: flex;
+            justify-content: center;
+        }
+
+        .fieldsetContainer {
+            width: 100%;
+            direction: rtl;
+        }
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: right;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: 0.3s;
+            font-size: 12px;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            direction: rtl;
+        }
+
+        .btn-submit {
+            width: 60px;
+            height: 30px;
+            background-color: #78ff4c;
+            border: 0;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobile-Bold;
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #code {
+            max-width: 70%;
+        }
+
+        #source {
+            width: 125px;
+        }
+
+        #corrector {
+            width: 125px;
+        }
+
+        .horizontalScrollView {
+            white-space: nowrap;
+        }
+
+        div#equipmentResultList {
+            display: flex;
+            flex-wrap: wrap;
+            height: auto;
+        }
+
+        .equipmentResult {
+            height: auto;
+            flex: 0 1 auto;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            -webkit-animation-name: fadeIn; /* Fade in the background */
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: #fefefe;
+            width: 100%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .btn-submit {
+            margin-right: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            height: 30px;
+            background-image: linear-gradient(rgb(45 47 146), white);
+            border: 0;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-family: IRANSansMobile-Bold;
+        }
+
+        div#equipmentList {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100vw;
+            height: auto;
+        }
+
+        .equipment {
+            width: 25%;
+            height: auto;
+            flex: 0 1 25%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        input {
+            background-image: linear-gradient(
+                    89deg, #130de622, white) !important;
+            border-width: 0.5px;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="loading">
+    <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
+</div>
+<div>
+    <div class="container">
+        <div class="left-container">
+            <div style="overflow-x: scroll" class="container-row">
+                <fieldset id="codeListContainer" class="fieldsetContainer horizontalScrollView">
+                    <legend>مناطق</legend>
+                    <label>کد:</label>
+                    <input id="addTableButton" type="image" src="images/plus.png" style="width: 10px; height: 10px"
+                           onclick="onAddRegionCodeClick()"/>
+                </fieldset>
+            </div>
+            <div class="container-row" style="justify-content: center">
+                <div style="width: 40%; margin-top: 12px">
+                    <div>
+                        <select name="code" id="code">
+                        </select>
+                        <label>:کد</label>
+                    </div>
+                    <ul id="regionNameAreaList"
+                        style="height: 166px;border-style: groove;border-width: 0.5px;direction: rtl; overflow: scroll">
+
+                    </ul>
+                </div>
+
+                <div style="width: 40%; margin-right: 50px">
+                    <ul id="regionNameResultAreaList"
+                        style="height: 198px;border-style: groove;border-width: 0.5px;direction: rtl; overflow: scroll">
+
+                    </ul>
+                </div>
+            </div>
+            <div>
+
+
+                <div class="tab">
+                    <button class="tablinks active" onclick="openTab(event, 'floor')">طبقه - واحد</button>
+                    <button class="tablinks" onclick="openTab(event, 'detail1')">جزییات۱</button>
+                    <button class="tablinks" onclick="openTab(event, 'detail2')">جزییات۲</button>
+                </div>
+
+                <div id="floor" class="tabcontent" style="display: block">
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>طبقه</legend>
+                            <input type="text" name="floorCount" id="floorCount">
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>تعداد طبقات</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromFloorCount">از:</label>
+                                    <input type="text" name="fromFloorCount" id="fromFloorCount" style="width: 40px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toFloorCount">تا:</label>
+                                    <input type="text" name="toFloorCount" id="toFloorCount" style="width: 40px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div style="display: flex; justify-content: center; margin: 5px">
+                        <fieldset class="fieldsetContainer" style="width: fit-content">
+                            <legend>تعداد کل واحدها</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromVahedCount">از:</label>
+                                    <input type="text" name="fromVahedCount" id="fromVahedCount" style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toVahedCount">تا:</label>
+                                    <input type="text" name="toVahedCount" id="toVahedCount" style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <!--<div style="display: flex; justify-content: center; margin: 5px">
+                        <fieldset class="fieldsetContainer" style="width: fit-content">
+                            <legend>تعداد واحد در هر طبقه</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromVahedCountPerFloor">از:</label>
+                                    <input type="text" name="fromVahedCountPerFloor" id="fromVahedCountPerFloor"
+                                           style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toVahedCountPerFloor">تا:</label>
+                                    <input type="text" name="toVahedCountPerFloor" id="toVahedCountPerFloor"
+                                           style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>-->
+                </div>
+
+                <div id="detail1" class="tabcontent">
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>سرویس بهداشتی</legend>
+                            <select name="wc" id="wc">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>خط تلفن</legend>
+                            <select name="phoneLine" id="phoneLine">
+                            </select>
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>حیاط</legend>
+                            <select name="yard" id="yard">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>زیر زمین</legend>
+                            <input type="text" name="basement" id="basement">
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>حیاط خلوت</legend>
+                            <select name="backyard" id="backyard">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>سکونت مالک</legend>
+                            <select name="residenceOwner" id="residenceOwner">
+                            </select>
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>مستخدم</legend>
+                            <select name="servant" id="servant">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>وضعیت سند</legend>
+                            <select name="documentStatus" id="documentStatus">
+                            </select>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div id="detail2" class="tabcontent">
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>منبع</legend>
+                            <select name="source" id="source">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>تنظیم کننده</legend>
+                            <select name="corrector" id="corrector">
+                            </select>
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>ارتفاع</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromHeight">از:</label>
+                                    <input type="text" name="fromHeight" id="fromHeight" style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toHeight">تا:</label>
+                                    <input type="text" name="toHeight" id="toHeight" style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>تراکم</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromDensity">از:</label>
+                                    <input type="text" name="fromDensity" id="fromDensity" style="width: 50px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toDensity">تا:</label>
+                                    <input type="text" name="toDensity" id="toDensity" style="width: 50px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row" style="flex-direction: row">
+                        <div class="container-border" style="flex-direction: column; width: 60%; align-items: center">
+                            <div class="from-date">
+                                <label for="pool">استخر:</label>
+                                <input type="checkbox" name="pool" id="pool">
+                            </div>
+                            <div class="from-date">
+                                <label for="sauna">سونا:</label>
+                                <input type="checkbox" name="sauna" id="sauna">
+                            </div>
+                            <div class="from-date">
+                                <label for="Jacuzzi">جکوزی:</label>
+                                <input type="checkbox" name="Jacuzzi" id="Jacuzzi">
+                            </div>
+                        </div>
+                        <div class="container-border" style="flex-direction: column; width: 40%; align-items: center">
+                            <div class="from-date">
+                                <label for="residential">مسکونی</label>
+                                <input type="checkbox" name="residential" value="checkbox" id="residential">
+                            </div>
+                            <div class="from-date">
+                                <label for="empty">تخلیه</label>
+                                <input type="checkbox" name="empty" value="checkbox" id="empty">
+                            </div>
+                            <div class="from-date">
+                                <label for="Jacuzzi">اجاره</label>
+                                <input type="checkbox" name="rent" value="checkbox" id="rent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="container-row container-border">
+                <label style="color: #9b0000; margin: 2px 5px">
+                    <input type="checkbox" name="existType" value="checkbox" id="exist">
+                    موجود</label>
+                <br>
+                <label style="color: #9b0000; margin: 2px 5px">
+                    <input type="checkbox" name="existType" value="checkbox" id="archive">
+                    بایگانی</label>
+                <br>
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>تاریخ</legend>
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromDate">از:</label>
+                            <input class='validate textInput font-text-light date-picker' type='text' name='fromDate'
+                                   id='fromDate'/>
+                        </div>
+                        <div class="to-date">
+                            <label for="toDate">تا:</label>
+                            <input class='validate textInput font-text-light date-picker' type='text' name='toDate'
+                                   id='toDate'/>
+                        </div>
+                    </div>
+                    <div class="date-inner">
+                        <div style="flex: 1">
+                            <button class="button button5" onclick="onCurrentDateClick()">تاریخ روز</button>
+                        </div>
+                        <!--<div class="prev-week">
+                            <label>هفته قبل</label>
+                            <input type="number" style="width: 30px">
+                        </div>-->
+                    </div>
+
+
+                </fieldset>
+
+                <fieldset class="fieldsetContainer">
+                    <legend>نوع ملک</legend>
+                    <div class="type-inner">
+                        <select name="noeMelk" id="noeMelk">
+                            <option value="آپارتمان">آپارتمان</option>
+                            <option value="ویلا">ویلا</option>
+                            <option value="مستغلات">مستغلات</option>
+                            <option value="کلنگی">کلنگی</option>
+                            <option value="دفتر کار">دفتر کار</option>
+                        </select>
+                        <label>:مشخصه</label>
+                        <select name="moshakhase" id="moshakhase">
+                        </select>
+                    </div>
+
+                </fieldset>
+
+                <fieldset style="width: 20%; direction: rtl">
+                    <legend> جهت ملک</legend>
+                    <p>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_north">
+                            شمالی</label>
+                        <br>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_south">
+                            جنوبی</label>
+                        <br>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_east">
+                            شرقی</label>
+                        <br>
+                        <label>
+                            <input type="checkbox" name="direction" value="checkbox" id="direction_west">
+                            غربی</label>
+                        <br>
+                    </p>
+                </fieldset>
+            </div>
+            <div class="container-row container-border">
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="فروش" id="sale">
+                    فروش</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="مشارکت" id="collabration">
+                    مشارکت</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="معاوضه" id="exchange">
+                    معاوضه</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="اجاره و رهن" id="rentAndMortinage">
+                    اجاره و رهن</label>
+
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="رهن کامل" id="mortinage">
+                    رهن کامل</label>
+                <label class="sale-type-label">
+                    <input type="checkbox" name="saleType" value="اجاره به خارجی" id="rentToForeigner">
+                    اجاره به خارجی</label>
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>آدرس</legend>
+
+                    <input type="text" name="address1" id="address1">
+                    <input type="text" name="address2" id="address2">
+                    <input type="text" name="address3" id="address3">
+
+                </fieldset>
+
+                <fieldset style="width: 30%; direction: rtl">
+                    <legend>تلفن</legend>
+
+                    <input type="text" name="telephone" id="telephone">
+                </fieldset>
+
+                <fieldset style="width: 30%; direction: rtl">
+                    <legend> مالک</legend>
+                    <input type="text" name="owner" id="owner">
+                </fieldset>
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>ودیعه</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromMortgage">از:</label>
+                            <input type="text" name="fromMortgage" id="fromMortgage">
+                        </div>
+                        <div class="to-date">
+                            <label for="toMortgage">تا:</label>
+                            <input type="text" name="toMortgage" id="toMortgage">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>اجاره</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromRent">از:</label>
+                            <input type="text" name="fromRent" id="fromRent">
+                        </div>
+                        <div class="to-date">
+                            <label for="toRent">تا:</label>
+                            <input type="text" name="toRent" id="toRent">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>متری</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromMetri">از:</label>
+                            <input type="text" name="fromMetri" id="fromMetri">
+                        </div>
+                        <div class="to-date">
+                            <label for="toMetri">تا:</label>
+                            <input type="text" name="toMetri" id="toMetri">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>قیمت کل</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromTotalPrice">از:</label>
+                            <input type="text" name="fromTotalPrice" id="fromTotalPrice">
+                        </div>
+                        <div class="to-date">
+                            <label for="toTotalPrice">تا:</label>
+                            <input type="text" name="toTotalPrice" id="toTotalPrice">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+            </div>
+            <div class="container-row">
+                <fieldset class="fieldsetContainer">
+                    <legend>خواب</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromBed">از:</label>
+                            <input type="text" name="fromBed" id="fromBed" style="width: 70px">
+                        </div>
+                        <div class="to-date">
+                            <label for="toBed">تا:</label>
+                            <input type="text" name="toBed" id="toBed" style="width: 70px">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>سن بنا</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromAge">از:</label>
+                            <input type="text" name="fromAge" id="fromAge" style="width: 70px">
+                        </div>
+                        <div class="to-date">
+                            <label for="toAge">تا:</label>
+                            <input type="text" name="toAge" id="toAge" style="width: 70px">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>شماره</legend>
+
+                    <div class="date-inner">
+                        <div class="from-date">
+                            <label for="fromNumber">از:</label>
+                            <input type="text" name="fromNumber" id="fromNumber" style="width: 70px">
+                        </div>
+                        <div class="to-date">
+                            <label for="toNumber">تا:</label>
+                            <input type="text" name="toNumber" id="toNumber" style="width: 70px">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset class="fieldsetContainer">
+                    <legend>توضیح قیمت</legend>
+                    <input type="text" name="priceDescription" id="priceDescription">
+                </fieldset>
+
+            </div>
+            <div class="container-row">
+                <div style="width: 100%">
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>کف پوش</legend>
+                            <select name="kafpoosh" id="kafpoosh">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>زیر بنا</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromZirbana">از:</label>
+                                    <input type="text" name="fromZirbana" id="fromZirbana" style="width: 70px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toZirbana">تا:</label>
+                                    <input type="text" name="toZirbana" id="toZirbana" style="width: 70px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>سرویس آشپزخانه</legend>
+                            <select name="kitchen" id="kitchen">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>مساحت زمین</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromArea">از:</label>
+                                    <input type="text" name="fromArea" id="fromArea" style="width: 70px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toArea">تا:</label>
+                                    <input type="text" name="toArea" id="toArea" style="width: 70px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>نما</legend>
+                            <select name="nama" id="nama">
+                            </select>
+                        </fieldset>
+                        <fieldset class="fieldsetContainer">
+                            <legend>طول بر</legend>
+
+                            <div class="date-inner">
+                                <div class="from-date">
+                                    <label for="fromToolBar">از:</label>
+                                    <input type="text" name="fromToolBar" id="fromToolBar" style="width: 70px">
+                                </div>
+                                <div class="to-date">
+                                    <label for="toToolBar">تا:</label>
+                                    <input type="text" name="toToolBar" id="toToolBar" style="width: 70px">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="container-row">
+                        <fieldset class="fieldsetContainer">
+                            <legend>توضیحات</legend>
+                            <input type="text" name="description" id="description" style="width: 100%">
+                        </fieldset>
+                    </div>
+                </div>
+                <fieldset class="fieldsetContainer">
+                    <legend>امکانات</legend>
+                    <button style="border-width: 0.5px; font-family: IRANSans-Light; background-image: linear-gradient(89deg, #130de622, white) !important;"
+                            type="button" onclick="onFacilityClick()">امکانات
+                    </button>
+                    <div id="equipmentResultList">
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div style="position: fixed; bottom: 10px">
+        <button id="btn-submit" class="btn-submit">جستجو</button>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>امکانات</h2>
+        </div>
+        <div class="modal-body">
+            <div id="equipmentList">
+            </div>
+            <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+                <button id="btn-submit-modal" class="btn-submit">ثبت</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const StringUtils = require('./utils/StringUtils');
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const _ = require('underscore');
+    const Store = require('electron-store');
+    const store = new Store();
+    var regionNameResultList = [];
+    var regionCodeList = [];
+    var regionCodeListForSearch = [];
+    var equipments = [];
+
+    function getRegionNameListFromRegionCode(regionCode) {
+        var regionNameList = [];
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].region)) {
+            for (var i = 0; i < store.get('configList')[0].region.length; i++) {
+                if (regionCode === store.get('configList')[0].region[i].regionCode) {
+                    regionNameList.push(store.get('configList')[0].region[i].regionName)
+                }
+            }
+        }
+        return regionNameList;
+    }
+
+    function onAddRegionCodeClick() {
+        var codeListContainer = document.getElementById("codeListContainer");
+        var codeInput = document.createElement('select');
+        codeInput.id = 'id' + regionCodeListForSearch.length;
+        codeInput.style = "width: 30px";
+        for (var i = 0; i < regionCodeList.length; i++) {
+            var optionCode = document.createElement('option');
+            optionCode.value = regionCodeList[i];
+            optionCode.innerHTML = regionCodeList[i];
+            codeInput.appendChild(optionCode);
+        }
+        regionCodeListForSearch.push(codeInput);
+        codeListContainer.appendChild(codeInput);
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].region)) {
+        for (var i = 0; i < store.get('configList')[0].region.length; i++) {
+            if (!_.contains(regionCodeList, store.get('configList')[0].region[i].regionCode)) {
+                regionCodeList.push(store.get('configList')[0].region[i].regionCode)
+            }
+        }
+    }
+
+    //fill options with configs
+    var codeSelect = document.getElementById("code");
+    for (var i = 0; i < regionCodeList.length; i++) {
+        var optionCode = document.createElement('option');
+        optionCode.value = regionCodeList[i];
+        optionCode.innerHTML = regionCodeList[i];
+        codeSelect.appendChild(optionCode);
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].source)) {
+        var sourceSelect = document.getElementById("source");
+        for (var i = 0; i < store.get('configList')[0].source.length; i++) {
+            var optionSource = document.createElement('option');
+            optionSource.value = store.get('configList')[0].source[i];
+            optionSource.innerHTML = store.get('configList')[0].source[i];
+            sourceSelect.appendChild(optionSource);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].publisher)) {
+        var correctorSelect = document.getElementById("corrector");
+        for (var i = 0; i < store.get('configList')[0].publisher.length; i++) {
+            var optionCorrector = document.createElement('option');
+            optionCorrector.value = store.get('configList')[0].publisher[i];
+            optionCorrector.innerHTML = store.get('configList')[0].publisher[i];
+            correctorSelect.appendChild(optionCorrector);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
+        var wcServiceSelect = document.getElementById("wc");
+        for (var i = 0; i < store.get('configList')[0].wcService.length; i++) {
+            var optionWcService = document.createElement('option');
+            optionWcService.value = store.get('configList')[0].wcService[i];
+            optionWcService.innerHTML = store.get('configList')[0].wcService[i];
+            wcServiceSelect.appendChild(optionWcService);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
+        var telephoneSelect = document.getElementById("phoneLine");
+        for (var i = 0; i < store.get('configList')[0].telephone.length; i++) {
+            var optionTelephone = document.createElement('option');
+            optionTelephone.value = store.get('configList')[0].telephone[i];
+            optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
+            telephoneSelect.appendChild(optionTelephone);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].yard)) {
+        var yardSelect = document.getElementById("yard");
+        for (var i = 0; i < store.get('configList')[0].yard.length; i++) {
+            var optionYard = document.createElement('option');
+            optionYard.value = store.get('configList')[0].yard[i];
+            optionYard.innerHTML = store.get('configList')[0].yard[i];
+            yardSelect.appendChild(optionYard);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].backYard)) {
+        var backYardSelect = document.getElementById("backyard");
+        for (var i = 0; i < store.get('configList')[0].backYard.length; i++) {
+            var optionBackYard = document.createElement('option');
+            optionBackYard.value = store.get('configList')[0].backYard[i];
+            optionBackYard.innerHTML = store.get('configList')[0].backYard[i];
+            backYardSelect.appendChild(optionBackYard);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].residenceOwner)) {
+        var residenceOwnerSelect = document.getElementById("residenceOwner");
+        for (var i = 0; i < store.get('configList')[0].residenceOwner.length; i++) {
+            var optionResidenceOwner = document.createElement('option');
+            optionResidenceOwner.value = store.get('configList')[0].residenceOwner[i];
+            optionResidenceOwner.innerHTML = store.get('configList')[0].residenceOwner[i];
+            residenceOwnerSelect.appendChild(optionResidenceOwner);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].employeeService)) {
+        var employeeServiceSelect = document.getElementById("servant");
+        for (var i = 0; i < store.get('configList')[0].employeeService.length; i++) {
+            var optionEmployeeService = document.createElement('option');
+            optionEmployeeService.value = store.get('configList')[0].employeeService[i];
+            optionEmployeeService.innerHTML = store.get('configList')[0].employeeService[i];
+            employeeServiceSelect.appendChild(optionEmployeeService);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].documentKind)) {
+        var documentKindSelect = document.getElementById("documentStatus");
+        for (var i = 0; i < store.get('configList')[0].documentKind.length; i++) {
+            var optionDocumentKind = document.createElement('option');
+            optionDocumentKind.value = store.get('configList')[0].documentKind[i];
+            optionDocumentKind.innerHTML = store.get('configList')[0].documentKind[i];
+            documentKindSelect.appendChild(optionDocumentKind);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
+        var kafpooshSelect = document.getElementById("kafpoosh");
+        for (var i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
+            var optionKafpoosh = document.createElement('option');
+            optionKafpoosh.value = store.get('configList')[0].floorCovering[i];
+            optionKafpoosh.innerHTML = store.get('configList')[0].floorCovering[i];
+            kafpooshSelect.appendChild(optionKafpoosh);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].kitchenService)) {
+        var kitchenSelect = document.getElementById("kitchen");
+        for (var i = 0; i < store.get('configList')[0].kitchenService.length; i++) {
+            var optionKitchen = document.createElement('option');
+            optionKitchen.value = store.get('configList')[0].kitchenService[i];
+            optionKitchen.innerHTML = store.get('configList')[0].kitchenService[i];
+            kitchenSelect.appendChild(optionKitchen);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].frontKind)) {
+        var namaSelect = document.getElementById("nama");
+        for (var i = 0; i < store.get('configList')[0].frontKind.length; i++) {
+            var optionNama = document.createElement('option');
+            optionNama.value = store.get('configList')[0].frontKind[i];
+            optionNama.innerHTML = store.get('configList')[0].frontKind[i];
+            namaSelect.appendChild(optionNama);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].equipments)) {
+        var equipmentListDiv = document.getElementById("equipmentList");
+        for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
+            var equipmentDiv = document.createElement('DIV');
+            equipmentDiv.className = 'equipment';
+            var equipmentLabel = document.createElement('LABEL');
+            equipmentLabel.innerHTML = store.get('configList')[0].equipments[i];
+            var equipmentCheckBox = document.createElement('INPUT');
+            equipmentCheckBox.type = 'checkbox';
+            equipmentCheckBox.id = store.get('configList')[0].equipments[i];
+            equipmentDiv.appendChild(equipmentLabel);
+            equipmentDiv.appendChild(equipmentCheckBox);
+            equipmentListDiv.appendChild(equipmentDiv);
+        }
+    }
+
+    // Get the modal
+    var facilityModal = document.getElementById("myModal");
+
+    // Get the <span> element that closes the modal
+    var facilityCloseModal = document.getElementsByClassName("close")[0];
+
+    //facilities button click
+    function onFacilityClick() {
+        facilityModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    facilityCloseModal.onclick = function () {
+        facilityModal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == facilityModal) {
+            facilityModal.style.display = "none";
+        }
+    };
+
+    var checkedEquipmentList = [];
+    var btnSubmit = document.getElementById("btn-submit-modal");
+    btnSubmit.addEventListener("click", function () {
+        $("#equipmentResultList").empty();
+        equipments = [];
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].equipments)) {
+            var equipmentResultListDiv = document.getElementById("equipmentResultList");
+            for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
+                if (document.getElementById(store.get('configList')[0].equipments[i]).checked) {
+                    checkedEquipmentList.push(store.get('configList')[0].equipments[i]);
+                    var equipmentResultDiv = document.createElement('DIV');
+                    equipmentResultDiv.className = 'equipmentResult';
+                    equipmentResultDiv.innerHTML = store.get('configList')[0].equipments[i];
+                    equipmentResultListDiv.appendChild(equipmentResultDiv);
+                    equipments.push(store.get('configList')[0].equipments[i]);
+                }
+            }
+        }
+        facilityModal.style.display = "none";
+    });
+
+    $(document).ready(function () {
+        $(".date-picker").persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+    });
+
+    ipcRenderer.on('showLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "block";
+
+    });
+
+    ipcRenderer.on('hideLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "none";
+    });
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    function getNoeMelk(noeMelk) {
+        var noeMelkValue = "";
+        switch (noeMelk) {
+            case "آپارتمان":
+                noeMelkValue = "apartment";
+                break;
+            case "ویلا":
+                noeMelkValue = "vila";
+                break;
+            case "مستغلات":
+                noeMelkValue = "building";
+                break;
+            case "کلنگی":
+                noeMelkValue = "oldHouse";
+                break;
+            case "دفتر کار":
+                noeMelkValue = "office";
+                break;
+        }
+        return noeMelkValue;
+    }
+
+    $('#code').on('select.editable-select', function (e) {
+        var regionCode = document.getElementById("code").value;
+        var regionNameAreaList = document.getElementById("regionNameAreaList");
+        var regionNameList = getRegionNameListFromRegionCode(regionCode);
+        $("#regionNameAreaList").empty();
+        for (var i = 0; i < regionNameList.length; i++) {
+            var optionRegionName = document.createElement('li');
+            optionRegionName.id = regionNameList[i];
+            optionRegionName.innerHTML = regionNameList[i];
+            optionRegionName.onclick = function () {
+                var regionNameResultAreaList = document.getElementById("regionNameResultAreaList");
+                var optionRegionName = document.createElement('li');
+                optionRegionName.innerHTML = this.id;
+                optionRegionName.id = 'result-' + this.id;
+                optionRegionName.onclick = function () {
+                    regionNameResultList.pop(this.id.split('-')[1]);
+                    var regionNameResultAreaList = document.getElementById('regionNameResultAreaList');
+
+                    regionNameResultAreaList.removeChild(document.getElementById(this.id))
+                };
+                regionNameResultList.push(this.id);
+                regionNameResultAreaList.appendChild(optionRegionName);
+            };
+            regionNameAreaList.appendChild(optionRegionName);
+        }
+    }).editableSelect();
+    $('#corrector').editableSelect();
+    $('#source').editableSelect();
+    $('#noeMelk').on('select.editable-select', function (e) {
+        var noeMelk = document.getElementById("noeMelk");
+        var noeMelkValue = getNoeMelk(noeMelk.value);
+        $("#moshakhase").editableSelect('clear');
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0][noeMelkValue])) {
+            for (var i = 0; i < store.get('configList')[0][noeMelkValue].length; i++) {
+                $("#moshakhase").editableSelect('add', store.get('configList')[0][noeMelkValue][i]);
+            }
+        }
+    }).editableSelect();
+    $('#moshakhase').editableSelect();
+    $('#servant').editableSelect();
+    $('#documentStatus').editableSelect();
+    $('#kafpoosh').editableSelect();
+    $('#kitchen').editableSelect();
+    $('#nama').editableSelect();
+    $('#residenceOwner').editableSelect();
+    $('#backyard').editableSelect();
+    $('#yard').editableSelect();
+    $('#phoneLine').editableSelect();
+    $('#wc').editableSelect();
+
+    onCurrentDateClick = function () {
+        document.querySelector('#fromDate').value = StringUtils.convertMillisecondToShamsi((new Date()).getTime());
+        document.querySelector('#toDate').value = StringUtils.convertMillisecondToShamsi((new Date()).getTime());
+    };
+
+    // Get the btnSubmit
+    var btnSubmit = document.getElementById("btn-submit");
+    btnSubmit.addEventListener("click", function () {
+        var saleTypeList = document.getElementsByName('saleType');
+        var saleType = [];
+        for (var i = 0, n = saleTypeList.length; i < n; i++) {
+            if (saleTypeList[i].checked) {
+                saleType.push(saleTypeList[i].value);
+            }
+        }
+        var regionCodeList = [];
+        for (i = 0; i < regionCodeListForSearch.length; i++) {
+            regionCodeList.push(regionCodeListForSearch[i].value)
+        }
+        var requestBody = {
+            tel1: !_.isEmpty(document.querySelector('#telephone').value) ? document.querySelector('#telephone').value : undefined,
+            address: _.compact([
+                !_.isEmpty(document.querySelector('#address1').value) ? document.querySelector('#address1').value : undefined,
+                !_.isEmpty(document.querySelector('#address2').value) ? document.querySelector('#address2').value : undefined,
+                !_.isEmpty(document.querySelector('#address3').value) ? document.querySelector('#address3').value : undefined
+            ]),
+            owner: !_.isEmpty(document.querySelector('#owner').value) ? document.querySelector('#owner').value : undefined,
+            regionCode: regionCodeList,
+            regionName: regionNameResultList,
+            fromDate: !_.isEmpty(document.querySelector('#fromDate').value) ? StringUtils.convertShamsiToMillisecond(document.querySelector('#fromDate').value) : undefined,
+            toDate: !_.isEmpty(document.querySelector('#toDate').value) ? StringUtils.convertShamsiToMillisecond(document.querySelector('#toDate').value) : undefined,
+            fromNumber: !_.isEmpty(document.querySelector('#fromNumber').value) ? document.querySelector('#fromNumber').value : undefined,
+            toNumber: !_.isEmpty(document.querySelector('#toNumber').value) ? document.querySelector('#toNumber').value : undefined,
+            sale: !_.isEmpty(saleType) ? saleType : undefined,
+            fromRent: !_.isEmpty(document.querySelector('#fromRent').value) ? document.querySelector('#fromRent').value : undefined,
+            toRent: !_.isEmpty(document.querySelector('#toRent').value) ? document.querySelector('#toRent').value : undefined,
+            fromMortgage: !_.isEmpty(document.querySelector('#fromMortgage').value) ? document.querySelector('#fromMortgage').value : undefined,
+            toMortgage: !_.isEmpty(document.querySelector('#toMortgage').value) ? document.querySelector('#toMortgage').value : undefined,
+            north: document.querySelector('#direction_north').checked ? true : undefined,
+            south: document.querySelector('#direction_south').checked ? true : undefined,
+            east: document.querySelector('#direction_east').checked ? true : undefined,
+            west: document.querySelector('#direction_west').checked ? true : undefined,
+            fromFloorNo: !_.isEmpty(document.querySelector('#fromFloorCount').value) ? document.querySelector('#fromFloorCount').value : undefined,
+            toFloorNo: !_.isEmpty(document.querySelector('#toFloorCount').value) ? document.querySelector('#toFloorCount').value : undefined,
+            fromUnitNo: !_.isEmpty(document.querySelector('#fromVahedCount').value) ? document.querySelector('#fromVahedCount').value : undefined,
+            toUnitNo: !_.isEmpty(document.querySelector('#toVahedCount').value) ? document.querySelector('#toVahedCount').value : undefined,
+            fromUnitPrice: !_.isEmpty(document.querySelector('#fromMetri').value) ? document.querySelector('#fromMetri').value : undefined,
+            fromTotalPrice: !_.isEmpty(document.querySelector('#fromTotalPrice').value) ? document.querySelector('#fromTotalPrice').value : undefined,
+            toUnitPrice: !_.isEmpty(document.querySelector('#toMetri').value) ? document.querySelector('#toMetri').value : undefined,
+            toTotalPrice: !_.isEmpty(document.querySelector('#toTotalPrice').value) ? document.querySelector('#toTotalPrice').value : undefined,
+            priceComment: !_.isEmpty(document.querySelector('#priceDescription').value) ? document.querySelector('#priceDescription').value : undefined,
+            pool: document.querySelector('#pool').checked ? true : undefined,
+            sona: document.querySelector('#sauna').checked ? true : undefined,
+            jakozi: document.querySelector('#Jacuzzi').checked ? true : undefined,
+            fromArea: !_.isEmpty(document.querySelector('#fromArea').value) ? document.querySelector('#fromArea').value : undefined,
+            toArea: !_.isEmpty(document.querySelector('#toArea').value) ? document.querySelector('#toArea').value : undefined,
+            fromDensity: !_.isEmpty(document.querySelector('#fromDensity').value) ? document.querySelector('#fromDensity').value : undefined,
+            toDensity: !_.isEmpty(document.querySelector('#toDensity').value) ? document.querySelector('#toDensity').value : undefined,
+            fromFront: !_.isEmpty(document.querySelector('#fromToolBar').value) ? document.querySelector('#fromToolBar').value : undefined,
+            toFront: !_.isEmpty(document.querySelector('#toToolBar').value) ? document.querySelector('#toToolBar').value : undefined,
+            fromHeight: !_.isEmpty(document.querySelector('#fromHeight').value) ? document.querySelector('#fromHeight').value : undefined,
+            toHeight: !_.isEmpty(document.querySelector('#toHeight').value) ? document.querySelector('#toHeight').value : undefined,
+            yard: !_.isEmpty(document.querySelector('#yard').value) ? document.querySelector('#yard').value : undefined,
+            smallYard: !_.isEmpty(document.querySelector('#backyard').value) ? document.querySelector('#backyard').value : undefined,
+            underGround: !_.isEmpty(document.querySelector('#basement').value) ? document.querySelector('#basement').value : undefined,
+            employeeService: !_.isEmpty(document.querySelector('#servant').value) ? document.querySelector('#servant').value : undefined,
+            residential: document.querySelector('#residential').checked ? true : undefined,
+            empty: document.querySelector('#empty').checked ? true : undefined,
+            rented: document.querySelector('#rent').checked ? true : undefined,
+            frontKind: !_.isEmpty(document.querySelector('#nama').value) ? document.querySelector('#nama').value : undefined,
+            source: !_.isEmpty(document.querySelector('#source').value) ? document.querySelector('#source').value : undefined,
+            publisher: !_.isEmpty(document.querySelector('#corrector').value) ? document.querySelector('#corrector').value : undefined,
+            ownerInHouse: !_.isEmpty(document.querySelector('#residenceOwner').value) ? document.querySelector('#residenceOwner').value : undefined,
+            documentKind: !_.isEmpty(document.querySelector('#documentStatus').value) ? document.querySelector('#documentStatus').value : undefined,
+            comment: !_.isEmpty(document.querySelector('#description').value) ? document.querySelector('#description').value : undefined,
+            equipments: equipments,
+        };
+
+        requestBody[getNoeMelk(document.querySelector('#noeMelk').value)] = document.querySelector('#moshakhase').value;
+
+        ipcRenderer.send('listFile', requestBody);
+    });
+</script>
+
+</body>
+</html>

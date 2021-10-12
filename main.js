@@ -9,7 +9,7 @@ const _ = require('underscore');
 // SET ENV
 process.env.NODE_ENV = 'development';
 
-const {app, BrowserWindow, Menu, ipcMain, Notification, screen, shell, globalShortcut} = electron;
+const {app, BrowserWindow, Menu, ipcMain, Notification, screen, shell, dialog, globalShortcut} = electron;
 
 let mainWindow;
 let addFileWindow;
@@ -56,6 +56,7 @@ app.on('ready', function () {
         width: 1024,
         height: 768,
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false,
         },
@@ -175,33 +176,29 @@ ipcMain.on('setFile', async function (e, requestArray) {
     const store = new Store();
     if (store.get('userData').insertFile) {
         addFileWindow.webContents.send('showLoading');
-        for (var i in requestArray) {
-            // services.insertFile(requestArray[i]).then(() => {
-            //     addFileWindow.close();
-            //     const notification = {
-            //         title: 'موفقیت',
-            //         body: 'فایل ' + i + ' با موفقیت ذخیره شد.'
-            //     };
-            //     new Notification(notification).show()
-            // }).catch(() => {
-            //     addFileWindow.webContents.send('hideLoading');
-            //     const notification = {
-            //         title: 'خطا',
-            //         body: 'خطا در دخیره فایل.'
-            //     };
-            //     new Notification(notification).show()
-            // })
-            requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
-            var result = await services.insertFile(requestArray[i]);
-            if (parseInt(i) === (requestArray.length - 1)) {
-                addFileWindow.close();
-                const notification = {
-                    title: 'موفقیت',
-                    body: 'فایل با موفقیت ذخیره شد.'
-                };
-                new Notification(notification).show()
+        let fileId = '';
+        services.getFileTotalCount().then(async (response) => {
+            fileId = 'cl-' + (10000 + parseInt(response.data));
+            for (var i in requestArray) {
+                requestArray[i].Id = fileId.split("-")[0] + "-" + parseInt(parseInt(fileId.split("-")[1]) + parseInt(i));
+                requestArray[i].Number = parseInt(parseInt(fileId.split("-")[1]) + parseInt(i));
+                var result = await services.insertFile(requestArray[i]);
+                if (parseInt(i) === (requestArray.length - 1)) {
+                    addFileWindow.reload();
+                    const notification = {
+                        title: 'موفقیت',
+                        body: 'فایل با موفقیت ذخیره شد.'
+                    };
+                    new Notification(notification).show()
+                }
             }
-        }
+        }).catch(() => {
+            const notification = {
+                title: 'خطا',
+                body: 'خطا در دریافت کد فایل.'
+            };
+            new Notification(notification).show()
+        })
     } else {
         const notification = {
             title: 'خطا',
@@ -526,22 +523,22 @@ ipcMain.on('setUser', function (e, requestBody) {
 });
 
 // setFile callback
-ipcMain.on('setFile', async function (e, requestArray) {
-    addFileWindow.webContents.send('showLoading');
-    for (var i in requestArray) {
-        requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
-        var result = await services.insertFile(requestArray[i]);
-        if (parseInt(i) === (requestArray.length - 1)) {
-            addFileWindow.close();
-            const notification = {
-                title: 'موفقیت',
-                body: 'فایل با موفقیت ذخیره شد.'
-            };
-            new Notification(notification).show()
-        }
-    }
-
-});
+// ipcMain.on('setFile', async function (e, requestArray) {
+//     addFileWindow.webContents.send('showLoading');
+//     for (var i in requestArray) {
+//         requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
+//         var result = await services.insertFile(requestArray[i]);
+//         if (parseInt(i) === (requestArray.length - 1)) {
+//             addFileWindow.close();
+//             const notification = {
+//                 title: 'موفقیت',
+//                 body: 'فایل با موفقیت ذخیره شد.'
+//             };
+//             new Notification(notification).show()
+//         }
+//     }
+//
+// });
 
 // searchFile callback
 ipcMain.on('listFile', function (e, requestBody) {
@@ -570,8 +567,8 @@ ipcMain.on('getFileList', function (e, requestBody) {
     const Store = require('electron-store');
     const store = new Store();
     var request = store.get('fileSearchBody');
-    request.offset = requestBody.offset;
-    request.length = requestBody.length;
+    request.offset = requestBody.offset.toString();
+    request.length = requestBody.length.toString();
     searchFileTableWindow.webContents.send('showLoading');
 
     services.searchFile(request).then((response) => {
@@ -619,6 +616,7 @@ ipcMain.on('getUserList', function (e, requestBody) {
         userManagementWindow.webContents.send('hideLoading');
         userManagementWindow.webContents.send('getUserListFromMain', response.data);
     }).catch(() => {
+        userManagementWindow.webContents.send('hideLoading');
         const notification = {
             title: 'خطا',
             body: 'خطا در نمایش کاربران های املاک.'
@@ -885,6 +883,9 @@ ipcMain.on('getPrintFile', async function (e, request) {
 // get print file callback
 ipcMain.on('printFile', async function (e) {
 // Importing BrowserWindow from Main
+    if (!fs.existsSync(path.join(__dirname, './assets'))){
+        fs.mkdirSync(path.join(__dirname, './assets'));
+    }
     let filepath = path.join(__dirname, './assets/print.pdf');
 
     let options = {
@@ -892,7 +893,7 @@ ipcMain.on('printFile', async function (e) {
         pageSize: 'A5',
         printBackground: true,
         printSelectionOnly: false,
-        landscape: false
+        landscape: true
     };
 
     filePrintWindow.webContents.printToPDF(options).then(data => {
@@ -965,6 +966,7 @@ ipcMain.on('contactInfo', async function (e, contactInfo) {
 function createAddFileWindow() {
     addFileWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false,
         },
@@ -974,7 +976,8 @@ function createAddFileWindow() {
         title: 'ثبت فایل'
     });
     addFileWindow.webContents.on('crashed', () => {
-        addFileWindow.reload();
+        addFileWindow.destroy();
+        createAddFileWindow();
     });
     addFileWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addFileWindow.html'),
@@ -991,6 +994,7 @@ function createAddFileWindow() {
 function createSearchFileWindow() {
     searchFileWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false,
         },
@@ -1000,7 +1004,8 @@ function createSearchFileWindow() {
         title: 'جستجو فایل'
     });
     searchFileWindow.webContents.on('crashed', () => {
-        searchFileWindow.reload();
+        searchFileWindow.destroy();
+        createSearchFileWindow();
     });
     searchFileWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'searchFileWindow.html'),
@@ -1017,6 +1022,7 @@ function createSearchFileWindow() {
 function createSearchFileTableWindow() {
     searchFileTableWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false,
         },
@@ -1025,7 +1031,8 @@ function createSearchFileTableWindow() {
         title: 'نمایش فایل ها'
     });
     searchFileTableWindow.webContents.on('crashed', () => {
-        searchFileTableWindow.reload();
+        searchFileTableWindow.destroy();
+        createSearchFileTableWindow();
     });
     searchFileTableWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'searchFileTableWindow.html'),
@@ -1042,6 +1049,7 @@ function createSearchFileTableWindow() {
 function createAddUserWindow() {
     addUserWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
@@ -1050,7 +1058,8 @@ function createAddUserWindow() {
         title: 'ثبت کاربر'
     });
     addUserWindow.webContents.on('crashed', () => {
-        addUserWindow.reload();
+        addUserWindow.destroy();
+        createAddUserWindow();
     });
     addUserWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addUserWindow/addUserWindow.html'),
@@ -1067,6 +1076,7 @@ function createAddUserWindow() {
 function createContactListWindow() {
     contactListWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
@@ -1076,7 +1086,8 @@ function createContactListWindow() {
         title: 'لیست مخاطبین'
     });
     contactListWindow.webContents.on('crashed', () => {
-        contactListWindow.reload();
+        contactListWindow.destroy();
+        createContactListWindow();
     });
     contactListWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'contactWindow.html'),
@@ -1093,6 +1104,7 @@ function createContactListWindow() {
 function createAddContactWindow() {
     addContactWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
@@ -1101,7 +1113,8 @@ function createAddContactWindow() {
         title: 'افزودن مخاطب'
     });
     addContactWindow.webContents.on('crashed', () => {
-        addContactWindow.reload();
+        addContactWindow.destroy();
+        createAddContactWindow();
     });
     addContactWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addContactWindow/addContactWindow.html'),
@@ -1118,6 +1131,7 @@ function createAddContactWindow() {
 function createSettingWindow() {
     settingWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
@@ -1126,7 +1140,8 @@ function createSettingWindow() {
         title: 'تنظیمات'
     });
     settingWindow.webContents.on('crashed', () => {
-        settingWindow.reload();
+        settingWindow.destroy();
+        createSettingWindow();
     });
     settingWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'settingWindow.html'),
@@ -1170,6 +1185,7 @@ function createZoncanWindow() {
 function createUserManagementWindow() {
     userManagementWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
@@ -1178,7 +1194,8 @@ function createUserManagementWindow() {
         title: 'لیست کاربران'
     });
     userManagementWindow.webContents.on('crashed', () => {
-        userManagementWindow.reload();
+        userManagementWindow.destroy();
+        createUserManagementWindow();
     });
     userManagementWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'userManagementWindow.html'),
@@ -1195,16 +1212,18 @@ function createUserManagementWindow() {
 function createFilePrintWindow() {
     filePrintWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
         resizable: false,
-        width: 600,
-        height: 420,
+        width: 833,
+        // height: 420,
         title: 'فایل'
     });
     filePrintWindow.webContents.on('crashed', () => {
-        filePrintWindow.reload();
+        filePrintWindow.destroy();
+        createFilePrintWindow();
     });
     filePrintWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'filePrintWindow.html'),
@@ -1221,6 +1240,7 @@ function createFilePrintWindow() {
 function createAddHostWindow() {
     addHostNameWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
@@ -1229,7 +1249,8 @@ function createAddHostWindow() {
         title: 'افزودن سرویس جدید'
     });
     addHostNameWindow.webContents.on('crashed', () => {
-        addHostNameWindow.reload();
+        addHostNameWindow.destroy();
+        createAddHostWindow();
     });
     addHostNameWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addHostNameWindow.html'),
@@ -1246,6 +1267,7 @@ function createAddHostWindow() {
 function createAddFilingHostNameWindow() {
     addFilingHostNameWindow = new BrowserWindow({
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         },
@@ -1254,7 +1276,8 @@ function createAddFilingHostNameWindow() {
         title: 'افزودن سرویس جدید'
     });
     addFilingHostNameWindow.webContents.on('crashed', () => {
-        addFilingHostNameWindow.reload();
+        addFilingHostNameWindow.destroy();
+        createAddFilingHostNameWindow();
     });
     addFilingHostNameWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'addFilingHostNameWindow.html'),

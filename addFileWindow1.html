@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 <html>
+
 <head>
     <script>
         var $ = jQuery = require("jquery")
@@ -12,15 +12,6 @@
     <link href="libraries/jquery-editable-select.min.css"
           rel="stylesheet">
     <link rel="stylesheet" href="node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=1024, maximum-scale=1.0"/>
-    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png"/>
-    <meta name="og:type" content="website"/>
-    <meta name="twitter:card" content="photo"/>
-    <link rel="stylesheet" type="text/css" href="css/add-file.css"/>
-    <link rel="stylesheet" type="text/css" href="css/styleguide.css"/>
-    <link rel="stylesheet" type="text/css" href="css/globals.css"/>
-    <meta name="author" content="AnimaApp.com - Design to code, Automated."/>
     <style>
         body {
             display: flex;
@@ -250,7 +241,7 @@
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
+            z-index: 1; /* Sit on top */
             left: 0;
             top: 0;
             width: 100%; /* Full width */
@@ -282,9 +273,6 @@
             float: right;
             font-size: 28px;
             font-weight: bold;
-            display: flex;
-            justify-content: flex-end;
-            flex: 1;
         }
 
         .close:hover,
@@ -295,22 +283,13 @@
         }
 
         .modal-header {
-            padding: 20px 16px;
+            padding: 2px 16px;
             background-color: #5cb85c;
             color: white;
-            direction: rtl;
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-        }
-
-        .modal-header h2 {
-            flex: 1;
         }
 
         .modal-body {
             padding: 2px 16px;
-            z-index: 1000;
         }
 
         .modal-footer {
@@ -374,50 +353,57 @@
         }
 
         #apartment {
-            font-family: IRANSans-Light;
-        }
-
-        #land {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #vila {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #mostaghelat {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #kolangi {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #office {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #pool {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #sona {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #jakoozi {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #view {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #documentState {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
         #InformationSource {
+            width: 100px;
             font-family: IRANSans-Light;
         }
 
@@ -426,7 +412,6 @@
             flex-wrap: wrap;
             width: 100vw;
             height: auto;
-            overflow: auto;
         }
 
         .equipment {
@@ -434,46 +419,33 @@
             height: auto;
             flex: 0 1 25%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             margin-top: 10px;
-            padding-right: 25px;
         }
 
         div#equipmentResultList {
             display: flex;
             flex-wrap: wrap;
-            height: auto !important;
-            direction: rtl;
+            height: auto;
         }
 
         .equipmentResult {
             width: 10%;
             height: auto;
-            flex: 0 1 15%;
+            flex: 0 1 10%;
             display: flex;
             justify-content: center;
             margin-top: 10px;
-            font-size: 13px;
         }
 
-        #watermarkContainer {
-            position: absolute;
-            top: 40%;
-            left: 0;
-            right: 0;
-            margin-right: auto;
-            margin-left: auto;
-            transform: rotate(-45deg);
-            text-align: center;
-            opacity: 0.5;
-            z-index: 99;
-            color: red;
-        }
-
-        #watermark {
-            color: red;
-            transform: rotate(320deg);
-            font-size: 80px;
+        #watermark
+        {
+            position:fixed;
+            bottom:10px;
+            left: 10px;
+            opacity:0.5;
+            z-index:99;
+            color:red;
         }
 
         .contactName {
@@ -482,416 +454,673 @@
             font-size: 11px;
             color: #3a81cc;
         }
-
-        .es-list {
-            max-width: 100px !important;
-        }
-
-        .es-list::-webkit-scrollbar {
-            display: none;
-        }
-
-        .es-list li {
-            font-size: 12px !important;
-            text-align: right !important;
-        }
     </style>
 </head>
-<body style="margin: 0; background: #eff9f9; height: 100%; overflow: hidden">
+
+<body>
 
 <script src="libraries/jalali-moment.browser.js"></script>
 
 <div id="loading">
     <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
 </div>
-<div id="watermarkContainer">
-    <span id="watermark"></span>
-</div>
+<main class="z-depth-1 grey lighten-4 row">
+    <div id="watermark"></div>
 
-<input type="hidden" id="anPageName" name="page" value="add-file"/>
-<div class="container-center-horizontal">
-    <div class="add-file screen">
-        <div class="flex-row">
-            <div class="jahat border-1px-dove-gray">
-                <div class="flex-col-1">
-                    <input type="checkbox" class="rectangle-69 border-1px-denim" id="east" tabindex="11">
-                    <input type="checkbox" class="rectangle-69-1 border-1px-denim" id="west" tabindex="13">
+    <div class='container'>
+
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">تلفن:</label>
+                    <p id="contact1" class="contactName" style="right: 55px; display: none"></p>
+                    <input class='validate textInput font-text-light' type='tel' name='tel1'
+                           id='tel1' onfocusout="onTelephoneInputFocusOut('tel1')"/>
+                    <p id="contact2" class="contactName" style="right: 195px; display: none"></p>
+                    <input class='validate textInput font-text-light' type='tel' name='tel2'
+                           id='tel2' onfocusout="onTelephoneInputFocusOut('tel2')"/>
+                    <p id="contact3" class="contactName" style="right: 335px; display: none"></p>
+                    <input class='validate textInput font-text-light' type='tel' name='tel3'
+                           id='tel3' onfocusout="onTelephoneInputFocusOut('tel3')"/>
+                    <p id="contact4" class="contactName" style="right: 475px; display: none"></p>
+                    <input class='validate textInput font-text-light' type='tel' name='tel4'
+                           id='tel4' onfocusout="onTelephoneInputFocusOut('tel4')"/>
+                    <p id="contact5" class="contactName" style="right: 615px; display: none"></p>
+                    <input class='validate textInput font-text-light' type='tel' name='tel5'
+                           id='tel5' onfocusout="onTelephoneInputFocusOut('tel5')"/>
                 </div>
-                <div class="flex-col-2">
-                    <div class="text iransans-light-black-13px">شرقی</div>
-                    <div class="text-9 iransans-light-black-13px">غربی</div>
-                </div>
-                <div class="flex-col-3">
-                    <input type="checkbox" class="rectangle-69-2 border-1px-denim" id="north" tabindex="10">
-                    <input type="checkbox" class="rectangle-69-3 border-1px-denim" id="south" tabindex="12">
-                </div>
-                <div class="flex-col-4">
-                    <div class="text-8 iransans-light-black-13px">شمالی</div>
-                    <div class="text-1 iransans-light-black-13px">جنوبی</div>
-                </div>
-            </div>
-            <div class="date border-1px-dove-gray">
-                <div class="flex-row-1">
-                    <input class="rectangle-9 border-1px-navy-blue date-picker" id='date' tabindex="6">
-                    <div class="text-4 iransans-light-black-13px">: تاریخ</div>
-                </div>
-                <div class="flex-row-2">
-                    <select class="rectangle-11 border-1px-navy-blue" id="regionName" tabindex="9">
-                        <option></option>
-                    </select>
-                    <select class="rectangle-10 border-1px-navy-blue" id="regionCode" tabindex="8"
-                            onchange="onRegionCodeChange()">
-                        <option></option>
-                    </select>
-                    <div class="text-5 iransans-light-black-13px">: منطقه</div>
+                <div class="input-container">
+                    <label class="active font-text-light placeholder">آدرس:</label>
+                    <input class='validate textInput font-text-light' type='text' name='address'
+                           id='address' style="width: 100%"/>
                 </div>
             </div>
-            <div class="overlap-group3">
-                <div class="tel border-1px-dove-gray">
-                    <div class="flex-col">
-                        <div class="flex-row-3">
-                            <div class="rectangle-4 border-1px-navy-blue"></div>
-                            <div class="text-2-1 segoeui-regular-normal-black-13px">: مالک</div>
-                            <div class="rectangle-3 border-1px-navy-blue"></div>
-                            <div class="rectangle-3-1 border-1px-navy-blue"></div>
-                            <div class="overlap-group4 border-1px-navy-blue">
-                            </div>
-                        </div>
-                        <div class="rectangle-6 border-1px-navy-blue"></div>
-                    </div>
-                    <div class="flex-col-5">
-                        <div class="text-1-1 segoeui-regular-normal-black-13px">: تلفن</div>
-                        <div class="text-3 segoeui-regular-normal-black-13px">: آدرس</div>
-                    </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">مالک:</label>
+                    <input class='validate textInput font-text-light' type='text' name='owner'
+                           id='owner'/>
                 </div>
-                <div class="tel-1 border-1px-dove-gray">
-                    <div class="flex-col">
-                        <div class="flex-row-4">
-                            <input class="rectangle-4-1 border-1px-navy-blue" id='owner' tabindex="4">
-                            <div class="text-11 iransans-light-black-13px">: مالک</div>
-                            <input class="rectangle-3 border-1px-navy-blue" onfocusout="onTelephoneInputFocusOut('tel3')" id="tel3" tabindex="3">
-                            <input class="rectangle-3-1 border-1px-navy-blue" onfocusout="onTelephoneInputFocusOut('tel2')" id="tel2" tabindex="2">
-                            <input class="rectangle-3-1 border-1px-navy-blue" onfocusout="onTelephoneInputFocusOut('tel1')" id="tel1" tabindex="1">
-                        </div>
-                        <input class="rectangle-6-1 border-1px-navy-blue" id="address" tabindex="5">
-                    </div>
-                    <div class="flex-col-6">
-                        <div class="text-10 iransans-light-black-13px">: تلفن</div>
-                        <div class="text-1 iransans-light-black-13px">: آدرس</div>
+                <div class="input-container">
+                    <label class="active font-text-light placeholder">منطقه:</label>
+                    <div style="width: 100%; display: flex">
+                        <select class='validate textInput font-text-light' name='regionCode'
+                                id='regionCode' style="width: 30%" onchange="onRegionCodeChange()">
+                            <option></option>
+                        </select>
+                        <select class='validate textInput font-text-light' name='regionName'
+                                id='regionName' style="width: 70%">
+                            <option></option>
+                        </select>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="overlap-group1">
-            <div class="kind">
-                <div class="overlap-group4-1 border-1px-dove-gray">
-                    <div class="rectangle-13"></div>
-                    <div class="kind-1">
-                        <div class="text-13 iransans-light-red-13px">خارجی</div>
-                        <div class="text-14 iransans-light-red-13px">معاوضه</div>
-                        <div class="text-15 iransans-light-red-13px">مشارکت</div>
-                        <div class="text-16 iransans-light-red-13px">رهن</div>
-                        <div class="text-17 iransans-light-red-13px">اجاره</div>
-                        <div class="text-18 iransans-light-red-13px">فروش</div>
-                    </div>
-                    <div class="text-19 iransans-light-chocolate-13px">سوئیت</div>
-                    <div class="text-20 iransans-light-chocolate-13px">مغازه</div>
-                    <div class="text-21 iransans-light-chocolate-13px">دفترکار</div>
-                    <div class="text-22 iransans-light-chocolate-13px">زمین</div>
-                    <div class="text-23 iransans-light-chocolate-13px">کلنگی</div>
-                    <div class="text-24 iransans-light-chocolate-13px">مستغلات</div>
-                    <div class="text-25 iransans-light-chocolate-13px">ویلا</div>
-                    <div class="text-26 iransans-light-chocolate-13px">آپارتمان</div>
-                    <select class="rectangle-14 border-1px-navy-blue" id="office" tabindex="25">
-                    </select>
-                    <select class="rectangle-14-1 border-1px-navy-blue" id="kolangi" tabindex="23">
-                    </select>
-                    <select class="rectangle-14-2 border-1px-navy-blue" id="mostaghelat" tabindex="22">
-                    </select>
-                    <select class="rectangle-14-3 border-1px-navy-blue" id="vila" tabindex="21">
-                    </select>
-                    <select class="rectangle-14-4 border-1px-navy-blue" id="apartment" tabindex="20">
-                    </select>
-                    <select class="rectangle-15 border-1px-navy-blue" id="land" tabindex="24">
-                    </select>
-                    <input type="checkbox" class="ch-soeit border-1px-denim" id="suite" tabindex="27">
-                    <input type="checkbox" class="ch-maghazeh border-1px-denim" id="store" tabindex="26">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">تاریخ:</label>
+                    <input class='validate textInput font-text-light date-picker' type='text' name='date'
+                           id='date'/>
+                </div>
+                <div class="input-container">
+                    <label class="active font-text-light placeholder">شماره:</label>
+                    <input class='validate textInput font-text-light' name='number'
+                           id='number' style="width: 100%" disabled/>
                 </div>
             </div>
-            <div class="parking-anbari">
-                <input type="checkbox" class="ch-khareji border-1px-denim" id="home" tabindex="19"  name="saleType[]" onclick="saleTypeClickEvent('خارجی')">
-                <input type="checkbox" class="ch-moavezeh border-1px-denim" id="exchange" tabindex="18" name="saleType[]" onclick="saleTypeClickEvent('معاوضه')">
-                <input type="checkbox" class="ch-mosharekat border-1px-denim" id="partnership" tabindex="17" name="saleType[]" onclick="saleTypeClickEvent('مشارکت')">
-                <input type="checkbox" class="ch-rahn border-1px-denim" id="mortgage" tabindex="16" name="saleType[]" onclick="saleTypeClickEvent('رهن')">
-                <input type="checkbox" class="parking-anbari-item border-1px-denim" id="rent" tabindex="15" name="saleType[]" onclick="saleTypeClickEvent('اجاره')">
-                <input type="checkbox" class="parking-anbari-item border-1px-denim" id="sale" tabindex="14" name="saleType[]" onclick="saleTypeClickEvent('فروش')">
-            </div>
-        </div>
-        <div class="overlap-group-1">
-            <div class="price border-1px-dove-gray">
-                <select class="rectangle-18 border-1px-navy-blue" id="unitComment" tabindex="33" style="display: none">
-                </select>
-                <select class="rectangle-18 border-1px-navy-blue" id="priceComment" tabindex="33">
-                </select>
-                <div class="text-27 iransans-light-black-13px">: توضیح قیمت</div>
-                <input class="rectangle-18-1 border-1px-navy-blue" id='rentPrice' tabindex="32" style="display: none">
-                <input class="rectangle-18-1 border-1px-navy-blue" id='metri' tabindex="32">
-                <div class="text-28 iransans-light-black-13px" id='rentPriceLabel' style="display: none">: اجاره</div>
-                <div class="text-28 iransans-light-black-13px" id='metriLabel'>: قیمت متری</div>
-                <input class="rectangle-18-2 border-1px-navy-blue" id="mortgagePrice" tabindex="31"
-                       style="display: none">
-                <input class="rectangle-18-2 border-1px-navy-blue" id="totalPrice" tabindex="31">
-                <div class="text-29 iransans-light-black-13px" id='mortgagePriceLabel' style="display: none">: ودیعه
-                </div>
-                <div class="text-29 iransans-light-black-13px" id='totalPriceLabel'>: قیمت کل</div>
-                <input class="rectangle-18-3 border-1px-navy-blue" id="totalVahed" tabindex="30" onfocus="onTotalVahedFocus(this)">
-                <input class="rectangle-19 border-1px-navy-blue" id="vahed" tabindex="29">
-                <div class="text-30 iransans-light-black-13px">: واحد</div>
-                <input class="rectangle-18-4 border-1px-navy-blue" id="tabaghat" tabindex="28">
-                <div class="text-31 iransans-light-black-13px">: تعداد طبقات</div>
-            </div>
-            <img class="bar" src="img/bar@1x.png"/>
-            <div class="x border-1px-dove-gray">
-                <div class="mdi-minus-circle-outline">
-                    <a onclick="onRemoveTableClick()" id="removeTableButton"><img class="path-minus-circle-outline"
-                                                                                  src="img/path---minus-circle-outline@1x.png"/></a>
-                </div>
-                <a onclick="onAddTableClick()" id="addTableButton"><img class="path-plus-circle-outline"
-                                                                        src="img/path---plus-circle-outline@1x.png"/></a>
-            </div>
-        </div>
-        <div id="table" class="table">
-            <div class="sub-bar2-1 border-1px-dove-gray">
-                <input class="rectangle-30 border-1px-navy-blue" id='tableMetri0' tabindex="46">
-                <input class="rectangle border-1px-navy-blue" id='tableTotalAmount0' tabindex="45">
-                <select class="rectangle-17 border-1px-navy-blue" id="tableAnbari0" tabindex="44">
-                </select>
-                <select class="rectangle-17 border-1px-navy-blue" id="tableParking0" tabindex="43">
-                </select>
-                <select class="rectangle-28 border-1px-navy-blue" id="tableKafPoosh0" tabindex="42">
-                </select>
-                <select class="rectangle-27 border-1px-navy-blue" id="tableWC0" tabindex="41">
-                </select>
-                <input type="checkbox" class="ch-open border-1px-denim" id='tableOpen0' tabindex="40">
-                <select class="rectangle-26 border-1px-navy-blue" id="tableKitchen0" tabindex="39">
-                </select>
-                <select class="rectangle-2 border-1px-navy-blue" id="tableTelephone0" tabindex="38">
-                </select>
-                <input type="checkbox" class="ch-open border-1px-denim" style="margin-right: 15px" id='tableBalcon0' tabindex="37">
-                <input class="rectangle-2-1 border-1px-navy-blue" id='tableKhab0' tabindex="36">
-                <input class="rectangle-2-1 border-1px-navy-blue" id='tableZirBana0' tabindex="35">
-                <input class="rectangle-2 border-1px-navy-blue" id='tableFloor0' tabindex="34">
-            </div>
-            <div class="sub-bar2-1 border-1px-dove-gray">
-                <span style="width: 100%; text-align: center">برای افزودن به لیست طبقات کلید <img
-                        class="path-plus-circle-outline"
-                        src="img/path---plus-circle-outline@1x.png"/> و برای حذف کلید <img
-                        class="path-minus-circle-outline"
-                        src="img/path---minus-circle-outline@1x.png"/> را کلیک کنید</span>
-            </div>
+
         </div>
 
-        <div class="flex-row-5">
-            <div class="estakhr-sona">
-                <div class="flex-col-7">
-                    <select class="rectangle-34 border-1px-navy-blue" id="pool" tabindex="49">
-                    </select>
-                    <select class="rectangle-34-1 border-1px-navy-blue" id="sona" tabindex="50">
-                    </select>
-                    <select class="rectangle-34-2 border-1px-navy-blue" id="jakoozi" tabindex="51">
-                    </select>
-                </div>
-                <div class="flex-col-8">
-                    <div class="text iransans-light-chocolate-13px">: استخر</div>
-                    <div class="text-34 iransans-light-chocolate-13px">: سونا</div>
-                    <div class="text-35 iransans-light-chocolate-13px">: جکوزی</div>
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">فروش</label>
+                        <input type="checkbox" class="radio" value="فروش" id="sale" name="saleType[]"
+                               onclick="saleTypeClickEvent('فروش')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">اجاره</label>
+                        <input type="checkbox" class="radio" value="اجاره" id="rent" name="saleType[]"
+                               onclick="saleTypeClickEvent('اجاره')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">رهن</label>
+                        <input type="checkbox" class="radio" value="رهن" id="mortgage" name="saleType[]"
+                               onclick="saleTypeClickEvent('رهن')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">مشارکت</label>
+                        <input type="checkbox" class="radio" value="مشارکت" id="partnership" name="saleType[]"
+                               onclick="saleTypeClickEvent('مشارکت')"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">معاوضه</label>
+                        <input type="checkbox" class="radio" value="معاوضه" id="exchange" name="saleType[]"
+                               onclick="saleTypeClickEvent('معاوضه')"/>
+                    </div>
                 </div>
             </div>
-            <div class="emkanat border-1px-dove-gray">
-                <div style="flex: 1; height: 100%" id="equipmentResultList"></div>
-                <button class="overlap-group5" tabindex="47" onclick="onFacilityClick()">
-                    <div class="emkanat-bt border-1px-dove-gray"></div>
-                    <div class="text-32"><a style="color:white;">امکانات</a>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)" for="apartment">آپارتمان</label>
+
+                        <select class="textInput" name="apartment" id="apartment">
+                        </select>
                     </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)"
+                               for="vila">ویلا</label>
+
+                        <select class="textInput" name="vila" id="vila">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)"
+                               for="mostaghelat">مستغلات</label>
+
+                        <select class="textInput" name="mostaghelat" id="mostaghelat">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)">خارجی</label>
+                        <input type="checkbox" class="radio" value="1" name="foreign[1][]" id="home"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)"
+                               for="kolangi">کلنگی</label>
+
+                        <select class="textInput" name="kolangi" id="kolangi">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)" for="office">دفتر
+                            کار</label>
+
+                        <select class="textInput" name="office" id="office">
+                        </select>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)">مغازه</label>
+                        <input type="checkbox" class="radio" value="1" name="store[1][]" id="store"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="color: rgb(45 47 146)">سوییت</label>
+                        <input type="checkbox" class="radio" value="1" name="suite[1][]" id="suite"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">شمالی</label>
+                        <input type="checkbox" class="radio" value="1" id="north"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">جنوبی</label>
+                        <input type="checkbox" class="radio" value="1" id="south"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">شرقی</label>
+                        <input type="checkbox" class="radio" value="1" id="east"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">غربی</label>
+                        <input type="checkbox" class="radio" value="1" id="west"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px;">تعداد طبقات:</label>
+                    <input class='validate textInput font-text-light' type='number' name='tabaghat'
+                           id='tabaghat' style="width: 30%"/>
+
+                    <label class="active font-text-light placeholder" style="margin-right: 10px;">تعداد واحد:</label>
+                    <input class='validate textInput font-text-light' type='number' name='vahed'
+                           id='vahed' style="width: 35%"/>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 200px"
+                           id='totalPriceLabel'>قیمت
+                        کل:</label>
+                    <input class='validate textInput font-text-light' name='totalPrice'
+                           id='totalPrice'/>
+                    <label class="active font-text-light placeholder" id='metriLabel'>متری:</label>
+                    <input class='validate textInput font-text-light' name='metri'
+                           id='metri' style="width: 100%"/>
+
+                    <label class="active font-text-light placeholder"
+                           style="margin-right: 10px; width: 350px; display: none" id='mortgagePriceLabel'>
+                        ودیعه:</label>
+                    <input class='validate textInput font-text-light' name='mortgagePrice'
+                           id='mortgagePrice' style="display: none"/>
+                    <label class="active font-text-light placeholder" id='rentPriceLabel'
+                           style="display: none">اجاره:</label>
+                    <input class='validate textInput font-text-light' name='rentPrice'
+                           id='rentPrice' style="width: 100%; display: none"/>
+
+                    <label class="active font-text-light placeholder">توضیح:</label>
+                    <input class='validate textInput font-text-light' name='description'
+                           id='priceComment' style="width: 100%"/>
+                    <input class='validate textInput font-text-light' name='description'
+                           id='unitComment' style="width: 100%; display: none"/>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center">
+            <input id="addTableButton" type="image" src="images/plus.png" style="width: 20px; height: 20px"
+                   onclick="onAddTableClick()"/>
+            <input id="removeTableButton" type="image" src="images/removeRow.png" style="width: 20px; height: 20px; margin-right: 10px"
+                   onclick="onRemoveTableClick()"/>
+        </div>
+        <div class="row">
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>طبقات</th>
+                    <th>زیربنا</th>
+                    <th>خواب</th>
+                    <th>بالکن</th>
+                    <th>تلفن</th>
+                    <th>سرویس آشپزخانه</th>
+                    <th>open</th>
+                    <th>سرویس بهداشتی</th>
+                    <th>کف پوش</th>
+                    <th>پارکینگ</th>
+                    <th>انباری</th>
+                    <th>قیمت کل</th>
+                    <th>متری</th>
+                </tr>
+                </thead>
+                <tbody id="tableRow">
+                <tr>
+                    <td>
+                        <input class='validate textInput tableTextInput font-text-light' type='number' name='tableFloor'
+                               id='tableFloor0'/>
+                    </td>
+                    <td>
+                        <input class='validate textInput tableTextInput font-text-light' type='number'
+                               name='tableZirBana'
+                               id='tableZirBana0'/>
+                    </td>
+                    <td>
+                        <input class='validate textInput tableTextInput font-text-light' type='number' name='tableKhab'
+                               id='tableKhab0'/>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="radio" value="1"
+                               name='tableBalcon'
+                               id='tableBalcon0'/>
+                    </td>
+                    <td>
+                        <select class="textInput tableTextInput font-text-light" name="tableTelephone" id="tableTelephone0">
+                            <option></option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="textInput tableTextInput font-text-light" name="tableKitchen" id="tableKitchen0">
+                            <option></option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="radio" value="1" name="tableOpen" id='tableOpen0'/>
+                    </td>
+                    <td>
+                        <select class="textInput tableTextInput font-text-light" name="tableWC" id="tableWC0">
+                            <option></option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="textInput tableTextInput font-text-light" name="tableKafPoosh" id="tableKafPoosh0">
+                            <option></option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="textInput tableTextInput font-text-light" name="tableParking" id="tableParking0">
+                            <option></option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="textInput tableTextInput font-text-light" name="tableAnbari" id="tableAnbari0">
+                            <option></option>
+                        </select>
+                    </td>
+                    <td>
+                        <input class='validate textInput tableTextInput font-text-light' type='number'
+                               name='tableTotalAmount'
+                               id='tableTotalAmount0'/>
+                    </td>
+                    <td>
+                        <input class='validate textInput tableTextInput font-text-light' type='number' name='tableMetri'
+                               id='tableMetri0'/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" style="border-style: groove; border-width: 0.5px;">
+            <div style="flex: 1;">
+                <button style="border-width: 0.5px; font-family: IRANSans-Light; background-image: linear-gradient(89deg, #130de622, white) !important;"
+                        type="button" onclick="onFacilityClick()">امکانات
+                </button>
+                <div id="equipmentResultList">
+                </div>
+            </div>
+            <div style="flex: 0">
+                <div class="group-input-container">
+                    <div class="input-container">
+                        <label class="active font-text-light placeholder" style="color: #100f8a; margin-left: 3px"
+                               for="pool">استخر:</label>
+                        <select class="textInput" name="pool" id="pool">
+                        </select>
+                    </div>
+                </div>
+                <div class="group-input-container">
+                    <div class="input-container">
+                        <label class="active font-text-light placeholder"
+                               style="color: #100f8a; margin-left: 3px; margin-right: 15px;"
+                               for="sona">سونا:</label>
+                        <select class="textInput" name="sona" id="sona">
+                        </select>
+                    </div>
+                </div>
+                <div class="group-input-container">
+                    <div class="input-container">
+                        <label class="active font-text-light placeholder" style="color: #100f8a; margin-left: 3px"
+                               for="jakoozi">جکوزی:</label>
+                        <select class="textInput" name="jakoozi" id="jakoozi">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">مساحت</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number' name='area'
+                               id='area'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">تراکم</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='density'
+                               id='density'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">طول بر</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='toolBar'
+                               id='toolBar'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">ارتفاع</label>
+                        <input class='validate textInput font-text-light' style="width: 71px" type='number'
+                               name='height'
+                               id='height'/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">اصلاحی</label>
+                        <select class="textInput tableTextInput font-text-light" name="corrective" id="corrective">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">حیاط</label>
+                        <select class="textInput tableTextInput font-text-light" name="yard" id="yard">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">حیاط خلوت</label>
+                        <select class="textInput tableTextInput font-text-light" name="backYard" id="backYard">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color:rgb(45 47 146);">زیرزمین</label>
+                        <select class="textInput tableTextInput font-text-light" name="basement" id="basement">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="width: 70px; font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">سرویس مستخدم</label>
+                        <select class="textInput tableTextInput font-text-light" name="employeeService" id="employeeService">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">پاسیو</label>
+                        <select class="textInput tableTextInput font-text-light" name="patio" id="patio">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">سکونت مالک</label>
+                        <select class="textInput tableTextInput font-text-light" name="residenceOwner" id="residenceOwner">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">مسکونی</label>
+                        <input type="checkbox" class="radio" value="1" name="residential" id="residential"
+                               style="margin-bottom: 11px"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">تخلیه</label>
+                        <input type="checkbox" class="radio" value="1" name="discharge" id="discharge"
+                               style="margin-bottom: 11px"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder"
+                               style="font-size: 10px; margin-right: 10px; color: rgb(45 47 146);">اجاره</label>
+                        <input type="checkbox" class="radio" value="1" name="rent" id="rented"
+                               style="margin-bottom: 11px"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 50px; ">سن
+                        بنا:</label>
+                    <input class='validate textInput font-text-light' type='number' name='ageBuilding'
+                           id='ageBuilding'/>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="height: 37px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">نما:</label>
+                    <select class="textInput" name="view" id="view">
+                    </select>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="height: 37px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">وضعیت سند:</label>
+                    <select class="textInput" name="documentState" id="documentState">
+                    </select>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="height: 37px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">منبع اطلاعاتی:</label>
+                    <select class="textInput" name="InformationSource" id="InformationSource">
+                    </select>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <input type="checkbox" class="radio" value="1" name="isHurry" id="isHurry"
+                           style="margin-bottom: 11px"/>
+                    <label class="active font-text-light placeholder" style="margin-right: 10px">مالک عجله دارد</label>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 100px">تنظیم
+                        کننده:</label>
+                    <input class='validate textInput font-text-light' type='text' name='ownerName'
+                           id='ownerName' value="گیلان فایل" disabled/>
+                </div>
+            </div>
+
+            <div class="group-input-container">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder" style="margin-right: 10px; width: 100px">نام کاربری:</label>
+                    <input class='validate textInput font-text-light' type='text' name='username'
+                           id='username' value=""/>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="group-input-container" style="height: 67px">
+                <div class="input-container">
+                    <label class="active font-text-light placeholder"
+                           style="margin-right: 10px; width: 50px; ">توضیحات:</label>
+                    <input style="height: 50px" class='validate textInput font-text-light' type='text' name='additionalDescription'
+                           id='additionalDescription'/>
+                </div>
+            </div>
+
+            <div class="group-input-container" style="flex: 0">
+                <div class="input-container">
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">همه</label>
+                        <input type="checkbox" class="radio" value="1" id="allParticipation" name="participation[]"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">خصوصی</label>
+                        <input type="checkbox" class="radio" value="1" id="privateParticipation"
+                               name="participation[]"/>
+                    </div>
+                    <div class="checkbox-item">
+                        <label class="active font-text-light placeholder" style="margin-right: 10px">تعاون مشاور</label>
+                        <input type="checkbox" class="radio" value="1" id="consultingCooperativeParticipation"
+                               name="participation[]"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%">
+            <button id="btn-submit" class="btn-submit">ثبت</button>
+            <button id="btn-new" class="btn-submit">جدید</button>
+            <button id="btn-print" class="btn-submit" style="margin-right: 10px" onclick="onFilePrintClick()"
+                    hidden>پرینت
+            </button>
+            <button id="btn-next" class="btn-submit" style="margin-right: 10px" onclick="onNextPrintClick()"
+                    hidden>بعدی
+            </button>
+            <button id="btn-prev" class="btn-submit" style="margin-right: 10px" onclick="onPrevPrintClick()"
+                    hidden>قبلی
+            </button>
+            <div style="display: flex; justify-content: flex-end; flex: 1">
+                <button style="background-image: linear-gradient(rgb(146 45 73), white);" id="btn-delete"
+                        class="btn-submit" onclick="onFileStateChange('delete')" hidden>حذف
+                </button>
+                <button style="background-image: linear-gradient(rgb(146 45 73), white);" id="btn-sold"
+                        class="btn-submit" onclick="onFileStateChange('sold')" hidden>فروش رفت
+                </button>
+                <button style="background-image: linear-gradient(rgb(146 45 73), white);" id="btn-rented"
+                        class="btn-submit" onclick="onFileStateChange('rented')" hidden>اجاره رفت
+                </button>
+                <button style="background-image: linear-gradient(rgb(146 45 73), white);" id="btn-dontCall"
+                        class="btn-submit" onclick="onFileStateChange('dontCall')" hidden>تماس نگیرید
                 </button>
             </div>
         </div>
-        <div class="flex-row-6">
-            <div class="ejadeh-takhliyeh border-1px-dove-gray">
-                <div class="flex-row-7">
-                    <div class="text-48 iransans-light-red-devil-13px">تخلیه</div>
-                    <div class="text-47 iransans-light-red-devil-13px">اجاره</div>
-                    <div class="text-49 iransans-light-red-devil-13px">مسکونی</div>
-                </div>
-                <div class="group-18">
-                    <input type="checkbox" class="ch-takhliyeh border-1px-denim" id="discharge" tabindex="65">
-                    <input type="checkbox" class="ch-ejareh border-1px-denim" id="rented" tabindex="64">
-                    <input type="checkbox" class="ch-maskoni border-1px-denim" id="residential" tabindex="63">
-                </div>
-            </div>
-            <div class="mostakhdem border-1px-dove-gray">
-                <div class="flex-col-9">
-                    <div class="text-46 iransans-light-red-devil-13px">سکونت مالک</div>
-                    <select class="rectangle-3-2 border-1px-navy-blue" id="residenceOwner" tabindex="62">
-                    </select>
-                </div>
-                <div class="flex-col-10">
-                    <div class="text-45 iransans-light-red-devil-13px">سرویس مستخدم</div>
-                    <select class="rectangle-3-2 border-1px-navy-blue" id="employeeService" tabindex="61">
-                    </select>
-                </div>
-            </div>
-            <div class="moshaat border-1px-dove-gray">
-                <div class="flex-col-11">
-                    <div class="text-42 iransans-light-red-devil-13px">زیر زمین</div>
-                    <select class="rectangle-36 border-1px-navy-blue" id="basement" tabindex="60">
-                    </select>
-                </div>
-                <div class="flex-col-12">
-                    <div class="text-41 iransans-light-red-devil-13px">پاسیو</div>
-                    <select class="rectangle-36 border-1px-navy-blue" id="patio" tabindex="59">
-                    </select>
-                </div>
-                <div class="flex-col-13">
-                    <div class="text-43 iransans-light-red-devil-13px">حیاط خلوت</div>
-                    <select class="rectangle-36-1 border-1px-navy-blue" id="backYard" tabindex="58">
-                    </select>
-                </div>
-                <div class="flex-col-14">
-                    <div class="text-44 iransans-light-red-devil-13px">حیاط</div>
-                    <select class="rectangle-36-1 border-1px-navy-blue" id="yard" tabindex="57">
-                    </select>
-                </div>
-            </div>
-            <div class="masahat-zamin border-1px-dove-gray">
-                <div class="overlap-group10">
-                    <div class="text-37 iransans-light-red-devil-13px">ارتفاع</div>
-                    <input class="rectangle-36-2 border-1px-navy-blue" id="height" tabindex="56">
-                </div>
-                <div class="overlap-group">
-                    <div class="text-36 iransans-light-red-devil-13px">اصلاحی</div>
-                    <select class="rectangle-36-2 border-1px-navy-blue" id="corrective" tabindex="55">
-                    </select>
-                </div>
-                <div class="overlap-group8">
-                    <div class="text-38 iransans-light-red-devil-13px">طول بر</div>
-                    <input class="rectangle-36-2 border-1px-navy-blue" id="toolBar" tabindex="54">
-                </div>
-                <div class="overlap-group">
-                    <div class="text-39 iransans-light-red-devil-13px">تراکم</div>
-                    <input class="rectangle-36-2 border-1px-navy-blue" id="density" tabindex="53">
-                </div>
-                <div class="overlap-group6">
-                    <div class="text-40 iransans-light-red-devil-13px">مساحت زمین</div>
-                    <input class="rectangle-35 border-1px-navy-blue" id="area" tabindex="52">
-                </div>
-            </div>
-        </div>
-        <div class="tanzim-konandeh border-1px-dove-gray">
-            <input class="rectangle-18-5 border-1px-navy-blue" id="ownerName" tabindex="71" disabled>
-            <div class="text-50 iransans-light-black-13px">: تنظیم کننده</div>
-            <input class="rectangle-38 border-1px-navy-blue" id="username" tabindex="70" disabled>
-            <div class="text-54 iransans-light-black-13px">: ثبت کننده</div>
-            <select class="rectangle-18-6 border-1px-navy-blue" id="InformationSource" tabindex="69">
-            </select>
-            <div class="text-51 iransans-light-black-13px">: منبع</div>
-            <select class="rectangle-18-7 border-1px-navy-blue" id="documentState" tabindex="68">
-            </select>
-            <div class="text-53 iransans-light-black-13px">: سند</div>
-            <select class="rectangle border-1px-navy-blue" id="view" tabindex="67">
-            </select>
-            <div class="text-52 iransans-light-black-13px">: نما</div>
-            <input class="rectangle-18-8 border-1px-navy-blue" id="ageBuilding" tabindex="66">
-            <div class="text-55 iransans-light-black-13px">: سن بنا</div>
-        </div>
-        <div class="overlap-group2">
-            <div class="tozihat border-1px-dove-gray">
-                <div class="flex-col-15">
-                    <input type="checkbox" class="ch-hame border-1px-denim" id="allParticipation" tabindex="74" name="participation[]">
-                    <input type="checkbox" class="ch-khososi border-1px-denim" id="privateParticipation" tabindex="76" name="participation[]">
-                </div>
-                <div class="flex-col-16">
-                    <input type="checkbox" class="ch-malek-ajaleh-darad border-1px-denim" id="isHurry" tabindex="73">
-                    <input type="checkbox" class="ch-taavon border-1px-denim" id="consultingCooperativeParticipation"
-                           tabindex="75" name="participation[]">
-                </div>
-                <input class="txt-tozihat border-1px-navy-blue" id="additionalDescription" tabindex="72">
-                <div class="text-56 iransans-light-black-13px">: توضیحات</div>
-            </div>
-            <div class="jahat-1">
-                <div class="flex-col-17">
-                    <div class="text-57 iransans-light-black-13px">همه</div>
-                    <div class="text-2 iransans-light-black-13px">خصوصی</div>
-                </div>
-                <div class="flex-col-18">
-                    <div class="text-58 iransans-light-black-13px">مالک عجله دارد</div>
-                    <div class="text-2 iransans-light-black-13px">تعاون مشاور</div>
-                </div>
-            </div>
-        </div>
-        <div class="flex-row-8">
-            <div class="shomareh border-1px-dove-gray">
-                <input class="rectangle-41 border-1px-navy-blue" id="number" tabindex="77" disabled>
-                <div class="text-61 iransans-light-black-13px">: شماره فایل</div>
-            </div>
-            <div class="button">
-                <div class="overlap-group11 border-1px-dove-gray">
-                    <div style="display: flex; flex: 1">
-                    </div>
 
-                    <div style="display: flex; flex: 1; justify-content: center">
-                        <a><img
-                                class="path-arrow-left-bold-box"
-                                src="img/path---arrow-left-bold-box@1x.png"
-                                onclick="onPrevPrintClick()"
-                                id="btn-prev"
-                                hidden
-                        /></a>
-                        <a><img class="path-arrow-right-bold-box" src="img/path---arrow-right-bold-box@1x.png"
-                                id="btn-next" onclick="onNextPrintClick()" hidden/></a>
-                    </div>
-                    <div style="display: flex; flex: 1; justify-content: flex-end">
-                        <a
-                        ><img
-                                class="path-printer"
-                                src="img/path---printer@1x.png"
-                                id="btn-print"
-                                onclick="onFilePrintClick()"
-                                hidden
-                        /></a><a><div><img  title="F5 جدید" class="path-file-restore" src="img/path---file-restore@1x.png" id="btn-new"/></div></a>
-                        <a><img class="path-file-excel" src="img/path---file-excel@1x.png" id="btn-delete"
-                                onclick="onFileStateChange('delete')" hidden/></a>
-                        <a><div title="F10 ثبت فایل"><img class="path-file-plus" src="img/path---file-plus@1x.png" id="btn-submit"/></div></a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>امکانات</h2>
-        </div>
-        <div class="modal-body">
-            <div id="equipmentList">
-                <!--<div class="equipment">
-                    <label>تست1</label>
-                    <input type="checkbox" />
-                </div>-->
-            </div>
-            <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-                <button id="btn-submit-modal" class="btn-submit">ثبت</button>
-            </div>
-        </div>
     </div>
 
-</div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>امکانات</h2>
+            </div>
+            <div class="modal-body">
+                <div id="equipmentList">
+                    <!--<div class="equipment">
+                        <label>تست1</label>
+                        <input type="checkbox" />
+                    </div>-->
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+                    <button id="btn-submit-modal" class="btn-submit">ثبت</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
 <script>
     const StringUtils = require('./utils/StringUtils');
     const electron = require('electron');
@@ -904,55 +1133,15 @@
     var isEdit = false;
     var isDisabled = false;
     var editFile = undefined;
-    const {remote} = require('electron');
-    const {Menu} = remote;
-
-    document.querySelector('#sale').disabled = !saleTypePermission('فروش');
-    document.querySelector('#rent').disabled = !saleTypePermission('اجاره');
-    document.querySelector('#mortgage').disabled = !saleTypePermission('رهن');
-    document.querySelector('#partnership').disabled = !saleTypePermission('مشارکت');
-    document.querySelector('#exchange').disabled = !saleTypePermission('معاوضه');
-
-
-    document.querySelector('#apartment').disabled = !noeMelkPermission('آپارتمان');
-    document.querySelector('#land').disabled = !noeMelkPermission('زمین');
-    document.querySelector('#vila').disabled = !noeMelkPermission('ویلا');
-    document.querySelector('#mostaghelat').disabled = !noeMelkPermission('مستغلات');
-    document.querySelector('#kolangi').disabled = !noeMelkPermission('کلنگی');
-    document.querySelector('#office').disabled = !noeMelkPermission('دفترکار');
-    document.querySelector('#store').disabled = !noeMelkPermission('مغازه');
-    document.querySelector('#suite').disabled = !noeMelkPermission('سوییت');
-
-    document.addEventListener('keydown', function (event) {
-        switch (event.key) {
-            case 'ArrowRight':
-                onNextPrintClick();
-                break;
-            case 'ArrowLeft':
-                onPrevPrintClick();
-                break;
-            case 116:
-                remote.getCurrentWindow().reload();
-                break;
-            case 121:
-                submitFile();
-                break;
-        }
-    });
-
-    document.querySelector('#date').addEventListener('dblclick', function (event) {
-        $("#date").persianDatepicker({
-            initialValue: true,
-            format: 'YYYY/MM/DD'
-        });
-    });
+    const { remote } = require('electron');
+    const { Menu } = remote;
 
     const markdownContextMenu = Menu.buildFromTemplate([
-        {type: 'separator'},
-        {label: 'Cut', role: 'cut'},
-        {label: 'Copy', role: 'copy'},
-        {label: 'Paste', role: 'paste'},
-        {label: 'Select All', role: 'selectall'},
+        { type: 'separator' },
+        { label: 'Cut', role: 'cut' },
+        { label: 'Copy', role: 'copy' },
+        { label: 'Paste', role: 'paste' },
+        { label: 'Select All', role: 'selectall' },
     ]);
 
     document.addEventListener('contextmenu', (event) => {
@@ -965,88 +1154,24 @@
     metri.addEventListener("input", (event) => {
         metri.value = StringUtils.commify(event.target.value)
     });
-    metri.addEventListener('keydown', function (event) {
-        if (event.key === 'Shift') {
-            if (!_.isEmpty(metri.value)) {
-                metri.value = StringUtils.commify((parseInt(metri.value.replace(/,/g, '')) * 1000) + '')
-            }
-        }
-    });
 
     var totalPrice = document.querySelector('#totalPrice');
     totalPrice.addEventListener("input", (event) => {
         totalPrice.value = StringUtils.commify(event.target.value)
-    });
-    totalPrice.addEventListener('keydown', function (event) {
-        if (event.key === 'Shift') {
-            if (!_.isEmpty(totalPrice.value)) {
-                totalPrice.value = StringUtils.commify((parseInt(totalPrice.value.replace(/,/g, '')) * 1000) + '')
-            }
-        }
     });
 
     var rentPrice = document.querySelector('#rentPrice');
     rentPrice.addEventListener("input", (event) => {
         rentPrice.value = StringUtils.commify(event.target.value)
     });
-    rentPrice.addEventListener('keydown', function (event) {
-        if (event.key === 'Shift') {
-            if (!_.isEmpty(rentPrice.value)) {
-                rentPrice.value = StringUtils.commify((parseInt(rentPrice.value.replace(/,/g, '')) * 1000) + '')
-            }
-        }
-    });
 
     var mortgagePrice = document.querySelector('#mortgagePrice');
     mortgagePrice.addEventListener("input", (event) => {
         mortgagePrice.value = StringUtils.commify(event.target.value)
     });
-    mortgagePrice.addEventListener('keydown', function (event) {
-        if (event.key === 'Shift') {
-            if (!_.isEmpty(mortgagePrice.value)) {
-                mortgagePrice.value = StringUtils.commify((parseInt(mortgagePrice.value.replace(/,/g, '')) * 1000) + '')
-            }
-        }
-    });
 
-    var tableTotalAmount0 = document.querySelector('#tableTotalAmount0');
-    tableTotalAmount0.addEventListener("input", (event) => {
-        tableTotalAmount0.value = StringUtils.commify(event.target.value)
-    });
-    tableTotalAmount0.addEventListener('keydown', function (event) {
-        if (event.key === 'Shift') {
-            if (!_.isEmpty(tableTotalAmount0.value)) {
-                tableTotalAmount0.value = StringUtils.commify((parseInt(tableTotalAmount0.value.replace(/,/g, '')) * 1000) + '')
-            }
-        }
-    });
-
-    var tableMetri0 = document.querySelector('#tableMetri0');
-    tableMetri0.addEventListener("input", (event) => {
-        tableMetri0.value = StringUtils.commify(event.target.value)
-    });
-    tableMetri0.addEventListener('keydown', function (event) {
-        if (event.key === 'Shift') {
-            if (!_.isEmpty(tableMetri0.value)) {
-                tableMetri0.value = StringUtils.commify((parseInt(tableMetri0.value.replace(/,/g, '')) * 1000) + '')
-            }
-        }
-    });
-
-    function onTotalVahedFocus(totalVahed) {
-        let tabaghat = document.getElementById('tabaghat').value;
-        let vahed = document.getElementById('vahed').value;
-        if (tabaghat && vahed) {
-            totalVahed.value = 'در کل ' + (StringUtils.convertNumbersToEnglish(tabaghat) * StringUtils.convertNumbersToEnglish(vahed)) + ' واحد';
-        }
-    }
-
-
-    document.getElementById('username').value = store.get('userData').username;
-
-    if (!_.isEmpty(store.get('publisher'))) {
-        document.getElementById('ownerName').value = store.get('publisher');
-    }
+    document.getElementById('ownerName').value = !_.isEmpty(store.get('publisher')) ?
+        store.get('publisher') : document.getElementById('ownerName').value;
 
     function onPrevPrintClick() {
         if (isEdit) {
@@ -1057,12 +1182,6 @@
     function onNextPrintClick() {
         if (isEdit) {
             ipcRenderer.send('getNextFile', editFile);
-        }
-    }
-
-    function fillEquipmentList(equipments) {
-        for (var i = 0; i < equipments.length; i++) {
-            document.getElementById(equipments[i]).checked = true;
         }
     }
 
@@ -1082,35 +1201,32 @@
                 equipmentResultListDiv.appendChild(equipmentResultDiv);
                 equipments.push(file.equipments[i]);
             }
-            fillEquipmentList(equipments);
 
-            document.querySelector('#username').value = file.username;
             document.querySelector('#number').value = file.Id;
             document.querySelector('#tel1').value = file.tel1;
             document.querySelector('#tel2').value = file.tel2;
             document.querySelector('#tel3').value = file.tel3;
-            // document.querySelector('#tel4').value = file.tel4;
-            // document.querySelector('#tel5').value = file.tel5;
+            document.querySelector('#tel4').value = file.tel4;
+            document.querySelector('#tel5').value = file.tel5;
             document.querySelector('#address').value = file.address;
             document.querySelector('#owner').value = file.owner;
             document.querySelector('#regionCode').value = file.regionCode;
             onRegionCodeChange();
             document.querySelector('#regionName').value = file.regionName;
             document.querySelector('#date').value = StringUtils.convertMillisecondToShamsi(file.date);
-            document.querySelector('#rentPrice').value = file.rent ? StringUtils.commify(file.rent) : '';
+            document.querySelector('#rentPrice').value = file.rent;
             document.querySelector('#sale').checked = file.sale === 'فروش';
             document.querySelector('#rent').checked = file.sale === 'اجاره';
             document.querySelector('#mortgage').checked = file.sale === 'رهن';
             document.querySelector('#partnership').checked = file.sale === 'مشارکت';
             document.querySelector('#exchange').checked = file.sale === 'معاوضه';
-            document.querySelector('#mortgagePrice').value = file.mortgage ? StringUtils.commify(file.mortgage) : '';
+            document.querySelector('#mortgagePrice').value = StringUtils.commify(file.mortgage);
             document.querySelector('#apartment').value = file.apartment;
-            document.querySelector('#land').value = !_.isEmpty(file.land) ? file.land : '';
-            document.querySelector('#vila').value = !_.isEmpty(file.vila) ? file.vila : '';
-            document.querySelector('#mostaghelat').value = !_.isEmpty(file.building) ? file.building : '';
+            document.querySelector('#vila').value = file.vila;
+            document.querySelector('#mostaghelat').value = file.building;
             document.querySelector('#home').checked = file.home;
-            document.querySelector('#kolangi').value = !_.isEmpty(file.oldHouse) ? file.oldHouse : '';
-            document.querySelector('#office').value = !_.isEmpty(file.office) ? file.office : '';
+            document.querySelector('#kolangi').value = file.oldHouse;
+            document.querySelector('#office').value = file.office;
             document.querySelector('#store').checked = file.store;
             document.querySelector('#suite').checked = file.suite;
             document.querySelector('#north').checked = file.north;
@@ -1119,14 +1235,13 @@
             document.querySelector('#west').checked = file.west;
             document.querySelector('#tabaghat').value = file.floorNo;
             document.querySelector('#vahed').value = file.unitNo;
-            document.querySelector('#totalVahed').value = file.totalUnit;
             document.querySelector('#unitComment').value = file.unitComment;
-            document.querySelector('#totalPrice').value = file.totalPrice ? StringUtils.commify(file.totalPrice.toString()) : '';
-            document.querySelector('#metri').value = file.unitPrice ? StringUtils.commify(file.unitPrice.toString()) : '';
+            document.querySelector('#totalPrice').value = StringUtils.commify(file.totalPrice.toString());
+            document.querySelector('#metri').value = StringUtils.commify(file.unitPrice);
             document.querySelector('#priceComment').value = file.priceComment;
-            document.querySelector('#pool').value = file.pool;
-            document.querySelector('#sona').value = file.sona;
-            document.querySelector('#jakoozi').value = file.jakozi;
+            document.querySelector('#pool').checked = file.pool;
+            document.querySelector('#sona').checked = file.sona;
+            document.querySelector('#jakoozi').checked = file.jakozi;
             document.querySelector('#area').value = file.area;
             document.querySelector('#density').value = file.density;
             document.querySelector('#toolBar').value = file.front;
@@ -1159,22 +1274,16 @@
             document.querySelector('#tableKitchen0').value = file.unitKitchen;
             document.querySelector('#tableWC0').value = file.unitWC;
             document.querySelector('#tableKafPoosh0').value = file.unitFloorCovering;
-            document.querySelector('#tableParking0').value = file.unitParking;
-            document.querySelector('#tableAnbari0').value = file.unitAnbari;
             document.querySelector('#tableOpen0').checked = file.unitOpen;
-            document.querySelector('#tableMetri0').value = file.unitMetri ? StringUtils.commify(file.unitMetri.toString()) : '';
-            document.querySelector('#tableTotalAmount0').value = file.unitTotalAmount ? StringUtils.commify(file.unitTotalAmount.toString()) : '';
 
             document.querySelector('#allParticipation').checked = file.participation === 'همه';
-            document.querySelector('#privateParticipation').checked = file.participation === 'خصوصی';
-            document.querySelector('#consultingCooperativeParticipation').checked = file.participation === 'تعاون مشاور';
+            document.querySelector('#privateParticipation').value = file.participation === 'خصوصی';
+            document.querySelector('#consultingCooperativeParticipation').value = file.participation === 'تعاون مشاور';
 
             if (file.isDeleted || file.isSold || file.isRented || file.isDontCall) {
                 isDisabled = true;
-                let btnNew = document.getElementById("btn-new");
-                let btnSubmit = document.getElementById("btn-submit");
-                btnNew.hidden = true;
-                btnSubmit.hidden = true;
+                var btnSubmit = document.getElementById("btn-submit");
+                btnSubmit.innerText = 'فعالسازی فایل';
 
                 var watermark = document.getElementById("watermark");
 
@@ -1190,16 +1299,23 @@
             } else {
                 var btnDelete = document.getElementById("btn-delete");
                 btnDelete.hidden = false;
+                var btnSaled = document.getElementById("btn-sold");
+                btnSaled.hidden = false;
+                var btnRented = document.getElementById("btn-rented");
+                btnRented.hidden = false;
+                var btnDontCall = document.getElementById("btn-dontCall");
+                btnDontCall.hidden = false;
                 var btnPrint = document.getElementById("btn-print");
                 btnPrint.hidden = false;
                 var btnNext = document.getElementById("btn-next");
                 btnNext.hidden = false;
                 var btnPrev = document.getElementById("btn-prev");
                 btnPrev.hidden = false;
-                let btnNew = document.getElementById("btn-new");
-                let btnSubmit = document.getElementById("btn-submit");
+                var btnNew = document.getElementById("btn-new");
                 btnNew.hidden = true;
-                btnSubmit.src = 'img/path---file-edit@1x.png';
+
+                var btnSubmit = document.getElementById("btn-submit");
+                btnSubmit.innerText = 'اصلاح';
             }
 
             var addTableButton = document.getElementById("addTableButton");
@@ -1214,7 +1330,7 @@
         if (!isEdit) {
             var number = document.getElementById('number');
             number.readOnly = true;
-            number.value = 'fl-' + 10000 + fileTotalCount;
+            number.value = 'cl-' + 10000 + fileTotalCount;
         }
     });
 
@@ -1233,22 +1349,23 @@
     }
 
     function onTelephoneInputFocusOut(id) {
-        searchTelInContactList(id, document.getElementById(id).value);
-        var telephoneInput1 = document.getElementById('tel1');
-        var telephoneInput2 = document.getElementById('tel2');
-        var telephoneInput3 = document.getElementById('tel3');
+        //searchTelInContactList(id, document.getElementById(id).value);
+        // var telephoneInput1 = document.getElementById('tel1');
+        // var telephoneInput2 = document.getElementById('tel2');
+        // var telephoneInput3 = document.getElementById('tel3');
         // var telephoneInput4 = document.getElementById('tel4');
         // var telephoneInput5 = document.getElementById('tel5');
-        var blackList = (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].blackList)) ? store.get('configList')[0].blackList : [];
-        var btnSubmit = document.getElementById("btn-submit");
-
-        if (_.contains(blackList, telephoneInput1.value) || _.contains(blackList, telephoneInput2.value) ||
-            _.contains(blackList, telephoneInput3.value)) {
-            btnSubmit.disabled = true;
-            ipcRenderer.send('showError', 'شماره ی وارد شده مسدود می باشد.');
-        } else {
-            btnSubmit.disabled = false;
-        }
+        // var blackList = store.get('configList')[0].blackList;
+        // var btnSubmit = document.getElementById("btn-submit");
+        //
+        // if (_.contains(blackList, telephoneInput1.value) || _.contains(blackList, telephoneInput2.value) ||
+        //     _.contains(blackList, telephoneInput3.value) || _.contains(blackList, telephoneInput4.value) ||
+        //     _.contains(blackList, telephoneInput5.value)) {
+        //     btnSubmit.disabled = true;
+        //     ipcRenderer.send('showError', 'شماره ی وارد شده مسدود می باشد.');
+        // } else {
+        //     btnSubmit.disabled = false;
+        // }
         searchFileOnTelephoneNumber(id, document.getElementById(id).value);
     }
 
@@ -1420,36 +1537,6 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].land)) {
-        var landSelect = document.getElementById("land");
-        for (var i = 0; i < store.get('configList')[0].land.length; i++) {
-            var optionLand = document.createElement('option');
-            optionLand.value = store.get('configList')[0].land[i];
-            optionLand.innerHTML = store.get('configList')[0].land[i];
-            landSelect.appendChild(optionLand);
-        }
-    }
-
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].comment)) {
-        var priceCommentSelect = document.getElementById("priceComment");
-        for (var i = 0; i < store.get('configList')[0].comment.length; i++) {
-            var optionPriceComment = document.createElement('option');
-            optionPriceComment.value = store.get('configList')[0].comment[i];
-            optionPriceComment.innerHTML = store.get('configList')[0].comment[i];
-            priceCommentSelect.appendChild(optionPriceComment);
-        }
-    }
-
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].comment)) {
-        var unitCommentSelect = document.getElementById("unitComment");
-        for (var i = 0; i < store.get('configList')[0].comment.length; i++) {
-            var optionUnitComment = document.createElement('option');
-            optionUnitComment.value = store.get('configList')[0].comment[i];
-            optionUnitComment.innerHTML = store.get('configList')[0].comment[i];
-            unitCommentSelect.appendChild(optionUnitComment);
-        }
-    }
-
     if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].modify)) {
         var modifySelect = document.getElementById("corrective");
         for (var i = 0; i < store.get('configList')[0].modify.length; i++) {
@@ -1580,16 +1667,6 @@
         }
     }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floor)) {
-        var tableFloorSelect = document.getElementById("tableFloor0");
-        for (let i = 0; i < store.get('configList')[0].floor.length; i++) {
-            var optionFloor = document.createElement('option');
-            optionFloor.value = store.get('configList')[0].floor[i];
-            optionFloor.innerHTML = store.get('configList')[0].floor[i];
-            tableFloorSelect.appendChild(optionFloor);
-        }
-    }
-
     var regionCodeSelect = document.getElementById("regionCode");
     for (var i = 0; i < regionCodeList.length; i++) {
         var optionRegionCode = document.createElement('option');
@@ -1620,7 +1697,7 @@
 
     $(document).ready(function () {
         $(".date-picker").persianDatepicker({
-            initialValue: !isEdit,
+            initialValue: false,
             format: 'YYYY/MM/DD'
         });
     });
@@ -1638,56 +1715,47 @@
 
     //add button click in table
     function onAddTableClick() {
-        var index = document.querySelector('#table').childElementCount - 1;
-        var rowContainer = document.createElement("DIV");
-        rowContainer.style.display = 'flex';
-        rowContainer.style.flexDirection = 'row-reverse';
-        rowContainer.classList.add('sub-bar2-1');
-        rowContainer.classList.add('border-1px-dove-gray');
-        var inputFloor = document.createElement("SELECT");
-        inputFloor.classList.add('rectangle-2');
-        inputFloor.classList.add('border-1px-navy-blue');
+        var index = document.querySelector('#tableRow').rows.length;
+        var tr = document.createElement("TR");
+        var tdFloor = document.createElement("TD");
+        var inputFloor = document.createElement("INPUT");
+        inputFloor.type = 'number';
+        inputFloor.classList.add('validate');
+        inputFloor.classList.add('tableTextInput');
+        inputFloor.classList.add('font-text-light');
+        inputFloor.classList.add('textInput');
         inputFloor.id = ('tableFloor' + index);
-        rowContainer.appendChild(inputFloor);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floor)) {
-            var optionFloorEmpty = document.createElement('option');
-            optionFloorEmpty.value = '';
-            optionFloorEmpty.innerHTML = '';
-            inputFloor.appendChild(optionFloorEmpty);
-            for (let i = 0; i < store.get('configList')[0].floor.length; i++) {
-                var optionFloor = document.createElement('option');
-                optionFloor.value = store.get('configList')[0].floor[i];
-                optionFloor.innerHTML = store.get('configList')[0].floor[i];
-                inputFloor.appendChild(optionFloor);
-            }
-        }
+        tdFloor.appendChild(inputFloor);
+        var tdZirBana = document.createElement("TD");
         var inputZirBana = document.createElement("INPUT");
-        inputZirBana.classList.add('rectangle-2-1');
-        inputZirBana.classList.add('border-1px-navy-blue');
+        inputZirBana.classList.add('validate');
+        inputZirBana.classList.add('tableTextInput');
+        inputZirBana.classList.add('font-text-light');
+        inputZirBana.classList.add('textInput');
         inputZirBana.id = ('tableZirBana' + index);
-        rowContainer.appendChild(inputZirBana);
+        tdZirBana.appendChild(inputZirBana);
+        var tdKhab = document.createElement("TD");
         var inputKhab = document.createElement("INPUT");
-        inputKhab.classList.add('rectangle-2-1');
-        inputKhab.classList.add('border-1px-navy-blue');
+        inputKhab.classList.add('validate');
+        inputKhab.classList.add('tableTextInput');
+        inputKhab.classList.add('font-text-light');
+        inputKhab.classList.add('textInput');
         inputKhab.id = ('tableKhab' + index);
-        rowContainer.appendChild(inputKhab);
+        tdKhab.appendChild(inputKhab);
+        var tdBalcon = document.createElement("TD");
         var inputBalcon = document.createElement("INPUT");
-        inputBalcon.classList.add('ch-open');
-        inputBalcon.classList.add('border-1px-denim');
-        inputBalcon.style.marginRight = '15px';
         inputBalcon.type = 'checkbox';
         inputBalcon.id = ('tableBalcon' + index);
-        rowContainer.appendChild(inputBalcon);
+        tdBalcon.appendChild(inputBalcon);
+        var tdTelephone = document.createElement("TD");
         var inputTelephone = document.createElement("SELECT");
-        inputTelephone.classList.add('rectangle-2');
-        inputTelephone.classList.add('border-1px-navy-blue');
+        inputTelephone.classList.add('validate');
+        inputTelephone.classList.add('tableTextInput');
+        inputTelephone.classList.add('font-text-light');
+        inputTelephone.classList.add('textInput');
         inputTelephone.id = ('tableTelephone' + index);
-        rowContainer.appendChild(inputTelephone);
+        tdTelephone.appendChild(inputTelephone);
         if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
-            var optionTelephoneEmpty = document.createElement('option');
-            optionTelephoneEmpty.value = '';
-            optionTelephoneEmpty.innerHTML = '';
-            inputTelephone.appendChild(optionTelephoneEmpty);
             for (let i = 0; i < store.get('configList')[0].telephone.length; i++) {
                 var optionTelephone = document.createElement('option');
                 optionTelephone.value = store.get('configList')[0].telephone[i];
@@ -1695,16 +1763,15 @@
                 inputTelephone.appendChild(optionTelephone);
             }
         }
+        var tdKitchen = document.createElement("TD");
         var inputKitchen = document.createElement("SELECT");
-        inputKitchen.classList.add('rectangle-26');
-        inputKitchen.classList.add('border-1px-navy-blue');
+        inputKitchen.classList.add('validate');
+        inputKitchen.classList.add('tableTextInput');
+        inputKitchen.classList.add('font-text-light');
+        inputKitchen.classList.add('textInput');
         inputKitchen.id = ('tableKitchen' + index);
-        rowContainer.appendChild(inputKitchen);
+        tdKitchen.appendChild(inputKitchen);
         if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].kitchenService)) {
-            var optionKitchenEmpty = document.createElement('option');
-            optionKitchenEmpty.value = '';
-            optionKitchenEmpty.innerHTML = '';
-            inputKitchen.appendChild(optionKitchenEmpty);
             for (let i = 0; i < store.get('configList')[0].kitchenService.length; i++) {
                 var optionKitchen = document.createElement('option');
                 optionKitchen.value = store.get('configList')[0].kitchenService[i];
@@ -1712,22 +1779,19 @@
                 inputKitchen.appendChild(optionKitchen);
             }
         }
+        var tdOpen = document.createElement("TD");
         var inputOpen = document.createElement("INPUT");
-        inputOpen.classList.add('ch-open');
-        inputOpen.classList.add('border-1px-denim');
-        inputOpen.id = ('tableOpen' + index);
         inputOpen.type = 'checkbox';
-        rowContainer.appendChild(inputOpen);
+        tdOpen.appendChild(inputOpen);
+        var tdWC = document.createElement("TD");
         var inputWC = document.createElement("SELECT");
-        inputWC.classList.add('rectangle-27');
-        inputWC.classList.add('border-1px-navy-blue');
+        inputWC.classList.add('validate');
+        inputWC.classList.add('tableTextInput');
+        inputWC.classList.add('font-text-light');
+        inputWC.classList.add('textInput');
         inputWC.id = ('tableWC' + index);
-        rowContainer.appendChild(inputWC);
+        tdWC.appendChild(inputWC);
         if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
-            var optionWCEmpty = document.createElement('option');
-            optionWCEmpty.value = '';
-            optionWCEmpty.innerHTML = '';
-            inputWC.appendChild(optionWCEmpty);
             for (let i = 0; i < store.get('configList')[0].wcService.length; i++) {
                 var optionWC = document.createElement('option');
                 optionWC.value = store.get('configList')[0].wcService[i];
@@ -1735,33 +1799,15 @@
                 inputWC.appendChild(optionWC);
             }
         }
-        var inputKafPoosh = document.createElement("SELECT");
-        inputKafPoosh.classList.add('rectangle-28');
-        inputKafPoosh.classList.add('border-1px-navy-blue');
-        inputKafPoosh.id = ('tableKafPoosh' + index);
-        rowContainer.appendChild(inputKafPoosh);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
-            var optionFloorCoveringEmpty = document.createElement('option');
-            optionFloorCoveringEmpty.value = '';
-            optionFloorCoveringEmpty.innerHTML = '';
-            inputKafPoosh.appendChild(optionFloorCoveringEmpty);
-            for (let i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
-                var optionFloorCovering = document.createElement('option');
-                optionFloorCovering.value = store.get('configList')[0].floorCovering[i];
-                optionFloorCovering.innerHTML = store.get('configList')[0].floorCovering[i];
-                inputKafPoosh.appendChild(optionFloorCovering);
-            }
-        }
+        var tdParking = document.createElement("TD");
         var inputParking = document.createElement("SELECT");
-        inputParking.classList.add('rectangle-17');
-        inputParking.classList.add('border-1px-navy-blue');
+        inputParking.classList.add('validate');
+        inputParking.classList.add('tableTextInput');
+        inputParking.classList.add('font-text-light');
+        inputParking.classList.add('textInput');
         inputParking.id = ('tableParking' + index);
-        rowContainer.appendChild(inputParking);
+        tdParking.appendChild(inputParking);
         if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].parking)) {
-            var optionParkingEmpty = document.createElement('option');
-            optionParkingEmpty.value = '';
-            optionParkingEmpty.innerHTML = '';
-            inputParking.appendChild(optionParkingEmpty);
             for (let i = 0; i < store.get('configList')[0].parking.length; i++) {
                 var optionParking = document.createElement('option');
                 optionParking.value = store.get('configList')[0].parking[i];
@@ -1769,16 +1815,15 @@
                 inputParking.appendChild(optionParking);
             }
         }
+        var tdAnbari = document.createElement("TD");
         var inputAnbari = document.createElement("SELECT");
-        inputAnbari.classList.add('rectangle-17');
-        inputAnbari.classList.add('border-1px-navy-blue');
+        inputAnbari.classList.add('validate');
+        inputAnbari.classList.add('tableTextInput');
+        inputAnbari.classList.add('font-text-light');
+        inputAnbari.classList.add('textInput');
         inputAnbari.id = ('tableAnbari' + index);
-        rowContainer.appendChild(inputAnbari);
+        tdAnbari.appendChild(inputAnbari);
         if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].warehouse)) {
-            var optionWarehouseEmpty = document.createElement('option');
-            optionWarehouseEmpty.value = '';
-            optionWarehouseEmpty.innerHTML = '';
-            inputAnbari.appendChild(optionWarehouseEmpty);
             for (let i = 0; i < store.get('configList')[0].warehouse.length; i++) {
                 var optionWarehouse = document.createElement('option');
                 optionWarehouse.value = store.get('configList')[0].warehouse[i];
@@ -1786,54 +1831,64 @@
                 inputAnbari.appendChild(optionWarehouse);
             }
         }
+        var tdTotalAmount = document.createElement("TD");
         var inputTotalAmount = document.createElement("INPUT");
-        inputTotalAmount.classList.add('rectangle');
-        inputTotalAmount.classList.add('border-1px-navy-blue');
+        inputTotalAmount.classList.add('validate');
+        inputTotalAmount.classList.add('tableTextInput');
+        inputTotalAmount.classList.add('font-text-light');
+        inputTotalAmount.classList.add('textInput');
         inputTotalAmount.id = ('tableTotalAmount' + index);
-        rowContainer.appendChild(inputTotalAmount);
+        tdTotalAmount.appendChild(inputTotalAmount);
+        var tdKafPoosh = document.createElement("TD");
+        var inputKafPoosh = document.createElement("SELECT");
+        inputKafPoosh.classList.add('validate');
+        inputKafPoosh.classList.add('tableTextInput');
+        inputKafPoosh.classList.add('font-text-light');
+        inputKafPoosh.classList.add('textInput');
+        inputKafPoosh.id = ('tableKafPoosh' + index);
+        tdKafPoosh.appendChild(inputKafPoosh);
+        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
+            for (let i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
+                var optionFloorCovering = document.createElement('option');
+                optionFloorCovering.value = store.get('configList')[0].floorCovering[i];
+                optionFloorCovering.innerHTML = store.get('configList')[0].floorCovering[i];
+                inputKafPoosh.appendChild(optionFloorCovering);
+            }
+        }
+        var tdMetri = document.createElement("TD");
         var inputMetri = document.createElement("INPUT");
-        inputMetri.classList.add('rectangle-30');
-        inputMetri.classList.add('border-1px-navy-blue');
+        inputMetri.classList.add('validate');
+        inputMetri.classList.add('tableTextInput');
+        inputMetri.classList.add('font-text-light');
+        inputMetri.classList.add('textInput');
         inputMetri.id = ('tableMetri' + index);
-        rowContainer.appendChild(inputMetri);
-        document.querySelector('#table').insertBefore(rowContainer, document.querySelector('#table').firstChild);
-        $('#' + 'tableFloor' + index).editableSelect();
-        $('#' + 'tableKafPoosh' + index).editableSelect();
-        $('#' + 'tableAnbari' + index).editableSelect();
-        $('#' + 'tableParking' + index).editableSelect();
-        $('#' + 'tableWC' + index).editableSelect();
-        $('#' + 'tableTelephone' + index).editableSelect();
-        $('#' + 'tableKitchen' + index).editableSelect();
-
-        var tableMetri = document.querySelector('#tableMetri' + index);
-        tableMetri.addEventListener("input", (event) => {
-            tableMetri.value = StringUtils.commify(event.target.value)
-        });
-        tableMetri.addEventListener('keydown', function (event) {
-            if (event.key === 'Shift') {
-                if (!_.isEmpty(tableMetri.value)) {
-                    tableMetri.value = StringUtils.commify((parseInt(tableMetri.value.replace(/,/g, '')) * 1000) + '')
-                }
-            }
-        });
-
-        var tableTotalAmount = document.querySelector('#tableTotalAmount' + index);
-        tableTotalAmount.addEventListener("input", (event) => {
-            tableTotalAmount.value = StringUtils.commify(event.target.value)
-        });
-        tableTotalAmount.addEventListener('keydown', function (event) {
-            if (event.key === 'Shift') {
-                if (!_.isEmpty(tableTotalAmount.value)) {
-                    tableTotalAmount.value = StringUtils.commify((parseInt(tableTotalAmount.value.replace(/,/g, '')) * 1000) + '')
-                }
-            }
-        });
+        tdMetri.appendChild(inputMetri);
+        tr.appendChild(tdFloor);
+        tr.appendChild(tdZirBana);
+        tr.appendChild(tdKhab);
+        tr.appendChild(tdBalcon);
+        tr.appendChild(tdTelephone);
+        tr.appendChild(tdKitchen);
+        tr.appendChild(tdOpen);
+        tr.appendChild(tdWC);
+        tr.appendChild(tdKafPoosh);
+        tr.appendChild(tdParking);
+        tr.appendChild(tdAnbari);
+        tr.appendChild(tdTotalAmount);
+        tr.appendChild(tdMetri);
+        document.querySelector('#tableRow').appendChild(tr);
+        // $('#' + 'tableKafPoosh' + index).editableSelect();
+        // $('#' + 'tableAnbari' + index).editableSelect();
+        // $('#' + 'tableParking' + index).editableSelect();
+        // $('#' + 'tableWC' + index).editableSelect();
+        // $('#' + 'tableTelephone' + index).editableSelect();
+        // $('#' + 'tableKitchen' + index).editableSelect();
     }
 
     //remove button click in table
     function onRemoveTableClick() {
-        var index = document.querySelector('#table').childElementCount;
-        (index !== 2) && document.querySelector('#table').removeChild(document.querySelector('#table').childNodes[0]);
+        var index = document.querySelector('#tableRow').rows.length;
+        (index !== 1) && document.querySelector('#tableRow').removeChild(document.querySelector('#tableRow').childNodes[index - 1]);
     }
 
     // Get the modal
@@ -1860,7 +1915,7 @@
     };
 
     function saleTypeClickEvent(saleType) {
-        if (saleType === 'فروش' || saleType === 'معاوضه' || saleType === 'مشارکت') {
+        if (saleType === 'فروش') {
             document.getElementById("rentPriceLabel").style.display = "none";
             document.getElementById("rentPrice").style.display = "none";
             document.getElementById("mortgagePriceLabel").style.display = "none";
@@ -1888,7 +1943,6 @@
     }
 
     $('#apartment').editableSelect();
-    $('#land').editableSelect();
     $('#vila').editableSelect();
     $('#mostaghelat').editableSelect();
     $('#kolangi').editableSelect();
@@ -1899,13 +1953,12 @@
     $('#view').editableSelect();
     $('#documentState').editableSelect();
     $('#InformationSource').editableSelect();
-    $('#tableTelephone0').editableSelect();
-    $('#tableFloor0').editableSelect();
-    $('#tableKitchen0').editableSelect();
-    $('#tableWC0').editableSelect();
-    $('#tableParking0').editableSelect();
-    $('#tableAnbari0').editableSelect();
-    $('#tableKafPoosh0').editableSelect();
+    // $('#tableTelephone0').editableSelect();
+    // $('#tableKitchen0').editableSelect();
+    // $('#tableWC0').editableSelect();
+    // $('#tableParking0').editableSelect();
+    // $('#tableAnbari0').editableSelect();
+    // $('#tableKafPoosh0').editableSelect();
     $('#residenceOwner').editableSelect();
     $('#patio').editableSelect();
     $('#basement').editableSelect();
@@ -1913,8 +1966,6 @@
     $('#backYard').editableSelect();
     $('#yard').editableSelect();
     $('#corrective').editableSelect();
-    $('#unitComment').editableSelect();
-    $('#priceComment').editableSelect();
 
     var checkedEquipmentList = [];
     var btnSubmit = document.getElementById("btn-submit-modal");
@@ -1937,42 +1988,6 @@
         facilityModal.style.display = "none";
     });
 
-    function validateInsertFile(fileArray) {
-        let validationArray = [];
-        let file = fileArray[0];
-        if (_.isEmpty(file.address)) {
-            validationArray.push('آدرس');
-        }
-        if (_.isEmpty(file.tel1)) {
-            validationArray.push('تلفن');
-        }
-        if (_.isEmpty(file.sale)) {
-            validationArray.push('فروش - رهن - اجاره');
-        }
-        if (_.isEmpty(file.regionCode)) {
-            validationArray.push('کد منطقه');
-        }
-        if (_.isEmpty(file.regionName)) {
-            validationArray.push('نام منطقه');
-        }
-        if (_.isEmpty(file.owner)) {
-            validationArray.push('نام مالک');
-        }
-        if (_.isEmpty(file.apartment) && _.isEmpty(file.land) && _.isEmpty(file.vila)
-            && _.isEmpty(file.building) && _.isEmpty(file.home) && _.isEmpty(file.oldHouse)
-            && _.isEmpty(file.office) && file.store && file.suite) {
-            validationArray.push('نوع ملک');
-        }
-        if (!_.isEmpty(file.apartment) && isNaN(file.floorNo)) {
-            validationArray.push('تعداد طبقات');
-        }
-        return validationArray;
-    }
-
-    function showValidationError(validationArray) {
-        ipcRenderer.send('showFileValidationError', validationArray);
-    }
-
     // Get the btnSubmit
     var btnNew = document.getElementById("btn-new");
     btnNew.addEventListener("click", function () {
@@ -1981,47 +1996,42 @@
 
     // Get the btnSubmit
     var btnSubmit = document.getElementById("btn-submit");
-    btnSubmit.addEventListener("click", submitFile);
-
-    function submitFile() {
-        var table = document.querySelector('#table');
+    btnSubmit.addEventListener("click", function () {
+        var table = document.querySelector('#tableRow');
         var requestArray = [];
         //for (var index in table.rows) {
-        for (var index = 0; index < table.childElementCount - 1; index++) {
-            let saleTypeValue = ['خارجی','معاوضه','مشارکت', 'رهن', 'اجاره', 'فروش'];
+        for (var index = 0; index < table.rows.length; index++) {
             var saleTypeList = document.getElementsByName('saleType[]');
             var saleType = "";
             for (var i = 0, n = saleTypeList.length; i < n; i++) {
                 if (saleTypeList[i].checked) {
-                    saleType = saleTypeValue[i];
+                    saleType = saleTypeList[i].value;
                 }
             }
             var participationList = document.getElementsByName('participation[]');
-            let participationValue = ['همه', 'خصوصی', 'تعاون مشاور'];
             var participation = "";
             for (var j = 0, m = participationList.length; j < m; j++) {
                 if (participationList[j].checked) {
-                    participation = participationValue[j];
+                    participation = participationList[j].value;
                 }
             }
             var requestBody = {
                 Id: document.querySelector('#number').value,
-                Number: parseInt(document.querySelector('#number').value.split('fl-')[1]),
-                tel1: StringUtils.convertNumbersToEnglish(document.querySelector('#tel1').value),
-                tel2: StringUtils.convertNumbersToEnglish(document.querySelector('#tel2').value),
-                tel3: StringUtils.convertNumbersToEnglish(document.querySelector('#tel3').value),
-                // tel4: document.querySelector('#tel4').value,
-                // tel5: document.querySelector('#tel5').value,
+                Number: document.querySelector('#number').value.split('cl-')[1],
+                tel1: document.querySelector('#tel1').value,
+                tel2: document.querySelector('#tel2').value,
+                tel3: document.querySelector('#tel3').value,
+                tel4: document.querySelector('#tel4').value,
+                tel5: document.querySelector('#tel5').value,
                 address: document.querySelector('#address').value,
-                owner: StringUtils.convertNumbersToEnglish(document.querySelector('#owner').value),
+                owner: document.querySelector('#owner').value,
                 regionCode: StringUtils.convertNumbersToEnglish(document.querySelector('#regionCode').value),
-                regionName: StringUtils.convertNumbersToEnglish(document.querySelector('#regionName').value),
+                regionName: document.querySelector('#regionName').value,
                 date: parseInt(StringUtils.convertShamsiToMillisecond(document.querySelector('#date').value)),
                 sale: saleType,
-                rent: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#rentPrice').value.replace(/,/g, ''))),
-                mortgage: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#mortgagePrice').value.replace(/,/g, ''))),
+                rent: parseInt(document.querySelector('#rentPrice').value.replace(/,/g, '')),
+                mortgage: parseInt(document.querySelector('#mortgagePrice').value.replace(/,/g, '')),
                 apartment: document.querySelector('#apartment').value,
-                land: document.querySelector('#land').value,
                 vila: document.querySelector('#vila').value,
                 building: document.querySelector('#mostaghelat').value,
                 home: document.querySelector('#home').checked,
@@ -2033,20 +2043,19 @@
                 south: document.querySelector('#south').checked,
                 east: document.querySelector('#east').checked,
                 west: document.querySelector('#west').checked,
-                floorNo: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#tabaghat').value)),
-                unitNo: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#vahed').value)),
+                floorNo: parseInt(document.querySelector('#tabaghat').value),
+                unitNo: parseInt(document.querySelector('#vahed').value),
                 unitComment: document.querySelector('#unitComment').value,
-                totalPrice: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#totalPrice').value.replace(/,/g, ''))),
-                totalUnit: StringUtils.convertNumbersToEnglish(document.querySelector('#totalVahed').value),
+                totalPrice: parseInt(document.querySelector('#totalPrice').value.replace(/,/g, '')),
                 priceComment: document.querySelector('#priceComment').value,
-                pool: document.querySelector('#pool').value,
-                sona: document.querySelector('#sona').value,
-                jakozi: document.querySelector('#jakoozi').value,
-                area: parseFloat(StringUtils.convertNumbersToEnglish(document.querySelector('#area').value)),
-                density: parseFloat(StringUtils.convertNumbersToEnglish(document.querySelector('#density').value)),
-                front: parseFloat(StringUtils.convertNumbersToEnglish(document.querySelector('#toolBar').value)),
-                height: parseFloat(StringUtils.convertNumbersToEnglish(document.querySelector('#height').value)),
-                modify: StringUtils.convertNumbersToEnglish(document.querySelector('#corrective').value),
+                pool: document.querySelector('#pool').checked,
+                sona: document.querySelector('#sona').checked,
+                jakozi: document.querySelector('#jakoozi').checked,
+                area: parseInt(document.querySelector('#area').value),
+                density: document.querySelector('#density').value,
+                front: document.querySelector('#toolBar').value,
+                height: document.querySelector('#height').value,
+                modify: document.querySelector('#corrective').value,
                 yard: document.querySelector('#yard').value,
                 smallYard: document.querySelector('#backYard').value,
                 underGround: document.querySelector('#basement').value,
@@ -2055,7 +2064,7 @@
                 residential: document.querySelector('#residential').checked,
                 empty: document.querySelector('#discharge').value,
                 rented: document.querySelector('#rented').value,
-                age: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#ageBuilding').value)),
+                age: parseInt(document.querySelector('#ageBuilding').value),
                 frontKind: document.querySelector('#view').value,
                 source: document.querySelector('#InformationSource').value,
                 publisher: document.querySelector('#ownerName').value,
@@ -2065,25 +2074,22 @@
                 inHurry: document.querySelector('#isHurry').checked,
                 equipments: equipments,
                 participation: participation,
-                username: document.querySelector('#username').value,
-                unitFloor: StringUtils.convertNumbersToEnglish(document.querySelector('#tableFloor' + index).value),
-                unitBuiltUpArea: StringUtils.convertNumbersToEnglish(document.querySelector('#tableZirBana' + index).value),
-                unitRoom: StringUtils.convertNumbersToEnglish(document.querySelector('#tableKhab' + index).value),
+                username: document.querySelector('#ownerName').value,
+                unitFloor: document.querySelector('#tableFloor' + index).value,
+                unitBuiltUpArea: document.querySelector('#tableZirBana' + index).value,
+                unitRoom: document.querySelector('#tableKhab' + index).value,
                 unitBalcony: document.querySelector('#tableBalcon' + index).checked,
                 unitTelephone: document.querySelector('#tableTelephone' + index).value,
                 unitKitchen: document.querySelector('#tableKitchen' + index).value,
                 unitWC: document.querySelector('#tableWC' + index).value,
                 unitFloorCovering: document.querySelector('#tableKafPoosh' + index).value,
-                unitParking: document.querySelector('#tableParking' + index).value,
-                unitAnbari: document.querySelector('#tableAnbari' + index).value,
                 unitOpen: document.querySelector('#tableOpen' + index).checked,
-                unitTotalAmount: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#tableTotalAmount' + index).value.replace(/,/g, ''))),
-                unitMetri: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#tableMetri' + index).value.replace(/,/g, ''))),
-                unitPrice: parseInt(document.querySelector('#metri').value.replace(/,/g, '')),
+                unitPrice: _.isEmpty(document.querySelector('#tableMetri' + index).value) ?
+                    parseInt(document.querySelector('#metri').value.replace(/,/g, '')) :
+                    parseInt(document.querySelector('#tableMetri' + index).value),
             };
             requestArray.push(requestBody);
         }
-        let validationArray = validateInsertFile(requestArray);
         isDisabled ? ipcRenderer.send('editFile', {
                 Id: document.querySelector('#number').value,
                 isDeleted: false,
@@ -2091,9 +2097,8 @@
                 isRented: false,
                 isDontCall: false,
             }) :
-            (isEdit ? ipcRenderer.send('editFile', requestArray[0]) :
-                (_.isEmpty(validationArray) ? ipcRenderer.send('setFile', requestArray) : showValidationError(validationArray)));
-    }
+            (isEdit ? ipcRenderer.send('editFile', requestArray[0]) : ipcRenderer.send('setFile', requestArray));
+    });
 
     function onFileStateChange(id) {
         if (store.get('userData').deleteFile) {
@@ -2126,20 +2131,7 @@
     function onFilePrintClick() {
         ipcRenderer.send('openPrintFile', editFile);
     }
-
-    function saleTypePermission(saleType) {
-        if (store.get('userData').saleTypePermission && store.get('userData').saleTypePermission.includes(saleType)) {
-            return true;
-        }
-        return false;
-    }
-
-    function noeMelkPermission(noeMelk) {
-        if (store.get('userData').noeMelkPermission && store.get('userData').noeMelkPermission.includes(noeMelk)) {
-            return true;
-        }
-        return false;
-    }
 </script>
 </body>
+
 </html>

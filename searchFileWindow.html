@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <script>
         var $ = jQuery = require("jquery")
     </script>
@@ -13,6 +13,14 @@
     <link href="libraries/jquery-editable-select.min.css"
           rel="stylesheet">
     <link rel="stylesheet" href="node_modules/persian-datepicker/dist/css/persian-datepicker.css"/>
+    <meta name="viewport" content="width=1024, maximum-scale=1.0"/>
+    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png"/>
+    <meta name="og:type" content="website"/>
+    <meta name="twitter:card" content="photo"/>
+    <link rel="stylesheet" type="text/css" href="css/search.css"/>
+    <link rel="stylesheet" type="text/css" href="css/styleguideSearch.css"/>
+    <link rel="stylesheet" type="text/css" href="css/globals.css"/>
+    <meta name="author" content="AnimaApp.com - Design to code, Automated."/>
     <style>
         @font-face {
             font-family: IRANSansMobileFaNum-Light;
@@ -21,141 +29,15 @@
             url("./fonts/IRANSansMobileFaNum-Light.ttf") format('truetype');
         }
 
-        body {
-            background: #fff;
-            font-family: IRANSansMobileFaNum-Light;
+        @font-face {
+            font-family: IRANSansMobileFaNum-Bold;
+            src: url("./fonts/IRANSansMobileFaNum-Bold.eot") format('eot'),
+            url("./fonts/IRANSansMobileFaNum-Bold.woff") format('woff'),
+            url("./fonts/IRANSansMobileFaNum-Bold.ttf") format('truetype');
         }
 
-        .container {
-            min-height: 100vh;
-            display: flex;
-            float: none;
-            font-size: 12px;
-        }
-
-        .container-row {
-            display: flex;
-            flex-direction: row-reverse;
-        }
-
-        .container-border {
-            border-style: groove;
-            border-width: 0.5px;
-            display: flex;
-            justify-content: center;
-            padding: 10px 0;
-            margin: 2px;
-        }
-
-        .container .left-container {
-            width: 33%;
-        }
-
-        .container .right-container {
-            width: 75%;
-        }
-
-        div fieldset legend {
-            text-align: right;
-        }
-
-        .date-inner {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .to-date {
-            flex: 1;
-        }
-
-        .prev-week {
-            flex: 1;
-        }
-
-        .button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 12px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-
-        .button5 {
-            border-radius: 50%;
-        }
-
-        .sale-type-label {
-            font-size: 15px;
-            color: crimson;
-            margin-right: 10px;
-            margin-left: 20px;
-        }
-
-        .type-inner {
-            display: flex;
-            justify-content: center;
-        }
-
-        .fieldsetContainer {
-            width: 100%;
-            direction: rtl;
-        }
-
-        /* Style the tab */
-        .tab {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-        }
-
-        /* Style the buttons inside the tab */
-        .tab button {
-            background-color: inherit;
-            float: right;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 8px 16px;
-            transition: 0.3s;
-            font-size: 12px;
-            font-family: IRANSansMobileFaNum-Light;
-        }
-
-        /* Change background color of buttons on hover */
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        /* Create an active/current tablink class */
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-        /* Style the tab content */
-        .tabcontent {
+        body::-webkit-scrollbar {
             display: none;
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-top: none;
-            direction: rtl;
-        }
-
-        .btn-submit {
-            width: 60px;
-            height: 30px;
-            background-color: #78ff4c;
-            border: 0;
-            border-radius: 10px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-family: IRANSansMobile-Bold;
         }
 
         #loading {
@@ -171,26 +53,13 @@
             text-align: center;
         }
 
-        #code {
-            max-width: 70%;
-        }
-
-        #source {
-            width: 125px;
-        }
-
-        #corrector {
-            width: 125px;
-        }
-
-        .horizontalScrollView {
-            white-space: nowrap;
-        }
-
         div#equipmentResultList {
             display: flex;
             flex-wrap: wrap;
             height: auto;
+            margin-top: 30px;
+            margin-right: 10px;
+            direction: rtl;
         }
 
         .equipmentResult {
@@ -238,6 +107,9 @@
             float: right;
             font-size: 28px;
             font-weight: bold;
+            display: flex;
+            justify-content: flex-end;
+            flex: 1;
         }
 
         .close:hover,
@@ -248,9 +120,17 @@
         }
 
         .modal-header {
-            padding: 2px 16px;
+            padding: 20px 16px;
             background-color: #5cb85c;
             color: white;
+            direction: rtl;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            flex: 1;
         }
 
         .modal-body {
@@ -304,19 +184,6 @@
             }
         }
 
-        .btn-submit {
-            margin-right: 10px;
-            padding-left: 10px;
-            padding-right: 10px;
-            height: 30px;
-            background-image: linear-gradient(rgb(45 47 146), white);
-            border: 0;
-            border-radius: 10px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-family: IRANSansMobile-Bold;
-        }
-
         div#equipmentList {
             display: flex;
             flex-wrap: wrap;
@@ -325,584 +192,334 @@
         }
 
         .equipment {
-            width: 25%;
+            width: 10%;
             height: auto;
-            flex: 0 1 25%;
+            flex: 0 1 15%;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             margin-top: 10px;
+            font-size: 13px;
         }
 
         input {
-            background-image: linear-gradient(
-                    89deg, #130de622, white) !important;
-            border-width: 0.5px;
-            border-radius: 5px;
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        select {
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        option {
+            direction: rtl;
+            font-family: IRANSansMobileFaNum-Light;
+        }
+
+        #codeListContainer::-webkit-scrollbar {
+            display: none;
+        }
+
+        .datepicker-container {
+            direction: rtl !important;
+        }
+
+        .es-list {
+            max-width: 100px !important;
+        }
+
+        .es-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .es-list li {
+            font-size: 12px !important;
+            text-align: right !important;
+        }
+
+        #regionNameAreaList li {
+            margin-right: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        #regionNameResultAreaList li {
+            margin-right: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 13px;
         }
 
     </style>
 </head>
-<body>
+<body style="margin: 0; background: #eff9f9; font-family: IRANSansMobileFaNum-Light;">
+
 <div id="loading">
     <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
 </div>
-<div>
-    <div class="container">
-        <div class="left-container">
-            <div style="overflow-x: scroll" class="container-row">
-                <fieldset id="codeListContainer" class="fieldsetContainer horizontalScrollView">
-                    <legend>مناطق</legend>
-                    <label>کد:</label>
-                    <input id="addTableButton" type="image" src="images/plus.png" style="width: 10px; height: 10px"
-                           onclick="onAddRegionCodeClick()"/>
-                </fieldset>
+
+<input type="hidden" id="anPageName" name="page" value="search"/>
+<div class="container-center-horizontal">
+    <div class="search screen">
+        <div class="overlap-group10">
+            <img class="path-24" src="img/path-24@1x.png"/><img
+                class="path-file-restore"
+                src="img/path---file-restore-1@1x.png"
+                id="btn-reload"
+                style="cursor: pointer"
+        /><img class="path-file-search" src="img/path---file-search@1x.png" id="btn-submit"
+               style="cursor: pointer"/><img
+                class="path-file-search-1"
+                src="img/path---file-search@1x.png"
+                style="cursor: pointer"
+        />
+        </div>
+        <div class="overlap-group5 border-1px-navy-blue">
+            <input class="rectangle-9-1 border-1px-navy-blue" id="toRent" tabindex="14"/>
+            <div class="text-171 iransans-light-black-13px">تا</div>
+            <div class="overlap-group17">
+                <div class="text-169 iransans-light-black-13px">اجاره</div>
+                <input class="rectangle-9 border-1px-navy-blue" id="fromRent" tabindex="13"/>
             </div>
-            <div class="container-row" style="justify-content: center">
-                <div style="width: 40%; margin-top: 12px">
-                    <div>
-                        <select name="code" id="code">
-                        </select>
-                        <label>:کد</label>
-                    </div>
-                    <ul id="regionNameAreaList"
-                        style="height: 166px;border-style: groove;border-width: 0.5px;direction: rtl">
-
-                    </ul>
+            <div class="text-170 iransans-light-black-13px">: از</div>
+        </div>
+        <div class="overlap-group15 border-1px-navy-blue">
+            <div class="text-163 iransans-light-black-13px">توضیح قیمت</div>
+            <div class="x iransans-light-black-13px"></div>
+            <select class="rectangle-9-2 border-1px-navy-blue" id="priceDescription" tabindex="21"></select>
+        </div>
+        <div class="overlap-group14">
+            <div class="rectangle-163 border-1px-navy-blue"></div>
+            <div class="text-163 iransans-light-black-13px">قیمت متری</div>
+            <input class="rectangle-9-3 border-1px-navy-blue" id="fromMetri" tabindex="17"/>
+            <input class="rectangle-9-4 border-1px-navy-blue" id="toMetri" tabindex="18"/>
+            <div class="text-164 iransans-light-black-13px">: از</div>
+            <div class="text-165 iransans-light-black-13px">تا</div>
+        </div>
+        <div class="overlap-group8">
+            <div class="rectangle-162 border-1px-navy-blue"></div>
+            <div class="text-166 iransans-light-black-13px">ودیعه</div>
+            <input class="rectangle-9-5 border-1px-navy-blue" id="fromMortgage" tabindex="11"/>
+            <input class="rectangle-9-6 border-1px-navy-blue" id="toMortgage" tabindex="12"/>
+            <div class="text-167 iransans-light-black-13px">: از</div>
+            <div class="text-168 iransans-light-black-13px">تا</div>
+        </div>
+        <div class="overlap-group border-1px-navy-blue">
+            <input class="rectangle-9-7 border-1px-navy-blue" id="toTotalPrice" tabindex="16"/>
+            <div class="text-162 iransans-light-black-13px">تا</div>
+            <div class="overlap-group18">
+                <div class="text-160 iransans-light-black-13px">قیمت کل</div>
+                <input class="rectangle-9 border-1px-navy-blue" id="fromTotalPrice" tabindex="15"/>
+            </div>
+            <div class="text-161 iransans-light-black-13px">: از</div>
+        </div>
+        <div class="overlap-group13 border-1px-navy-blue">
+            <input class="rectangle-9-8 border-1px-navy-blue" id="telephone" tabindex="20"/>
+            <div class="text-180 iransans-light-black-13px">:تلفن</div>
+            <div class="overlap-group19">
+                <div class="text-178 iransans-light-black-13px">مالک</div>
+                <input class="rectangle-9-9 border-1px-navy-blue" id="owner" tabindex="19"/>
+            </div>
+            <div class="text-179 iransans-light-black-13px">: نام</div>
+        </div>
+        <div class="overlap-group16 border-1px-navy-blue">
+            <div class="text-181 iransans-light-black-13px">آدرس ملک</div>
+            <input class="rectangle-9-10 border-1px-navy-blue" id="address" tabindex="22"/>
+        </div>
+        <div class="overlap-group2 border-1px-navy-blue">
+            <div class="flex-row">
+                <input class="rectangle-9-11 border-1px-navy-blue" id="toToolBar" tabindex="31"/>
+                <div class="text-183 iransans-light-black-13px">تا</div>
+                <div class="flex-col">
+                    <div class="text-182 iransans-light-black-13px">طول بر</div>
+                    <input class="rectangle-53 border-1px-navy-blue" id="fromToolBar" tabindex="30"/>
                 </div>
-
-                <div style="width: 40%; margin-right: 50px">
-                    <ul id="regionNameResultAreaList"
-                        style="height: 198px;border-style: groove;border-width: 0.5px;direction: rtl">
-
-                    </ul>
+                <div class="text-184 iransans-light-black-13px">: از</div>
+                <input class="rectangle-9-12 border-1px-navy-blue" id="toArea" tabindex="29"/>
+                <div class="text-200 iransans-light-black-13px">تا</div>
+            </div>
+            <div class="flex-col-1">
+                <div class="flex-row-1">
+                    <div class="text-199 iransans-light-black-13px">مساحت زمین</div>
+                    <div class="text-202 iransans-light-black-13px">زیربنا</div>
+                </div>
+                <div class="flex-row-2">
+                    <input class="rectangle-53-1 border-1px-navy-blue" id="fromArea" tabindex="28"/>
+                    <div class="text-201 iransans-light-black-13px">: از</div>
+                    <input class="rectangle-9-13 border-1px-navy-blue" id="toZirbana" tabindex="27">
+                    <div class="text-203 iransans-light-black-13px">تا</div>
+                    <input class="rectangle-53-2 border-1px-navy-blue" id="fromZirbana" tabindex="26"/>
+                    <div class="text-204 iransans-light-black-13px">: از</div>
                 </div>
             </div>
+        </div>
+        <div class="overlap-group3 border-1px-navy-blue">
+            <div class="overlap-group21">
+                <div class="text-198 iransans-light-black-13px">تنظیم کننده</div>
+                <input class="rectangle border-1px-navy-blue" id="corrector" tabindex="36"/>
+            </div>
+            <div class="overlap-group22">
+                <div class="text-197 iransans-light-black-13px">ثبت کننده</div>
+                <input class="rectangle border-1px-navy-blue" id="username" tabindex="35"/>
+            </div>
+            <div class="overlap-group20">
+                <div class="text-193 iransans-light-black-13px">کف پوش</div>
+                <select class="rectangle-53-3 border-1px-navy-blue" id="kafpoosh" tabindex="34"></select>
+            </div>
+            <input type="checkbox" class="rectangle-9-14 border-1px-navy-blue" id="unitOpen" tabindex="33"/>
+            <div class="open iransans-light-black-15px">Open</div>
+            <div class="flex-col-2">
+                <div class="text-195 iransans-light-black-13px">سرویس آشپزخانه</div>
+                <select class="rectangle-53-4 border-1px-navy-blue" id="kitchen" tabindex="32"></select>
+            </div>
+        </div>
+        <div class="overlap-group1 border-1px-navy-blue">
+            <div class="overlap-group24">
+                <div class="text-194 iransans-light-black-13px">سند</div>
+                <select class="rectangle-53-5 border-1px-navy-blue" id="documentStatus" tabindex="38"></select>
+            </div>
+            <div class="overlap-group23">
+                <div class="text-196 iransans-light-black-13px">نما</div>
+                <select class="rectangle-53-6 border-1px-navy-blue" id="nama" tabindex="37"></select>
+            </div>
+        </div>
+        <div class="overlap-group9 border-1px-navy-blue">
+            <div class="flex-col-3">
+                <select class="rectangle-34 border-1px-navy-blue" id="pool" tabindex="39"></select>
+                <select class="rectangle-34-1 border-1px-navy-blue" id="sauna" tabindex="40"></select>
+                <select class="rectangle-34-2 border-1px-navy-blue" id="Jacuzzi" tabindex="41"></select>
+            </div>
+            <div class="flex-col-4">
+                <div class="text-18 iransans-light-chocolate-13px">: استخر</div>
+                <div class="text-186 iransans-light-chocolate-13px">: سونا</div>
+                <div class="text-187 iransans-light-chocolate-13px">: جکوزی</div>
+            </div>
+        </div>
+        <div class="overlap-group12 border-1px-navy-blue">
+            <div class="flex-col-5">
+                <div class="text-192 iransans-light-black-13px">طبقه</div>
+                <input class="rectangle-54 border-1px-navy-blue" id="floorCount" tabindex="25"/>
+            </div>
+            <input class="rectangle-9-15 border-1px-navy-blue" id="toAge" tabindex="24"/>
+            <div class="text-190 iransans-light-black-13px">تا</div>
+            <div class="flex-col-6">
+                <div class="text-18 iransans-light-black-13px">سن بنا</div>
+                <input class="rectangle-53-7 border-1px-navy-blue" id="fromAge" tabindex="23"/>
+            </div>
+            <div class="text-191 iransans-light-black-13px">: از</div>
+        </div>
+        <div class="overlap-group7 border-1px-dove-gray">
+            <input class="rectangle-9-16 border-1px-navy-blue date-picker" id='toDate' tabindex="2"/>
+            <div class="text-145 iransans-light-black-13px">تا</div>
+            <div class="flex-col-7">
+                <div class="text-143 iransans-light-denim-13px">تاریخ</div>
+                <input class="rectangle-9-17 border-1px-navy-blue date-picker" id='fromDate' tabindex="1"/>
+            </div>
+            <div class="text-144 iransans-light-black-13px">: از</div>
+        </div>
+        <div class="overlap-group4 border-1px-dove-gray">
             <div>
-
-
-                <div class="tab">
-                    <button class="tablinks active" onclick="openTab(event, 'floor')">طبقه - واحد</button>
-                    <button class="tablinks" onclick="openTab(event, 'detail1')">جزییات۱</button>
-                    <button class="tablinks" onclick="openTab(event, 'detail2')">جزییات۲</button>
-                </div>
-
-                <div id="floor" class="tabcontent" style="display: block">
-                    <div class="container-row" style="flex-direction: row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>طبقه</legend>
-                            <input type="text" name="floorCount" id="floorCount">
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>تعداد طبقات</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromFloorCount">از:</label>
-                                    <input type="text" name="fromFloorCount" id="fromFloorCount" style="width: 40px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toFloorCount">تا:</label>
-                                    <input type="text" name="toFloorCount" id="toFloorCount" style="width: 40px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>
-                    <div style="display: flex; justify-content: center; margin: 5px">
-                        <fieldset class="fieldsetContainer" style="width: fit-content">
-                            <legend>تعداد کل واحدها</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromVahedCount">از:</label>
-                                    <input type="text" name="fromVahedCount" id="fromVahedCount" style="width: 50px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toVahedCount">تا:</label>
-                                    <input type="text" name="toVahedCount" id="toVahedCount" style="width: 50px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>
-                    <!--<div style="display: flex; justify-content: center; margin: 5px">
-                        <fieldset class="fieldsetContainer" style="width: fit-content">
-                            <legend>تعداد واحد در هر طبقه</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromVahedCountPerFloor">از:</label>
-                                    <input type="text" name="fromVahedCountPerFloor" id="fromVahedCountPerFloor"
-                                           style="width: 50px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toVahedCountPerFloor">تا:</label>
-                                    <input type="text" name="toVahedCountPerFloor" id="toVahedCountPerFloor"
-                                           style="width: 50px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>-->
-                </div>
-
-                <div id="detail1" class="tabcontent">
-                    <div class="container-row" style="flex-direction: row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>سرویس بهداشتی</legend>
-                            <select name="wc" id="wc">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>خط تلفن</legend>
-                            <select name="phoneLine" id="phoneLine">
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div class="container-row" style="flex-direction: row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>حیاط</legend>
-                            <select name="yard" id="yard">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>زیر زمین</legend>
-                            <input type="text" name="basement" id="basement">
-                        </fieldset>
-                    </div>
-                    <div class="container-row" style="flex-direction: row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>حیاط خلوت</legend>
-                            <select name="backyard" id="backyard">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>سکونت مالک</legend>
-                            <select name="residenceOwner" id="residenceOwner">
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div class="container-row" style="flex-direction: row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>مستخدم</legend>
-                            <select name="servant" id="servant">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>وضعیت سند</legend>
-                            <select name="documentStatus" id="documentStatus">
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-
-                <div id="detail2" class="tabcontent">
-                    <div class="container-row" style="flex-direction: row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>منبع</legend>
-                            <select name="source" id="source">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>تنظیم کننده</legend>
-                            <select name="corrector" id="corrector">
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div class="container-row" style="flex-direction: row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>ارتفاع</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromHeight">از:</label>
-                                    <input type="text" name="fromHeight" id="fromHeight" style="width: 50px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toHeight">تا:</label>
-                                    <input type="text" name="toHeight" id="toHeight" style="width: 50px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>تراکم</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromDensity">از:</label>
-                                    <input type="text" name="fromDensity" id="fromDensity" style="width: 50px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toDensity">تا:</label>
-                                    <input type="text" name="toDensity" id="toDensity" style="width: 50px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>
-                    <div class="container-row" style="flex-direction: row">
-                        <div class="container-border" style="flex-direction: column; width: 60%; align-items: center">
-                            <div class="from-date">
-                                <label for="pool">استخر:</label>
-                                <input type="checkbox" name="pool" id="pool">
-                            </div>
-                            <div class="from-date">
-                                <label for="sauna">سونا:</label>
-                                <input type="checkbox" name="sauna" id="sauna">
-                            </div>
-                            <div class="from-date">
-                                <label for="Jacuzzi">جکوزی:</label>
-                                <input type="checkbox" name="Jacuzzi" id="Jacuzzi">
-                            </div>
-                        </div>
-                        <div class="container-border" style="flex-direction: column; width: 40%; align-items: center">
-                            <div class="from-date">
-                                <label for="residential">مسکونی</label>
-                                <input type="checkbox" name="residential" value="checkbox" id="residential">
-                            </div>
-                            <div class="from-date">
-                                <label for="empty">تخلیه</label>
-                                <input type="checkbox" name="empty" value="checkbox" id="empty">
-                            </div>
-                            <div class="from-date">
-                                <label for="Jacuzzi">اجاره</label>
-                                <input type="checkbox" name="rent" value="checkbox" id="rent">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
+                <select class="rectangle-9-18 border-1px-navy-blue" id="moshakhase" tabindex="4"></select>
             </div>
-            <div class="container-row container-border">
-                <label style="color: #9b0000; margin: 2px 5px">
-                    <input type="checkbox" name="existType" value="checkbox" id="exist">
-                    موجود</label>
-                <br>
-                <label style="color: #9b0000; margin: 2px 5px">
-                    <input type="checkbox" name="existType" value="checkbox" id="archive">
-                    بایگانی</label>
-                <br>
+            <div class="text-148 iransans-light-black-13px">:مشخصه</div>
+            <div class="flex-col-8">
+                <div class="text-146">نوع ملک</div>
+                <select class="rectangle-9-19 border-1px-navy-blue" id="noeMelk" tabindex="3">
+                    <option value="آپارتمان">آپارتمان</option>
+                    <option value="ویلا">ویلا</option>
+                    <option value="مستغلات">مستغلات</option>
+                    <option value="کلنگی">کلنگی</option>
+                    <option value="دفتر کار">دفتر کار</option>
+                    <option value="زمین">زمین</option>
+                    <option value="مغازه">مغازه</option>
+                    <option value="سوییت">سوییت</option>
+                </select>
+            </div>
+            <div class="text-147 iransans-light-black-13px">: نوع</div>
+        </div>
+        <div class="overlap-group11 border-1px-dove-gray">
+            <div class="text-205 iransans-light-denim-13px">جهت</div>
+            <div class="flex-row-3">
+                <input type="checkbox" class="ch-gharbi border-1px-denim" id="direction_west" tabindex="48"/>
+                <div class="text-152 iransans-light-black-13px">غربی</div>
+                <input type="checkbox" class="flex-row-item border-1px-denim" id="direction_east" tabindex="47"/>
+                <div class="text-150 iransans-light-black-13px">شرقی</div>
+                <input type="checkbox" class="flex-row-item border-1px-denim" id="direction_south" tabindex="46"/>
+                <div class="text-149 iransans-light-black-13px">جنوبی</div>
+                <input type="checkbox" class="ch-shomali border-1px-denim" id="direction_north" tabindex="45"/>
+                <div class="text-151 iransans-light-black-13px">شمالی</div>
             </div>
         </div>
-        <div class="right-container">
-            <div class="container-row">
-                <fieldset class="fieldsetContainer">
-                    <legend>تاریخ</legend>
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromDate">از:</label>
-                            <input class='validate textInput font-text-light date-picker' type='text' name='fromDate'
-                                   id='fromDate'/>
-                        </div>
-                        <div class="to-date">
-                            <label for="toDate">تا:</label>
-                            <input class='validate textInput font-text-light date-picker' type='text' name='toDate'
-                                   id='toDate'/>
-                        </div>
-                    </div>
-                    <div class="date-inner">
-                        <div style="flex: 1">
-                            <button class="button button5" onclick="onCurrentDateClick()">تاریخ روز</button>
-                        </div>
-                        <!--<div class="prev-week">
-                            <label>هفته قبل</label>
-                            <input type="number" style="width: 30px">
-                        </div>-->
-                    </div>
-
-
-                </fieldset>
-
-                <fieldset class="fieldsetContainer">
-                    <legend>نوع ملک</legend>
-                    <div class="type-inner">
-                        <select name="noeMelk" id="noeMelk">
-                            <option value="آپارتمان">آپارتمان</option>
-                            <option value="ویلا">ویلا</option>
-                            <option value="مستغلات">مستغلات</option>
-                            <option value="کلنگی">کلنگی</option>
-                            <option value="دفتر کار">دفتر کار</option>
-                        </select>
-                        <label>:مشخصه</label>
-                        <select name="moshakhase" id="moshakhase">
-                        </select>
-                    </div>
-
-                </fieldset>
-
-                <fieldset style="width: 20%; direction: rtl">
-                    <legend> جهت ملک</legend>
-                    <p>
-                        <label>
-                            <input type="checkbox" name="direction" value="checkbox" id="direction_north">
-                            شمالی</label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="direction" value="checkbox" id="direction_south">
-                            جنوبی</label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="direction" value="checkbox" id="direction_east">
-                            شرقی</label>
-                        <br>
-                        <label>
-                            <input type="checkbox" name="direction" value="checkbox" id="direction_west">
-                            غربی</label>
-                        <br>
-                    </p>
-                </fieldset>
-            </div>
-            <div class="container-row container-border">
-                <label class="sale-type-label">
-                    <input type="checkbox" name="saleType" value="فروش" id="sale">
-                    فروش</label>
-                <label class="sale-type-label">
-                    <input type="checkbox" name="saleType" value="مشارکت" id="collabration">
-                    مشارکت</label>
-                <label class="sale-type-label">
-                    <input type="checkbox" name="saleType" value="معاوضه" id="exchange">
-                    معاوضه</label>
-                <label class="sale-type-label">
-                    <input type="checkbox" name="saleType" value="اجاره و رهن" id="rentAndMortinage">
-                    اجاره و رهن</label>
-
-                <label class="sale-type-label">
-                    <input type="checkbox" name="saleType" value="رهن کامل" id="mortinage">
-                    رهن کامل</label>
-                <label class="sale-type-label">
-                    <input type="checkbox" name="saleType" value="اجاره به خارجی" id="rentToForeigner">
-                    اجاره به خارجی</label>
-            </div>
-            <div class="container-row">
-                <fieldset class="fieldsetContainer">
-                    <legend>آدرس</legend>
-
-                    <input type="text" name="address1" id="address1">
-                    <input type="text" name="address2" id="address2">
-                    <input type="text" name="address3" id="address3">
-
-                </fieldset>
-
-                <fieldset style="width: 30%; direction: rtl">
-                    <legend>تلفن</legend>
-
-                    <input type="text" name="telephone" id="telephone">
-                </fieldset>
-
-                <fieldset style="width: 30%; direction: rtl">
-                    <legend> مالک</legend>
-                    <input type="text" name="owner" id="owner">
-                </fieldset>
-            </div>
-            <div class="container-row">
-                <fieldset class="fieldsetContainer">
-                    <legend>ودیعه</legend>
-
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromMortgage">از:</label>
-                            <input type="text" name="fromMortgage" id="fromMortgage">
-                        </div>
-                        <div class="to-date">
-                            <label for="toMortgage">تا:</label>
-                            <input type="text" name="toMortgage" id="toMortgage">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <fieldset class="fieldsetContainer">
-                    <legend>اجاره</legend>
-
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromRent">از:</label>
-                            <input type="text" name="fromRent" id="fromRent">
-                        </div>
-                        <div class="to-date">
-                            <label for="toRent">تا:</label>
-                            <input type="text" name="toRent" id="toRent">
-                        </div>
-                    </div>
-
-                </fieldset>
-
-            </div>
-            <div class="container-row">
-                <fieldset class="fieldsetContainer">
-                    <legend>متری</legend>
-
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromMetri">از:</label>
-                            <input type="text" name="fromMetri" id="fromMetri">
-                        </div>
-                        <div class="to-date">
-                            <label for="toMetri">تا:</label>
-                            <input type="text" name="toMetri" id="toMetri">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <fieldset class="fieldsetContainer">
-                    <legend>قیمت کل</legend>
-
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromTotalPrice">از:</label>
-                            <input type="text" name="fromTotalPrice" id="fromTotalPrice">
-                        </div>
-                        <div class="to-date">
-                            <label for="toTotalPrice">تا:</label>
-                            <input type="text" name="toTotalPrice" id="toTotalPrice">
-                        </div>
-                    </div>
-
-                </fieldset>
-
-            </div>
-            <div class="container-row">
-                <fieldset class="fieldsetContainer">
-                    <legend>خواب</legend>
-
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromBed">از:</label>
-                            <input type="text" name="fromBed" id="fromBed" style="width: 70px">
-                        </div>
-                        <div class="to-date">
-                            <label for="toBed">تا:</label>
-                            <input type="text" name="toBed" id="toBed" style="width: 70px">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <fieldset class="fieldsetContainer">
-                    <legend>سن بنا</legend>
-
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromAge">از:</label>
-                            <input type="text" name="fromAge" id="fromAge" style="width: 70px">
-                        </div>
-                        <div class="to-date">
-                            <label for="toAge">تا:</label>
-                            <input type="text" name="toAge" id="toAge" style="width: 70px">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <fieldset class="fieldsetContainer">
-                    <legend>شماره</legend>
-
-                    <div class="date-inner">
-                        <div class="from-date">
-                            <label for="fromNumber">از:</label>
-                            <input type="text" name="fromNumber" id="fromNumber" style="width: 70px">
-                        </div>
-                        <div class="to-date">
-                            <label for="toNumber">تا:</label>
-                            <input type="text" name="toNumber" id="toNumber" style="width: 70px">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <fieldset class="fieldsetContainer">
-                    <legend>توضیح قیمت</legend>
-                    <input type="text" name="priceDescription" id="priceDescription">
-                </fieldset>
-
-            </div>
-            <div class="container-row">
-                <div style="width: 100%">
-                    <div class="container-row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>کف پوش</legend>
-                            <select name="kafpoosh" id="kafpoosh">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>زیر بنا</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromZirbana">از:</label>
-                                    <input type="text" name="fromZirbana" id="fromZirbana" style="width: 70px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toZirbana">تا:</label>
-                                    <input type="text" name="toZirbana" id="toZirbana" style="width: 70px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>
-                    <div class="container-row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>سرویس آشپزخانه</legend>
-                            <select name="kitchen" id="kitchen">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>مساحت زمین</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromArea">از:</label>
-                                    <input type="text" name="fromArea" id="fromArea" style="width: 70px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toArea">تا:</label>
-                                    <input type="text" name="toArea" id="toArea" style="width: 70px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>
-                    <div class="container-row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>نما</legend>
-                            <select name="nama" id="nama">
-                            </select>
-                        </fieldset>
-                        <fieldset class="fieldsetContainer">
-                            <legend>طول بر</legend>
-
-                            <div class="date-inner">
-                                <div class="from-date">
-                                    <label for="fromToolBar">از:</label>
-                                    <input type="text" name="fromToolBar" id="fromToolBar" style="width: 70px">
-                                </div>
-                                <div class="to-date">
-                                    <label for="toToolBar">تا:</label>
-                                    <input type="text" name="toToolBar" id="toToolBar" style="width: 70px">
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>
-                    <div class="container-row">
-                        <fieldset class="fieldsetContainer">
-                            <legend>توضیحات</legend>
-                            <input type="text" name="description" id="description" style="width: 100%">
-                        </fieldset>
-                    </div>
-                </div>
-                <fieldset class="fieldsetContainer">
-                    <legend>امکانات</legend>
-                    <button style="border-width: 0.5px; font-family: IRANSans-Light; background-image: linear-gradient(89deg, #130de622, white) !important;"
-                            type="button" onclick="onFacilityClick()">امکانات
-                    </button>
-                    <div id="equipmentResultList">
-                    </div>
-
-                </fieldset>
+        <div class="mored">
+            <div class="overlap-group25">
+                <div class="rectangle-48 border-1px-denim"></div>
+                <div class="text-153 iransans-light-denim-13px">مورد</div>
+                <div class="text-154 iransans-light-san-felix-13px">اجاره به خارجی</div>
+                <div class="text-155 iransans-light-red-13px">معاوضه</div>
+                <div class="text-156 iransans-light-red-13px">مشارکت</div>
+                <div class="text-157 iransans-light-san-felix-13px">رهن&nbsp;&nbsp;کامل</div>
+                <div class="text-158 iransans-light-san-felix-13px">اجاره و رهن</div>
+                <div class="text-159 iransans-light-red-13px">فروش</div>
+                <input type="checkbox" class="ch-khareji border-1px-denim" id="rentToForeigner" name="saleType" tabindex="10"/>
+                <input type="checkbox" class="ch-moavezeh border-1px-denim" id="exchange" name="saleType" tabindex="9"/>
+                <input type="checkbox" class="ch-mosharekak border-1px-denim" id="collabration" name="saleType" tabindex="8"/>
+                <input type="checkbox" class="ch-rahn border-1px-denim" id="mortinage" name="saleType" tabindex="7"/>
+                <input type="checkbox" class="ch-ejareh border-1px-denim" id="rentAndMortinage" name="saleType" tabindex="6"/>
+                <input type="checkbox" class="ch-forosh border-1px-denim" id="sale" name="saleType" tabindex="5"/>
             </div>
         </div>
-    </div>
-    <div style="position: fixed; bottom: 10px">
-        <button id="btn-submit" class="btn-submit">جستجو</button>
+        <div class="overlap-group6 border-1px-dove-gray">
+            <input class="rectangle-9-20 border-1px-navy-blue" id="toNumber" tabindex="50"/>
+            <div class="text-174 iransans-light-black-13px">تا</div>
+            <div class="flex-col-9">
+                <div class="text-172 iransans-light-denim-13px">شماره فایل</div>
+                <input class="rectangle-9-21 border-1px-navy-blue" id="fromNumber" tabindex="49"/>
+            </div>
+            <div class="text-173 iransans-light-black-13px">: از</div>
+        </div>
+        <div class="aria">
+            <div class="overlap-group26">
+                <div class="rectangle-48-1 border-1px-dove-gray"></div>
+                <div class="text-175 iransans-light-denim-13px">مناطق</div>
+                <div id="codeListContainer" class="rectangle-49 border-1px-navy-blue" style="overflow-x: scroll; display: flex; flex-direction: row-reverse; padding-right: 50px; align-items: center">
+
+                </div>
+                <div>
+                    <select class="rectangle-50 border-1px-navy-blue" id="code" tabindex="44"></select>
+                </div>
+                <div class="rectangle-51 border-1px-navy-blue">
+                    <ul id="regionNameResultAreaList" style="height: 100%;direction: rtl; overflow: scroll; padding: 5px">
+
+                    </ul>
+                </div>
+                <div class="rectangle-52 border-1px-navy-blue">
+                    <ul id="regionNameAreaList" style="height: 100%;direction: rtl; overflow: scroll; padding: 5px">
+
+                    </ul>
+                </div>
+                <div class="text-176 iransans-light-black-13px">کد</div>
+                <div class="text-177 iransans-light-black-13px">کد</div>
+                <img class="path-plus-circle-outline" src="img/path---plus-circle-outline-1@1x.png" id="addTableButton"
+                     onclick="onAddRegionCodeClick()" tabindex="43"/><img
+                    class="path-53"
+                    src="img/path-53@1x.png"
+            />
+            </div>
+        </div>
+        <div class="emkanat">
+            <div tabindex="47" onclick="onFacilityClick()">
+                <div class="emkanat-bt border-1px-dove-gray"></div>
+                <div class="text-32"><a style="color:white;">امکانات</a>
+                </div>
+            </div>
+            <div id="equipmentResultList">
+            </div>
+        </div>
+        <div class="document">
+            <input class="rectangle-9-22 border-1px-navy-blue" id="description" tabindex="42"/>
+            <div class="text-188 iransans-light-black-13px">:توضیحات</div>
+        </div>
     </div>
 </div>
 
@@ -937,6 +554,22 @@
     var regionCodeList = [];
     var regionCodeListForSearch = [];
     var equipments = [];
+    const {remote} = require('electron');
+    const {Menu} = remote;
+
+    const markdownContextMenu = Menu.buildFromTemplate([
+        {type: 'separator'},
+        {label: 'Cut', role: 'cut'},
+        {label: 'Copy', role: 'copy'},
+        {label: 'Paste', role: 'paste'},
+        {label: 'Select All', role: 'selectall'},
+    ]);
+
+    document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        markdownContextMenu.popup();
+    });
+
 
     function getRegionNameListFromRegionCode(regionCode) {
         var regionNameList = [];
@@ -954,7 +587,11 @@
         var codeListContainer = document.getElementById("codeListContainer");
         var codeInput = document.createElement('select');
         codeInput.id = 'id' + regionCodeListForSearch.length;
-        codeInput.style = "width: 30px";
+        codeInput.style = "width: 40px; height: 30px; margin-left: 5px";
+        var optionCodeEmpty = document.createElement('option');
+        optionCodeEmpty.value = '';
+        optionCodeEmpty.innerHTML = '';
+        codeInput.appendChild(optionCodeEmpty);
         for (var i = 0; i < regionCodeList.length; i++) {
             var optionCode = document.createElement('option');
             optionCode.value = regionCodeList[i];
@@ -982,17 +619,17 @@
         codeSelect.appendChild(optionCode);
     }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].source)) {
-        var sourceSelect = document.getElementById("source");
-        for (var i = 0; i < store.get('configList')[0].source.length; i++) {
-            var optionSource = document.createElement('option');
-            optionSource.value = store.get('configList')[0].source[i];
-            optionSource.innerHTML = store.get('configList')[0].source[i];
-            sourceSelect.appendChild(optionSource);
-        }
-    }
+    // if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].source)) {
+    //     var sourceSelect = document.getElementById("source");
+    //     for (var i = 0; i < store.get('configList')[0].source.length; i++) {
+    //         var optionSource = document.createElement('option');
+    //         optionSource.value = store.get('configList')[0].source[i];
+    //         optionSource.innerHTML = store.get('configList')[0].source[i];
+    //         sourceSelect.appendChild(optionSource);
+    //     }
+    // }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].publisher)) {
+    /*if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].publisher)) {
         var correctorSelect = document.getElementById("corrector");
         for (var i = 0; i < store.get('configList')[0].publisher.length; i++) {
             var optionCorrector = document.createElement('option');
@@ -1000,67 +637,67 @@
             optionCorrector.innerHTML = store.get('configList')[0].publisher[i];
             correctorSelect.appendChild(optionCorrector);
         }
-    }
+    }*/
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
-        var wcServiceSelect = document.getElementById("wc");
-        for (var i = 0; i < store.get('configList')[0].wcService.length; i++) {
-            var optionWcService = document.createElement('option');
-            optionWcService.value = store.get('configList')[0].wcService[i];
-            optionWcService.innerHTML = store.get('configList')[0].wcService[i];
-            wcServiceSelect.appendChild(optionWcService);
-        }
-    }
+    // if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
+    //     var wcServiceSelect = document.getElementById("wc");
+    //     for (var i = 0; i < store.get('configList')[0].wcService.length; i++) {
+    //         var optionWcService = document.createElement('option');
+    //         optionWcService.value = store.get('configList')[0].wcService[i];
+    //         optionWcService.innerHTML = store.get('configList')[0].wcService[i];
+    //         wcServiceSelect.appendChild(optionWcService);
+    //     }
+    // }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
-        var telephoneSelect = document.getElementById("phoneLine");
-        for (var i = 0; i < store.get('configList')[0].telephone.length; i++) {
-            var optionTelephone = document.createElement('option');
-            optionTelephone.value = store.get('configList')[0].telephone[i];
-            optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
-            telephoneSelect.appendChild(optionTelephone);
-        }
-    }
+    // if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
+    //     var telephoneSelect = document.getElementById("phoneLine");
+    //     for (var i = 0; i < store.get('configList')[0].telephone.length; i++) {
+    //         var optionTelephone = document.createElement('option');
+    //         optionTelephone.value = store.get('configList')[0].telephone[i];
+    //         optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
+    //         telephoneSelect.appendChild(optionTelephone);
+    //     }
+    // }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].yard)) {
-        var yardSelect = document.getElementById("yard");
-        for (var i = 0; i < store.get('configList')[0].yard.length; i++) {
-            var optionYard = document.createElement('option');
-            optionYard.value = store.get('configList')[0].yard[i];
-            optionYard.innerHTML = store.get('configList')[0].yard[i];
-            yardSelect.appendChild(optionYard);
-        }
-    }
+    // if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].yard)) {
+    //     var yardSelect = document.getElementById("yard");
+    //     for (var i = 0; i < store.get('configList')[0].yard.length; i++) {
+    //         var optionYard = document.createElement('option');
+    //         optionYard.value = store.get('configList')[0].yard[i];
+    //         optionYard.innerHTML = store.get('configList')[0].yard[i];
+    //         yardSelect.appendChild(optionYard);
+    //     }
+    // }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].backYard)) {
-        var backYardSelect = document.getElementById("backyard");
-        for (var i = 0; i < store.get('configList')[0].backYard.length; i++) {
-            var optionBackYard = document.createElement('option');
-            optionBackYard.value = store.get('configList')[0].backYard[i];
-            optionBackYard.innerHTML = store.get('configList')[0].backYard[i];
-            backYardSelect.appendChild(optionBackYard);
-        }
-    }
+    // if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].backYard)) {
+    //     var backYardSelect = document.getElementById("backyard");
+    //     for (var i = 0; i < store.get('configList')[0].backYard.length; i++) {
+    //         var optionBackYard = document.createElement('option');
+    //         optionBackYard.value = store.get('configList')[0].backYard[i];
+    //         optionBackYard.innerHTML = store.get('configList')[0].backYard[i];
+    //         backYardSelect.appendChild(optionBackYard);
+    //     }
+    // }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].residenceOwner)) {
-        var residenceOwnerSelect = document.getElementById("residenceOwner");
-        for (var i = 0; i < store.get('configList')[0].residenceOwner.length; i++) {
-            var optionResidenceOwner = document.createElement('option');
-            optionResidenceOwner.value = store.get('configList')[0].residenceOwner[i];
-            optionResidenceOwner.innerHTML = store.get('configList')[0].residenceOwner[i];
-            residenceOwnerSelect.appendChild(optionResidenceOwner);
-        }
-    }
+    // if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].residenceOwner)) {
+    //     var residenceOwnerSelect = document.getElementById("residenceOwner");
+    //     for (var i = 0; i < store.get('configList')[0].residenceOwner.length; i++) {
+    //         var optionResidenceOwner = document.createElement('option');
+    //         optionResidenceOwner.value = store.get('configList')[0].residenceOwner[i];
+    //         optionResidenceOwner.innerHTML = store.get('configList')[0].residenceOwner[i];
+    //         residenceOwnerSelect.appendChild(optionResidenceOwner);
+    //     }
+    // }
 
-    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].employeeService)) {
-        var employeeServiceSelect = document.getElementById("servant");
-        for (var i = 0; i < store.get('configList')[0].employeeService.length; i++) {
-            var optionEmployeeService = document.createElement('option');
-            optionEmployeeService.value = store.get('configList')[0].employeeService[i];
-            optionEmployeeService.innerHTML = store.get('configList')[0].employeeService[i];
-            employeeServiceSelect.appendChild(optionEmployeeService);
-        }
-    }
+    // if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].employeeService)) {
+    //     var employeeServiceSelect = document.getElementById("servant");
+    //     for (var i = 0; i < store.get('configList')[0].employeeService.length; i++) {
+    //         var optionEmployeeService = document.createElement('option');
+    //         optionEmployeeService.value = store.get('configList')[0].employeeService[i];
+    //         optionEmployeeService.innerHTML = store.get('configList')[0].employeeService[i];
+    //         employeeServiceSelect.appendChild(optionEmployeeService);
+    //     }
+    // }
 
     if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].documentKind)) {
         var documentKindSelect = document.getElementById("documentStatus");
@@ -1102,6 +739,16 @@
         }
     }
 
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].comment)) {
+        var priceCommentSelect = document.getElementById("priceDescription");
+        for (var i = 0; i < store.get('configList')[0].comment.length; i++) {
+            var optionPriceComment = document.createElement('option');
+            optionPriceComment.value = store.get('configList')[0].comment[i];
+            optionPriceComment.innerHTML = store.get('configList')[0].comment[i];
+            priceCommentSelect.appendChild(optionPriceComment);
+        }
+    }
+
     if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].equipments)) {
         var equipmentListDiv = document.getElementById("equipmentList");
         for (var i = 0; i < store.get('configList')[0].equipments.length; i++) {
@@ -1115,6 +762,46 @@
             equipmentDiv.appendChild(equipmentLabel);
             equipmentDiv.appendChild(equipmentCheckBox);
             equipmentListDiv.appendChild(equipmentDiv);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].jakozi)) {
+        var jakooziSelect = document.getElementById("Jacuzzi");
+        for (var i = 0; i < store.get('configList')[0].jakozi.length; i++) {
+            var optionJakoozi = document.createElement('option');
+            optionJakoozi.value = store.get('configList')[0].jakozi[i];
+            optionJakoozi.innerHTML = store.get('configList')[0].jakozi[i];
+            jakooziSelect.appendChild(optionJakoozi);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].sona)) {
+        var sonaSelect = document.getElementById("sauna");
+        for (var i = 0; i < store.get('configList')[0].sona.length; i++) {
+            var optionSona = document.createElement('option');
+            optionSona.value = store.get('configList')[0].sona[i];
+            optionSona.innerHTML = store.get('configList')[0].sona[i];
+            sonaSelect.appendChild(optionSona);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].pool)) {
+        var poolSelect = document.getElementById("pool");
+        for (var i = 0; i < store.get('configList')[0].pool.length; i++) {
+            var optionPool = document.createElement('option');
+            optionPool.value = store.get('configList')[0].pool[i];
+            optionPool.innerHTML = store.get('configList')[0].pool[i];
+            poolSelect.appendChild(optionPool);
+        }
+    }
+
+    if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floor)) {
+        var floorSelect = document.getElementById("floorCount");
+        for (var i = 0; i < store.get('configList')[0].floor.length; i++) {
+            var optionFloor = document.createElement('option');
+            optionFloor.value = store.get('configList')[0].floor[i];
+            optionFloor.innerHTML = store.get('configList')[0].floor[i];
+            floorSelect.appendChild(optionFloor);
         }
     }
 
@@ -1212,8 +899,48 @@
             case "دفتر کار":
                 noeMelkValue = "office";
                 break;
+            case "زمین":
+                noeMelkValue = "land";
+                break;
+            case "مغازه":
+                noeMelkValue = "store";
+                break;
+            case "سوییت":
+                noeMelkValue = "suit";
+                break;
         }
         return noeMelkValue;
+    }
+
+    function getMoshakhase(noeMelk, moshakhase) {
+        var moshakhaseValue = moshakhase;
+        switch (noeMelk) {
+            case "آپارتمان":
+                moshakhaseValue = _.isEmpty(moshakhaseValue) ? true : moshakhaseValue;
+                break;
+            case "ویلا":
+                moshakhaseValue = _.isEmpty(moshakhaseValue) ? true : moshakhaseValue;
+                break;
+            case "مستغلات":
+                moshakhaseValue = _.isEmpty(moshakhaseValue) ? true : moshakhaseValue;
+                break;
+            case "کلنگی":
+                moshakhaseValue = _.isEmpty(moshakhaseValue) ? true : moshakhaseValue;
+                break;
+            case "دفتر کار":
+                moshakhaseValue = _.isEmpty(moshakhaseValue) ? true : moshakhaseValue;
+                break;
+            case "زمین":
+                moshakhaseValue = _.isEmpty(moshakhaseValue) ? true : moshakhaseValue;
+                break;
+            case "مغازه":
+                moshakhaseValue = true;
+                break;
+            case "سوییت":
+                moshakhaseValue = true;
+                break;
+        }
+        return moshakhaseValue;
     }
 
     $('#code').on('select.editable-select', function (e) {
@@ -1226,23 +953,25 @@
             optionRegionName.id = regionNameList[i];
             optionRegionName.innerHTML = regionNameList[i];
             optionRegionName.onclick = function () {
-                var regionNameResultAreaList = document.getElementById("regionNameResultAreaList");
-                var optionRegionName = document.createElement('li');
-                optionRegionName.innerHTML = this.id;
-                optionRegionName.id = 'result-' + this.id;
-                optionRegionName.onclick = function () {
-                    regionNameResultList.pop(this.id.split('-')[1]);
-                    var regionNameResultAreaList = document.getElementById('regionNameResultAreaList');
+                if (!regionNameResultList.includes(this.id)) {
+                    var regionNameResultAreaList = document.getElementById("regionNameResultAreaList");
+                    var optionRegionName = document.createElement('li');
+                    optionRegionName.innerHTML = this.id;
+                    optionRegionName.id = 'result-' + this.id;
+                    optionRegionName.onclick = function () {
+                        regionNameResultList.pop(this.id.split('-')[1]);
+                        var regionNameResultAreaList = document.getElementById('regionNameResultAreaList');
 
-                    regionNameResultAreaList.removeChild(document.getElementById(this.id))
-                };
-                regionNameResultList.push(this.id);
-                regionNameResultAreaList.appendChild(optionRegionName);
+                        regionNameResultAreaList.removeChild(document.getElementById(this.id))
+                    };
+                    regionNameResultList.push(this.id);
+                    regionNameResultAreaList.appendChild(optionRegionName);
+                }
             };
             regionNameAreaList.appendChild(optionRegionName);
         }
     }).editableSelect();
-    $('#corrector').editableSelect();
+    // $('#corrector').editableSelect();
     $('#source').editableSelect();
     $('#noeMelk').on('select.editable-select', function (e) {
         var noeMelk = document.getElementById("noeMelk");
@@ -1253,6 +982,7 @@
                 $("#moshakhase").editableSelect('add', store.get('configList')[0][noeMelkValue][i]);
             }
         }
+        document.getElementById("moshakhase").value = '';
     }).editableSelect();
     $('#moshakhase').editableSelect();
     $('#servant').editableSelect();
@@ -1264,21 +994,128 @@
     $('#backyard').editableSelect();
     $('#yard').editableSelect();
     $('#phoneLine').editableSelect();
+    $('#priceDescription').editableSelect();
+    $('#pool').editableSelect();
+    $('#sauna').editableSelect();
+    $('#Jacuzzi').editableSelect();
     $('#wc').editableSelect();
+    $('#floorCount').editableSelect();
 
     onCurrentDateClick = function () {
         document.querySelector('#fromDate').value = StringUtils.convertMillisecondToShamsi((new Date()).getTime());
         document.querySelector('#toDate').value = StringUtils.convertMillisecondToShamsi((new Date()).getTime());
     };
 
+    var fromRent = document.querySelector('#fromRent');
+    fromRent.addEventListener("input", (event) => {
+        fromRent.value = StringUtils.commify(event.target.value)
+    });
+    fromRent.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(fromRent.value)) {
+                fromRent.value = StringUtils.commify((parseInt(fromRent.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var toRent = document.querySelector('#toRent');
+    toRent.addEventListener("input", (event) => {
+        toRent.value = StringUtils.commify(event.target.value)
+    });
+    toRent.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(toRent.value)) {
+                toRent.value = StringUtils.commify((parseInt(toRent.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var fromMortgage = document.querySelector('#fromMortgage');
+    fromMortgage.addEventListener("input", (event) => {
+        fromMortgage.value = StringUtils.commify(event.target.value)
+    });
+    fromMortgage.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(fromMortgage.value)) {
+                fromMortgage.value = StringUtils.commify((parseInt(fromMortgage.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var toMortgage = document.querySelector('#toMortgage');
+    toMortgage.addEventListener("input", (event) => {
+        toMortgage.value = StringUtils.commify(event.target.value)
+    });
+    toMortgage.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(toMortgage.value)) {
+                toMortgage.value = StringUtils.commify((parseInt(toMortgage.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var fromMetri = document.querySelector('#fromMetri');
+    fromMetri.addEventListener("input", (event) => {
+        fromMetri.value = StringUtils.commify(event.target.value)
+    });
+    fromMetri.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(fromMetri.value)) {
+                fromMetri.value = StringUtils.commify((parseInt(fromMetri.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var toMetri = document.querySelector('#toMetri');
+    toMetri.addEventListener("input", (event) => {
+        toMetri.value = StringUtils.commify(event.target.value)
+    });
+    toMetri.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(toMetri.value)) {
+                toMetri.value = StringUtils.commify((parseInt(toMetri.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var fromTotalPrice = document.querySelector('#fromTotalPrice');
+    fromTotalPrice.addEventListener("input", (event) => {
+        fromTotalPrice.value = StringUtils.commify(event.target.value)
+    });
+    fromTotalPrice.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(fromTotalPrice.value)) {
+                fromTotalPrice.value = StringUtils.commify((parseInt(fromTotalPrice.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var toTotalPrice = document.querySelector('#toTotalPrice');
+    toTotalPrice.addEventListener("input", (event) => {
+        toTotalPrice.value = StringUtils.commify(event.target.value)
+    });
+    toTotalPrice.addEventListener('keydown', function (event) {
+        if (event.key === 'Shift') {
+            if (!_.isEmpty(toTotalPrice.value)) {
+                toTotalPrice.value = StringUtils.commify((parseInt(toTotalPrice.value.replace(/,/g, '')) * 1000) + '')
+            }
+        }
+    });
+
+    var btnReload = document.getElementById("btn-reload");
+    btnReload.addEventListener("click", function () {
+        remote.getCurrentWindow().reload();
+    });
+
     // Get the btnSubmit
     var btnSubmit = document.getElementById("btn-submit");
     btnSubmit.addEventListener("click", function () {
+        let saleTypeValue = ['خارجی','معاوضه','مشارکت', 'رهن', 'اجاره', 'فروش'];
         var saleTypeList = document.getElementsByName('saleType');
         var saleType = [];
         for (var i = 0, n = saleTypeList.length; i < n; i++) {
             if (saleTypeList[i].checked) {
-                saleType.push(saleTypeList[i].value);
+                saleType.push(saleTypeValue[i]);
             }
         }
         var regionCodeList = [];
@@ -1286,11 +1123,10 @@
             regionCodeList.push(regionCodeListForSearch[i].value)
         }
         var requestBody = {
+            username: !_.isEmpty(document.querySelector('#username').value) ? document.querySelector('#username').value : undefined,
             tel1: !_.isEmpty(document.querySelector('#telephone').value) ? document.querySelector('#telephone').value : undefined,
             address: _.compact([
-                !_.isEmpty(document.querySelector('#address1').value) ? document.querySelector('#address1').value : undefined,
-                !_.isEmpty(document.querySelector('#address2').value) ? document.querySelector('#address2').value : undefined,
-                !_.isEmpty(document.querySelector('#address3').value) ? document.querySelector('#address3').value : undefined
+                !_.isEmpty(document.querySelector('#address').value) ? document.querySelector('#address').value : undefined,
             ]),
             owner: !_.isEmpty(document.querySelector('#owner').value) ? document.querySelector('#owner').value : undefined,
             regionCode: regionCodeList,
@@ -1300,51 +1136,57 @@
             fromNumber: !_.isEmpty(document.querySelector('#fromNumber').value) ? document.querySelector('#fromNumber').value : undefined,
             toNumber: !_.isEmpty(document.querySelector('#toNumber').value) ? document.querySelector('#toNumber').value : undefined,
             sale: !_.isEmpty(saleType) ? saleType : undefined,
-            fromRent: !_.isEmpty(document.querySelector('#fromRent').value) ? document.querySelector('#fromRent').value : undefined,
-            toRent: !_.isEmpty(document.querySelector('#toRent').value) ? document.querySelector('#toRent').value : undefined,
-            fromMortgage: !_.isEmpty(document.querySelector('#fromMortgage').value) ? document.querySelector('#fromMortgage').value : undefined,
-            toMortgage: !_.isEmpty(document.querySelector('#toMortgage').value) ? document.querySelector('#toMortgage').value : undefined,
+            fromRent: !_.isEmpty(document.querySelector('#fromRent').value) ? parseInt(document.querySelector('#fromRent').value.replace(/,/g, '')) : undefined,
+            toRent: !_.isEmpty(document.querySelector('#toRent').value) ? parseInt(document.querySelector('#toRent').value.replace(/,/g, '')) : undefined,
+            fromAge: !_.isEmpty(document.querySelector('#fromAge').value) ? document.querySelector('#fromAge').value : undefined,
+            toAge: !_.isEmpty(document.querySelector('#toAge').value) ? document.querySelector('#toAge').value : undefined,
+            fromMortgage: !_.isEmpty(document.querySelector('#fromMortgage').value) ? parseInt(document.querySelector('#fromMortgage').value.replace(/,/g, '')) : undefined,
+            toMortgage: !_.isEmpty(document.querySelector('#toMortgage').value) ? parseInt(document.querySelector('#toMortgage').value.replace(/,/g, '')) : undefined,
             north: document.querySelector('#direction_north').checked ? true : undefined,
             south: document.querySelector('#direction_south').checked ? true : undefined,
             east: document.querySelector('#direction_east').checked ? true : undefined,
             west: document.querySelector('#direction_west').checked ? true : undefined,
-            fromFloorNo: !_.isEmpty(document.querySelector('#fromFloorCount').value) ? document.querySelector('#fromFloorCount').value : undefined,
-            toFloorNo: !_.isEmpty(document.querySelector('#toFloorCount').value) ? document.querySelector('#toFloorCount').value : undefined,
-            fromUnitNo: !_.isEmpty(document.querySelector('#fromVahedCount').value) ? document.querySelector('#fromVahedCount').value : undefined,
-            toUnitNo: !_.isEmpty(document.querySelector('#toVahedCount').value) ? document.querySelector('#toVahedCount').value : undefined,
-            fromUnitPrice: !_.isEmpty(document.querySelector('#fromMetri').value) ? document.querySelector('#fromMetri').value : undefined,
-            fromTotalPrice: !_.isEmpty(document.querySelector('#fromTotalPrice').value) ? document.querySelector('#fromTotalPrice').value : undefined,
-            toUnitPrice: !_.isEmpty(document.querySelector('#toMetri').value) ? document.querySelector('#toMetri').value : undefined,
-            toTotalPrice: !_.isEmpty(document.querySelector('#toTotalPrice').value) ? document.querySelector('#toTotalPrice').value : undefined,
+            unitOpen: document.querySelector('#unitOpen').checked ? true : undefined,
+            unitKitchen: !_.isEmpty(document.querySelector('#kitchen').value) ? document.querySelector('#kitchen').value : undefined,
+            unitFloorCovering: !_.isEmpty(document.querySelector('#kafpoosh').value) ? document.querySelector('#kafpoosh').value : undefined,
+            unitFloor: !_.isEmpty(document.querySelector('#floorCount').value) ? document.querySelector('#floorCount').value : undefined,
+            // fromFloorNo: !_.isEmpty(document.querySelector('#fromFloorCount').value) ? document.querySelector('#fromFloorCount').value : undefined,
+            // toFloorNo: !_.isEmpty(document.querySelector('#toFloorCount').value) ? document.querySelector('#toFloorCount').value : undefined,
+            // fromUnitNo: !_.isEmpty(document.querySelector('#fromVahedCount').value) ? document.querySelector('#fromVahedCount').value : undefined,
+            // toUnitNo: !_.isEmpty(document.querySelector('#toVahedCount').value) ? document.querySelector('#toVahedCount').value : undefined,
+            fromUnitPrice: !_.isEmpty(document.querySelector('#fromMetri').value) ? parseInt(document.querySelector('#fromMetri').value.replace(/,/g, '')) : undefined,
+            fromTotalPrice: !_.isEmpty(document.querySelector('#fromTotalPrice').value) ? parseInt(document.querySelector('#fromTotalPrice').value.replace(/,/g, '')) : undefined,
+            toUnitPrice: !_.isEmpty(document.querySelector('#toMetri').value) ? parseInt(document.querySelector('#toMetri').value.replace(/,/g, '')) : undefined,
+            toTotalPrice: !_.isEmpty(document.querySelector('#toTotalPrice').value) ? parseInt(document.querySelector('#toTotalPrice').value.replace(/,/g, '')) : undefined,
             priceComment: !_.isEmpty(document.querySelector('#priceDescription').value) ? document.querySelector('#priceDescription').value : undefined,
-            pool: document.querySelector('#pool').checked ? true : undefined,
-            sona: document.querySelector('#sauna').checked ? true : undefined,
-            jakozi: document.querySelector('#Jacuzzi').checked ? true : undefined,
+            pool: !_.isEmpty(document.querySelector('#pool').value) ? document.querySelector('#pool').value : undefined,
+            sona: !_.isEmpty(document.querySelector('#sauna').value) ? document.querySelector('#sauna').value : undefined,
+            jakozi: !_.isEmpty(document.querySelector('#Jacuzzi').value) ? document.querySelector('#Jacuzzi').value : undefined,
             fromArea: !_.isEmpty(document.querySelector('#fromArea').value) ? document.querySelector('#fromArea').value : undefined,
             toArea: !_.isEmpty(document.querySelector('#toArea').value) ? document.querySelector('#toArea').value : undefined,
-            fromDensity: !_.isEmpty(document.querySelector('#fromDensity').value) ? document.querySelector('#fromDensity').value : undefined,
-            toDensity: !_.isEmpty(document.querySelector('#toDensity').value) ? document.querySelector('#toDensity').value : undefined,
+            // fromDensity: !_.isEmpty(document.querySelector('#fromDensity').value) ? document.querySelector('#fromDensity').value : undefined,
+            // toDensity: !_.isEmpty(document.querySelector('#toDensity').value) ? document.querySelector('#toDensity').value : undefined,
             fromFront: !_.isEmpty(document.querySelector('#fromToolBar').value) ? document.querySelector('#fromToolBar').value : undefined,
             toFront: !_.isEmpty(document.querySelector('#toToolBar').value) ? document.querySelector('#toToolBar').value : undefined,
-            fromHeight: !_.isEmpty(document.querySelector('#fromHeight').value) ? document.querySelector('#fromHeight').value : undefined,
-            toHeight: !_.isEmpty(document.querySelector('#toHeight').value) ? document.querySelector('#toHeight').value : undefined,
-            yard: !_.isEmpty(document.querySelector('#yard').value) ? document.querySelector('#yard').value : undefined,
-            smallYard: !_.isEmpty(document.querySelector('#backyard').value) ? document.querySelector('#backyard').value : undefined,
-            underGround: !_.isEmpty(document.querySelector('#basement').value) ? document.querySelector('#basement').value : undefined,
-            employeeService: !_.isEmpty(document.querySelector('#servant').value) ? document.querySelector('#servant').value : undefined,
-            residential: document.querySelector('#residential').checked ? true : undefined,
-            empty: document.querySelector('#empty').checked ? true : undefined,
-            rented: document.querySelector('#rent').checked ? true : undefined,
+            // fromHeight: !_.isEmpty(document.querySelector('#fromHeight').value) ? document.querySelector('#fromHeight').value : undefined,
+            // toHeight: !_.isEmpty(document.querySelector('#toHeight').value) ? document.querySelector('#toHeight').value : undefined,
+            // yard: !_.isEmpty(document.querySelector('#yard').value) ? document.querySelector('#yard').value : undefined,
+            // smallYard: !_.isEmpty(document.querySelector('#backyard').value) ? document.querySelector('#backyard').value : undefined,
+            // underGround: !_.isEmpty(document.querySelector('#basement').value) ? document.querySelector('#basement').value : undefined,
+            // employeeService: !_.isEmpty(document.querySelector('#servant').value) ? document.querySelector('#servant').value : undefined,
+            // residential: document.querySelector('#residential').checked ? true : undefined,
+            // empty: document.querySelector('#empty').checked ? true : undefined,
+            // rented: document.querySelector('#rent').checked ? true : undefined,
             frontKind: !_.isEmpty(document.querySelector('#nama').value) ? document.querySelector('#nama').value : undefined,
-            source: !_.isEmpty(document.querySelector('#source').value) ? document.querySelector('#source').value : undefined,
+            // source: !_.isEmpty(document.querySelector('#source').value) ? document.querySelector('#source').value : undefined,
             publisher: !_.isEmpty(document.querySelector('#corrector').value) ? document.querySelector('#corrector').value : undefined,
-            ownerInHouse: !_.isEmpty(document.querySelector('#residenceOwner').value) ? document.querySelector('#residenceOwner').value : undefined,
+            // ownerInHouse: !_.isEmpty(document.querySelector('#residenceOwner').value) ? document.querySelector('#residenceOwner').value : undefined,
             documentKind: !_.isEmpty(document.querySelector('#documentStatus').value) ? document.querySelector('#documentStatus').value : undefined,
             comment: !_.isEmpty(document.querySelector('#description').value) ? document.querySelector('#description').value : undefined,
             equipments: equipments,
         };
 
-        requestBody[getNoeMelk(document.querySelector('#noeMelk').value)] = document.querySelector('#moshakhase').value;
+        requestBody[getNoeMelk(document.querySelector('#noeMelk').value)] = getMoshakhase(document.querySelector('#noeMelk').value, document.querySelector('#moshakhase').value);
 
         ipcRenderer.send('listFile', requestBody);
     });

@@ -63,17 +63,41 @@ function convertShamsiToMillisecond(shamsiDate) {
 }
 
 function convertMillisecondToShamsi(millisecond) {
-    console.log(millisecond)
-    let date = new Date(millisecond);
-    console.log(date)
-    let jalaliDate = JalaliJs.toJalaali(date.getFullYear(), date.getMonth(), date.getDate());
-    console.log(jalaliDate)
-    return convertNumbersToPersian(jalaliDate.jy.toString()) + '/' + convertNumbersToPersian(jalaliDate.jm.toString()) + '/' + convertNumbersToPersian(jalaliDate.jd.toString());
+    if (millisecond !== undefined && millisecond !== null) {
+        let date = new Date(millisecond);
+        let jalaliDate = JalaliJs.toJalaali(date.getFullYear(), date.getMonth(), date.getDate());
+        return convertNumbersToPersian(jalaliDate.jy.toString()) + '/' + convertNumbersToPersian(jalaliDate.jm.toString()) + '/' + convertNumbersToPersian(jalaliDate.jd.toString());
+    } else {
+        return '';
+    }
+}
+
+function separateNumberWithCommas(number) {
+    return (number + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function commify(value){
+    if (!_.isEmpty(value)) {
+        value = value.replace(/,/g, '');
+        var chars = value.split("").reverse();
+        var withCommas = [];
+        for(var i = 1; i <= chars.length; i++ ){
+            withCommas.push(chars[i-1]);
+            if(i%3 === 0 && i !== chars.length ){
+                withCommas.push(",")
+            }
+        }
+        return withCommas.reverse().join("");
+    } else {
+        return '';
+    }
 }
 
 module.exports = {
     convertNumbersToEnglish,
     convertNumbersToPersian,
     convertShamsiToMillisecond,
-    convertMillisecondToShamsi
-}
+    convertMillisecondToShamsi,
+    separateNumberWithCommas,
+    commify
+};

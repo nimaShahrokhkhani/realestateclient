@@ -1,119 +1,222 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
-    <style type="text/css">
-        <!--
-        span.cls_002 {
-            font-family: Arial, serif;
-            font-size: 12.8px;
-            color: rgb(45, 47, 146);
-            font-weight: bold;
-            font-style: normal;
-            text-decoration: none
-        }
-
-        div.cls_002 {
-            font-family: Arial, serif;
-            font-size: 12.8px;
-            color: rgb(45, 47, 146);
-            font-weight: bold;
-            font-style: normal;
-            text-decoration: none
-        }
-
-        span.cls_003 {
-            font-family: Arial, serif;
-            font-size: 26.3px;
-            color: rgb(45, 47, 146);
-            font-weight: normal;
-            font-style: normal;
-            text-decoration: none
-        }
-
-        div.cls_003 {
-            font-family: Arial, serif;
-            font-size: 26.3px;
-            color: rgb(45, 47, 146);
-            font-weight: normal;
-            font-style: normal;
-            text-decoration: none
-        }
-
-        span.cls_004 {
-            font-family: Arial, serif;
-            font-size: 12.8px;
-            color: rgb(45, 47, 146);
-            font-weight: normal;
-            font-style: normal;
-            text-decoration: none
-        }
-
-        div.cls_004 {
-            font-family: Arial, serif;
-            font-size: 12.8px;
-            color: rgb(45, 47, 146);
-            font-weight: normal;
-            font-style: normal;
-            text-decoration: none
-        }
-
-        -->
-    </style>
+    <link href="./css/chap.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
-<div id="file" style="position:absolute;left:50%;margin-left:-297px;top:0px;width:595px;height:419px;border-style:outset;overflow:hidden">
-    <div style="position:absolute;left:0px;top:0px">
-        <img src="images/file-background.jpg" width=595 height=419></div>
-    <div style="position:absolute;left:31.55px;top:95.19px" class="cls_002"><span class="cls_002" id="date"></span>
-    </div>
-    <div style="position:absolute;left:146.50px;top:95.19px" class="cls_002"><span class="cls_002" id="region"></span>
-    </div>
-    <div style="position:absolute;left:249.34px;top:95.19px" class="cls_002"><span class="cls_002" id="telephone"></span></div>
-    <div style="position:absolute;left:361.86px;top:95.19px" class="cls_002"><span class="cls_002" id="publisher"></span></div>
-    <div style="position:absolute;left:506.74px;top:95.19px" class="cls_002"><span class="cls_002" id="owner"></span>
-    </div>
-    <div style="position:absolute;left:43.69px;top:122.94px" class="cls_002"><span class="cls_002" id="Id"></span></div>
-    <div style="position:absolute;left:419.17px;top:122.94px" class="cls_002"><span class="cls_002" id="address"></span>
-    </div>
-    <div style="position:absolute;left:436.71px;top:179.19px" class="cls_002"><span class="cls_002"><img src="images/tickFile.png" width="20px" height="20px"></span></div>
-    <div style="position:absolute;left:542.49px;top:173.33px" class="cls_003"><span class="cls_003"></span></div>
-    <div style="position:absolute;left:41.76px;top:210.69px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:347.71px;top:210.69px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:469.23px;top:210.69px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:44.62px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:109.67px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:182.52px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:228.95px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:274.96px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:322.87px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:388.24px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:434.70px;top:263.94px" class="cls_004"><span class="cls_004"></span></div>
-    <div style="position:absolute;left:469.16px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:514.26px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:544.52px;top:263.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:35.49px;top:282.08px" class="cls_003"><span class="cls_003"></span></div>
-    <div style="position:absolute;left:234.24px;top:282.08px" class="cls_003"><span class="cls_003"></span></div>
-    <div style="position:absolute;left:305.49px;top:282.08px" class="cls_003"><span class="cls_003"></span></div>
-    <div style="position:absolute;left:508.24px;top:347.94px" class="cls_002"><span class="cls_002"></span></div>
-    <div style="position:absolute;left:35.49px;top:339.08px" class="cls_003"><span class="cls_003"></span></div>
-</div>
+<style>
+    @page {
+        size: A5 landscape;
+    }
 
-<div style="position: fixed; bottom: 10px">
-    <img id="btn-convert-pdf" src="images/pdf.png" width="50" height="50"/>
-</div>
+    @font-face {
+        font-family: IRANSans-Light;
+        src: url("./fonts/IRANSans-Light.eot") format('eot'),
+        url("./fonts/IRANSans-Light.woff") format('woff'),
+        url("./fonts/IRANSans-Light.ttf") format('truetype');
+    }
 
+    html {
+        /*height: 8.27in;*/
+        /*width: 5.83in;*/
+        overflow: hidden;
+    }
+
+    body {
+        background-image: url("./img/gilan-file-tahmasebi-25--3-1400-1@1x.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow: hidden;
+    }
+
+    body div {
+        font-family: IRANSansMobileFaNum-Light;
+        overflow: hidden;
+    }
+</style>
+<!-- Set "A5", "A4" or "A3" for class name -->
+<!-- Set also "landscape" if you need -->
+<body id="btn-convert-pdf">
+<div class="rectangle-186" id="owner" style="top: 80px; left: 620px"></div>
+<div class="rectangle-187" id="telephone" style="top: 80px; left: 440px"></div>
+<div class="rectangle-188" id="publisher" style="top: 80px; left: 305px"></div>
+<div class="rectangle-189" id="number"></div>
+<div class="rectangle-190" id="date"></div>
+<div class="rectangle-191" id="regionCode" style="left: 165px"></div>
+<div class="rectangle-192" id="regionName"></div>
+<div class="rectangle-193" id="address" style="top: 125px"></div>
+<div class="rectangle-194" id="mored" style="left: 780px; top: 210px; width: 50px"></div>
+<div class="rectangle-195" id="noeMelk" style="left: 610px; top: 210px; width: 80px"></div>
+<div class="rectangle-196" id="unitBuiltUpArea" style="left: 535px; top: 210px; width: 50px"></div>
+<div class="rectangle-197" id="unitRoom" style="left: 460px; top: 210px; width: 50px"></div>
+<div class="rectangle-198" id="unitFloor" style="left: 390px; top: 210px; width: 50px"></div>
+<div class="rectangle-199" id="floorNo" style="left: 310px; top: 210px; width: 50px"></div>
+<div class="rectangle-200" id="unitNo" style="left: 240px; top: 210px; width: 50px"></div>
+<div class="rectangle-201" id="ageBuilding" style="left: 160px;top: 210px; width: 50px"></div>
+<div class="rectangle-202" id="area" style="top: 210px"></div>
+<div class="rectangle-203" id="front" style="top: 210px"></div>
+<div class="rectangle-204" id="totalPrice" style="left: 600px; top: 250px"></div>
+<div class="rectangle-205" id="unitPrice" style="left: 420px; top: 250px"></div>
+<div class="rectangle-206" id="mortgagePrice" style="top: 250px"></div>
+<div class="rectangle-207" id="rentPrice" style="top: 250px"></div>
+<div class="rectangle-208" id="kabinet" style="left: 720px; top: 330px"></div>
+<div class="rectangle-209" id="unitFloorCovering" style="left: 600px; top: 330px"></div>
+<div class="rectangle-210" id="unitWC" style="left: 480px; top: 330px"></div>
+<div class="rectangle-211" id="frontKind" style="left: 360px; top: 330px"></div>
+<div class="rectangle-212" id="parking" style="top: 330px"></div>
+<div class="rectangle-213" id="documentKind" style="top: 330px"></div>
+<div class="rectangle-214" id="direction" style="top: 330px"></div>
+<div class="rectangle-215" id="asansor" style="left: 730px; top: 375px"></div>
+<div class="rectangle-216" id="anbari" style="left: 613px; top: 375px"></div>
+<div class="rectangle-217" id="komodDivari" style="left: 495px; top: 375px"></div>
+<div class="rectangle-218" id="kaghazDivari" style="left: 375px; top: 375px"></div>
+<div class="rectangle-219" id="remoteDoor" style="left: 255px; top: 375px"></div>
+<div class="rectangle-220" id="securityDoor" style="top: 375px"></div>
+<div class="rectangle-221" id="iphoneImage" style="top: 375px"></div>
+<div class="rectangle-222" id="shoofazh" style="left: 730px; top: 415px"></div>
+<div class="rectangle-223" id="shoomine" style="left: 613px; top: 415px"></div>
+<div class="rectangle-224" id="package" style="left: 495px; top: 415px"></div>
+<div class="rectangle-225" id="gazRoomizi" style="left: 375px; top: 415px"></div>
+<div class="rectangle-226" id="hood" style="left: 255px; top: 415px"></div>
+<div class="rectangle-227" id="koolerGazi" style="top: 415px"></div>
+<div class="rectangle-228" id="split" style="top: 415px"></div>
+<div class="rectangle-229" id="hasTelephon" style="left: 730px; top: 455px"></div>
+<div class="rectangle-230" id="doubleGlazedWindow" style="left: 613px; top: 455px"></div>
+<div class="rectangle-231" id="pool" style="left: 495px; top: 455px"></div>
+<div class="rectangle-232" id="balcony" style="left: 375px; top: 455px"></div>
+<div class="rectangle-233" id="yard" style="left: 255px; top: 455px"></div>
+<div class="rectangle-234" id="ownerInHouse" style="top: 455px"></div>
+<div class="rectangle-235" id="takhlie" style="top: 455px"></div>
+<div class="rectangle-236" id="comment" style="top: 500px"></div>
+<div class="rectangle-237" id="receiver" style="top: 540px"></div>
+</body>
 <script>
     const electron = require('electron');
     const {ipcRenderer} = electron;
     const _ = require('underscore');
+    const StringUtils = require('./utils/StringUtils');
     ipcRenderer.send('getPrintFile');
+    const { remote } = require('electron');
+    const { Menu } = remote;
+    const Store = require('electron-store');
+    const store = new Store();
+    let filePrinted = undefined;
 
-    ipcRenderer.on('sendPrintFileFromMain', function (event, printFile) {
-        document.getElementById('date').innerText = printFile.date;
+    const markdownContextMenu = Menu.buildFromTemplate([
+        { type: 'separator' },
+        { label: 'Cut', role: 'cut' },
+        { label: 'Copy', role: 'copy' },
+        { label: 'Paste', role: 'paste' },
+        { label: 'Select All', role: 'selectall' },
+    ]);
+
+    document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        markdownContextMenu.popup();
+    });
+
+    function getDirection(file) {
+        if (file.north) {
+            return ('شمالی')
+        } else if (file.south) {
+            return ('جنوبی')
+        } else if (file.east) {
+            return ('شرقی')
+        } else if (file.west) {
+            return ('غربی')
+        } else {
+            return '';
+        }
+    }
+
+    function getNoeMelk(file) {
+
+        if (!_.isEmpty(file.office)) {
+            return 'دفترکار';
+        } else if (!_.isEmpty(file.apartment)) {
+            return 'آپارتمان';
+        } else if (!_.isEmpty(file.building)) {
+            return 'مستغلات';
+        } else if (!_.isEmpty(file.oldHouse)) {
+            return 'کلنگی';
+        } else if (!_.isEmpty(file.land)) {
+            return 'زمین';
+        } else if (!_.isEmpty(file.vila)) {
+            return 'ویلا';
+        } else if (file.store) {
+            return 'مغازه';
+        } else if (file.suite) {
+            return 'سوییت';
+        } else {
+            return '';
+        }
+
+    }
+
+    ipcRenderer.on('sendPrintFileFromMain', function (event, file) {
+        filePrinted = file;
+
+        document.querySelector('#date').innerHTML = StringUtils.convertMillisecondToShamsi(file.date);
+        document.querySelector('#address').innerHTML = !_.isEmpty(file.address) ? file.address : '';
+        document.querySelector('#telephone').innerHTML = StringUtils.convertNumbersToPersian(file.tel1);
+        document.querySelector('#regionCode').innerHTML = StringUtils.convertNumbersToPersian(file.regionCode);
+        document.querySelector('#regionName').innerHTML = file.regionName;
+        document.querySelector('#owner').innerHTML = !_.isEmpty(file.owner) ? file.owner : '';
+        document.querySelector('#publisher').innerHTML = !_.isEmpty(file.publisher) ? file.publisher : '';
+        document.querySelector('#number').innerHTML = file.Id;
+        document.querySelector('#direction').innerHTML = getDirection(file);
+        document.querySelector('#mored').innerHTML = file.sale;
+        document.querySelector('#ageBuilding').innerHTML = !_.isEmpty(file.age) ? StringUtils.convertNumbersToPersian(file.age) : '';
+        document.querySelector('#mortgagePrice').innerHTML = !_.isEmpty(file.mortgagePrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.mortgagePrice)) : '';
+        document.querySelector('#rentPrice').innerHTML = !_.isEmpty(file.rentPrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.rentPrice)) : '';
+        document.querySelector('#unitPrice').innerHTML = !_.isEmpty(file.unitPrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.unitPrice)) : '';
+        document.querySelector('#totalPrice').innerHTML = !_.isEmpty(file.totalPrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.totalPrice)) : '';
+        document.querySelector('#documentKind').innerHTML = !_.isEmpty(file.documentKind) ? file.documentKind : '';
+        document.querySelector('#frontKind').innerHTML = !_.isEmpty(file.frontKind) ? file.frontKind : '';
+        document.querySelector('#unitWC').innerHTML = !_.isEmpty(file.unitWC) ? file.unitWC : '';
+        document.querySelector('#unitFloorCovering').innerHTML = !_.isEmpty(file.unitFloorCovering) ? file.unitFloorCovering : '';
+        document.querySelector('#unitRoom').innerHTML = !_.isEmpty(file.unitRoom) ? StringUtils.convertNumbersToPersian(file.unitRoom) : '';
+        document.querySelector('#floorNo').innerHTML = !_.isEmpty(file.floorNo) ? StringUtils.convertNumbersToPersian(file.floorNo) : '';
+        document.querySelector('#unitNo').innerHTML = !_.isEmpty(file.unitNo) ? StringUtils.convertNumbersToPersian(file.unitNo) : '';
+        document.querySelector('#front').innerHTML = !_.isEmpty(file.front) ? StringUtils.convertNumbersToPersian(file.front) : '';
+        document.querySelector('#area').innerHTML = !_.isEmpty(file.area) ? StringUtils.convertNumbersToPersian(file.area) : '';
+        document.querySelector('#comment').innerHTML = !_.isEmpty(file.comment) ? file.comment : '';
+        document.querySelector('#unitFloor').innerHTML = !_.isEmpty(file.unitFloor) ? StringUtils.convertNumbersToPersian(file.unitFloor) : '';
+
+        document.querySelector('#iphoneImage').innerHTML = file.equipments.includes('آیفون تصویری') ? '✔' : '';
+        document.querySelector('#remoteDoor').innerHTML = file.equipments.includes('درب ریموت') ? '✔' : '';
+        document.querySelector('#balcony').innerHTML = file.unitBalcony ? '✔' : '';
+        document.querySelector('#komodDivari').innerHTML = file.equipments.includes('کمد دیواری') ? '✔' : '';
+        document.querySelector('#hasTelephon').innerHTML = file.equipments.includes('تلفن') ? '✔' : '';
+        document.querySelector('#anbari').innerHTML = file.equipments.includes('انباری') ? '✔' : '';
+        document.querySelector('#asansor').innerHTML = file.equipments.includes('آسانسور') ? '✔' : '';
+        document.querySelector('#pool').innerHTML = file.equipments.includes('استخر') ? '✔' : '';
+        document.querySelector('#split').innerHTML = file.equipments.includes('اسپلیت') ? '✔' : '';
+        document.querySelector('#koolerGazi').innerHTML = file.equipments.includes('کولر گازی') ? '✔' : '';
+        document.querySelector('#gazRoomizi').innerHTML = file.equipments.includes('گاز رومیزی') ? '✔' : '';
+        document.querySelector('#package').innerHTML = file.equipments.includes('پکیچ') ? '✔' : '';
+        document.querySelector('#shoomine').innerHTML = file.equipments.includes('شومینه') ? '✔' : '';
+        document.querySelector('#shoofazh').innerHTML = file.equipments.includes('شوفاژ') ? '✔' : '';
+        document.querySelector('#hood').innerHTML = file.equipments.includes('هود') ? '✔' : '';
+        document.querySelector('#kabinet').innerHTML = file.equipments.includes('کابینت') ? '✔' : '';
+        document.querySelector('#doubleGlazedWindow').innerHTML = file.equipments.includes('پنجره دوجداره') ? '✔' : '';
+        document.querySelector('#kaghazDivari').innerHTML = file.equipments.includes('کاغذ دیواری') ? '✔' : '';
+        document.querySelector('#securityDoor').innerHTML = file.equipments.includes('درب ضد سرقت') ? '✔' : '';
+        document.querySelector('#takhlie').innerHTML = file.empty ? '✔' : '';
+        document.querySelector('#ownerInHouse').innerHTML = file.ownerInHouse === 'دارد' ? '✔' : '';
+        document.querySelector('#yard').innerHTML = file.yard === 'دارد' ? '✔' : '';
+        document.querySelector('#publisher').innerHTML = file.source;
+        document.querySelector('#noeMelk').innerHTML = getNoeMelk(file);
+        document.querySelector('#receiver').innerHTML = store.get('agencyName');
+
     });
 
     var pdf = document.getElementById('btn-convert-pdf');
     pdf.addEventListener('click', (event) => {
+        // document.querySelector('body').style.transform = 'scale(1)';
+        // document.querySelector('body').style.height = 'auto';
+
+        // document.querySelector('html').style.transform = 'scale(1)';
+        // document.querySelector('html').style.height = 'auto';
         ipcRenderer.send('printFile');
     });
 </script>

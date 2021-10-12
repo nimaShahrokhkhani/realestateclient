@@ -10,522 +10,525 @@
   width: 1568px;
 }
 
-.chap .rectangle-186 {
+.rectangle-186 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1126px;
+  left: 590px;
   position: absolute;
-  top: 137px;
-  width: 298px;
+  top: 60px;
+  width: 200px;
 }
 
-.chap .rectangle-187 {
+.rectangle-187 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 790px;
+  left: 410px;
   position: absolute;
-  top: 137px;
+  top: 70px;
   width: 244px;
 }
 
-.chap .rectangle-188 {
+.rectangle-188 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 565px;
+  left: 290px;
   position: absolute;
-  top: 138px;
+  top: 75px;
   width: 127px;
 }
 
-.chap .rectangle-189 {
+.rectangle-189 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 284px;
+  left: 150px;
   position: absolute;
-  top: 59px;
+  top: 40px;
   width: 188px;
 }
 
-.chap .rectangle-190 {
+.rectangle-190 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 4px;
+  left: 15px;
   position: absolute;
-  top: 59px;
+  top: 40px;
   width: 188px;
 }
 
-.chap .rectangle-191 {
+.rectangle-191 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 285px;
+  left: 150px;
   position: absolute;
-  top: 139px;
+  top: 80px;
   width: 188px;
 }
 
-.chap .rectangle-192 {
+.rectangle-192 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 10px;
+  position: absolute;
+  top: 80px;
+  width: 188px;
+}
+
+.rectangle-193 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  right: 90px;
+  position: absolute;
+  top: 105px;
+  width: 700px;
+  direction: rtl;
+}
+
+.rectangle-194 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 715px;
+  position: absolute;
+  top: 200px;
+  width: 90px;
+}
+
+.rectangle-195 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 80px;
+  left: 590px;
+  position: absolute;
+  top: 200px;
+  width: 150px;
+}
+
+.rectangle-196 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 500px;
+  position: absolute;
+  top: 200px;
+  width: 127px;
+}
+
+.rectangle-197 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 390px;
+  position: absolute;
+  top: 200px;
+  width: 127px;
+}
+
+.rectangle-198 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 330px;
+  position: absolute;
+  top: 200px;
+  width: 127px;
+}
+
+.rectangle-199 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 270px;
+  position: absolute;
+  top: 200px;
+  width: 127px;
+}
+
+.rectangle-200 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 200px;
+  position: absolute;
+  top: 200px;
+  width: 127px;
+}
+
+.rectangle-201 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 150px;
+  position: absolute;
+  top: 200px;
+  width: 127px;
+}
+
+.rectangle-202 {
+  background-color: var(--white);
+  border-radius: 10px;
+  height: 68px;
+  left: 80px;
+  position: absolute;
+  top: 200px;
+  width: 127px;
+}
+
+.rectangle-203 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
   left: 5px;
   position: absolute;
-  top: 139px;
-  width: 188px;
-}
-
-.chap .rectangle-193 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 5px;
-  position: absolute;
-  top: 219px;
-  width: 1419px;
-}
-
-.chap .rectangle-194 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 1439px;
-  position: absolute;
-  top: 381px;
-  width: 121px;
-}
-
-.chap .rectangle-195 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 1126px;
-  position: absolute;
-  top: 381px;
-  width: 298px;
-}
-
-.chap .rectangle-196 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 985px;
-  position: absolute;
-  top: 381px;
+  top: 200px;
   width: 127px;
 }
 
-.chap .rectangle-197 {
+.rectangle-204 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 846px;
+  left: 580px;
   position: absolute;
-  top: 381px;
-  width: 127px;
+  top: 235px;
+  width: 150px;
 }
 
-.chap .rectangle-198 {
+.rectangle-205 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 706px;
+  left: 405px;
   position: absolute;
-  top: 381px;
-  width: 127px;
-}
-
-.chap .rectangle-199 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 567px;
-  position: absolute;
-  top: 381px;
-  width: 127px;
-}
-
-.chap .rectangle-200 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 427px;
-  position: absolute;
-  top: 381px;
-  width: 127px;
-}
-
-.chap .rectangle-201 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 286px;
-  position: absolute;
-  top: 381px;
-  width: 127px;
-}
-
-.chap .rectangle-202 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 146px;
-  position: absolute;
-  top: 381px;
-  width: 127px;
-}
-
-.chap .rectangle-203 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 5px;
-  position: absolute;
-  top: 381px;
-  width: 127px;
-}
-
-.chap .rectangle-204 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 1126px;
-  position: absolute;
-  top: 457px;
-  width: 298px;
-}
-
-.chap .rectangle-205 {
-  background-color: var(--white);
-  border-radius: 10px;
-  height: 68px;
-  left: 780px;
-  position: absolute;
-  top: 457px;
+  top: 235px;
   width: 232px;
 }
 
-.chap .rectangle-206 {
+.rectangle-206 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 333px;
+  left: 180px;
   position: absolute;
-  top: 456px;
+  top: 235px;
   width: 333px;
 }
 
-.chap .rectangle-207 {
+.rectangle-207 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
   left: 5px;
   position: absolute;
-  top: 456px;
+  top: 235px;
   width: 213px;
 }
 
-.chap .rectangle-208 {
+.rectangle-208 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1351px;
+  left: 700px;
   position: absolute;
-  top: 613px;
-  width: 213px;
+  top: 315px;
+  width: 100px;
 }
 
-.chap .rectangle-209 {
+.rectangle-209 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1126px;
+  left: 580px;
   position: absolute;
-  top: 613px;
+  top: 315px;
   width: 213px;
 }
 
-.chap .rectangle-210 {
+.rectangle-210 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 901px;
+  left: 465px;
   position: absolute;
-  top: 613px;
+  top: 315px;
   width: 213px;
 }
 
-.chap .rectangle-211 {
+.rectangle-211 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 676px;
+  left: 350px;
   position: absolute;
-  top: 613px;
   width: 213px;
+  top: 315px;
 }
 
-.chap .rectangle-212 {
+.rectangle-212 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 451px;
+  left: 240px;
   position: absolute;
-  top: 613px;
+  top: 315px;
   width: 213px;
 }
 
-.chap .rectangle-213 {
+.rectangle-213 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 226px;
+  left: 120px;
   position: absolute;
-  top: 613px;
+  top: 315px;
   width: 213px;
 }
 
-.chap .rectangle-214 {
+.rectangle-214 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
   left: 5px;
   position: absolute;
-  top: 613px;
+  top: 315px;
   width: 213px;
 }
 
-.chap .rectangle-215 {
+.rectangle-215 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1348px;
+  left: 680px;
   position: absolute;
-  top: 691px;
+  top: 355px;
   width: 77px;
 }
 
-.chap .rectangle-216 {
+.rectangle-216 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1126px;
+  left: 570px;
   position: absolute;
-  top: 690px;
+  top: 355px;
   width: 77px;
 }
 
-.chap .rectangle-217 {
+.rectangle-217 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 899px;
+  left: 460px;
   position: absolute;
-  top: 690px;
+  top: 355px;
   width: 77px;
 }
 
-.chap .rectangle-218 {
+.rectangle-218 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 675px;
+  left: 345px;
   position: absolute;
-  top: 691px;
+  top: 355px;
   width: 77px;
 }
 
-.chap .rectangle-219 {
+.rectangle-219 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 449px;
+  left: 240px;
   position: absolute;
-  top: 691px;
+  top: 355px;
   width: 77px;
 }
 
-.chap .rectangle-220 {
+.rectangle-220 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 225px;
+  left: 130px;
   position: absolute;
-  top: 691px;
+  top: 355px;
   width: 77px;
 }
 
-.chap .rectangle-221 {
+.rectangle-221 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 5px;
+  left: 15px;
   position: absolute;
-  top: 691px;
+  top: 355px;
   width: 77px;
 }
 
-.chap .rectangle-222 {
+.rectangle-222 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1348px;
+  left: 680px;
   position: absolute;
-  top: 767px;
+  top: 395px;
   width: 77px;
 }
 
-.chap .rectangle-223 {
+.rectangle-223 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1126px;
+  left: 570px;
   position: absolute;
-  top: 767px;
+  top: 395px;
   width: 77px;
 }
 
-.chap .rectangle-224 {
+.rectangle-224 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 901px;
+  left: 460px;
   position: absolute;
-  top: 767px;
+  top: 395px;
   width: 77px;
 }
 
-.chap .rectangle-225 {
+.rectangle-225 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 676px;
+  left: 345px;
   position: absolute;
-  top: 769px;
+  top: 395px;
   width: 77px;
 }
 
-.chap .rectangle-226 {
+.rectangle-226 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 451px;
+  left: 240px;
   position: absolute;
-  top: 766px;
+  top: 395px;
   width: 77px;
 }
 
-.chap .rectangle-227 {
+.rectangle-227 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 226px;
+  left: 130px;
   position: absolute;
-  top: 769px;
+  top: 395px;
   width: 77px;
 }
 
-.chap .rectangle-228 {
+.rectangle-228 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 4px;
+  left: 15px;
   position: absolute;
-  top: 771px;
+  top: 395px;
   width: 77px;
 }
 
-.chap .rectangle-229 {
+.rectangle-229 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1351px;
+  left: 680px;
   position: absolute;
-  top: 843px;
+  top: 440px;
   width: 77px;
 }
 
-.chap .rectangle-230 {
+.rectangle-230 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 1126px;
+  left: 560px;
   position: absolute;
-  top: 843px;
+  top: 440px;
   width: 77px;
 }
 
-.chap .rectangle-231 {
+.rectangle-231 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 901px;
+  left: 460px;
   position: absolute;
-  top: 843px;
+  top: 440px;
   width: 77px;
 }
 
-.chap .rectangle-232 {
+.rectangle-232 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 676px;
+  left: 345px;
   position: absolute;
-  top: 847px;
+  top: 440px;
   width: 77px;
 }
 
-.chap .rectangle-233 {
+.rectangle-233 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 451px;
+  left: 240px;
   position: absolute;
-  top: 841px;
+  top: 440px;
   width: 77px;
 }
 
-.chap .rectangle-234 {
+.rectangle-234 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 226px;
+  left: 130px;
   position: absolute;
-  top: 847px;
+  top: 440px;
   width: 77px;
 }
 
-.chap .rectangle-235 {
+.rectangle-235 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 5px;
+  left: 15px;
   position: absolute;
-  top: 846px;
+  top: 440px;
   width: 77px;
 }
 
-.chap .rectangle-236 {
+.rectangle-236 {
   background-color: var(--white);
   border-radius: 10px;
   height: 68px;
-  left: 5px;
+  right: 90px;
   position: absolute;
-  top: 919px;
-  width: 1423px;
+  top: 480px;
+  width: 700px;
+  direction: rtl;
 }
 
-.chap .rectangle-237 {
+.rectangle-237 {
   background-color: var(--white);
   border-radius: 10px;
   height: 70px;
-  left: 5px;
+  right: 90px;
   position: absolute;
-  top: 997px;
-  width: 1423px;
+  top: 520px;
+  width: 700px;
+  direction: rtl;
 }
