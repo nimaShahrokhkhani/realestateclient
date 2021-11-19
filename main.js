@@ -18,6 +18,7 @@ let searchFileTableWindow;
 let addUserWindow;
 let settingWindow;
 let userManagementWindow;
+let getFilingWindow;
 let addHostNameWindow;
 let addFilingHostNameWindow;
 let filePrintWindow;
@@ -215,7 +216,7 @@ ipcMain.on('showFileValidationError', async function (e, validationArray) {
     fileValidationWindow = new BrowserWindow({
         parent: addFileWindow,
         modal: true,
-        width:300, height:400,
+        width: 300, height: 400,
         webPreferences: {
             enableRemoteModule: true,
             nodeIntegration: true,
@@ -327,14 +328,14 @@ ipcMain.on('registerFilingDevice', function (e, realStateCode, realStateTemporar
 
 // getFileFromFilling callback
 ipcMain.on('getFileFromFilling', function (e, request) {
-    settingWindow.webContents.send('showLoading');
+    getFilingWindow.webContents.send('showLoading');
     services.getFileFromFilling(request).then(async response => {
         let requestArray = response.data;
         for (var i in requestArray) {
-            requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
+            // requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
             var result = await services.insertFromFiling(requestArray[i]);
             if (parseInt(i) === (requestArray.length - 1)) {
-                settingWindow.webContents.send('hideLoading');
+                getFilingWindow.webContents.send('hideLoading');
                 const notification = {
                     title: 'موفقیت',
                     body: 'فایل با موفقیت ذخیره شد.'
@@ -343,7 +344,7 @@ ipcMain.on('getFileFromFilling', function (e, request) {
             }
         }
     }).catch(error => {
-        settingWindow.webContents.send('hideLoading');
+        getFilingWindow.webContents.send('hideLoading');
         const notification = {
             title: 'خطا',
             body: 'خطا در رجیستر کردن.'
@@ -416,17 +417,18 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
             services.setAndResetSession(response.headers['set-cookie']);
             services.getConfigs().then((response) => {
                 if (response.data && response.data[0] && response.data[0].realStateName) {
-                    services.getDevices().then((response) => {
+                    services.getDevices().then((responseDevices) => {
                         const Store = require('electron-store');
                         const store = new Store();
-                        store.set('devices', response.data);
+                        store.set('devices', responseDevices.data);
+                        store.set('realStateName', response.data[0].realStateName);
                         mainWindow.webContents.send('hideLoading');
                         mainWindow.loadURL(url.format({
                             pathname: path.join(__dirname, 'managementPanel.html'),
                             protocol: 'file:',
                             slashes: true
                         }));
-                    }).catch(() => {
+                    }).catch((error) => {
                         mainWindow.webContents.send('hideLoading');
                         const notification = {
                             title: 'خطا',
@@ -645,8 +647,8 @@ ipcMain.on('getUserFilterList', function (e, requestBody) {
 
 // deleteUser callback
 ipcMain.on('deleteUser', function (e, username) {
-    let options  = {
-        buttons: ["بله","خیر"],
+    let options = {
+        buttons: ["بله", "خیر"],
         message: "آیا از حذف کاربر اطمینان دارید؟"
     };
     dialog.showMessageBox(userManagementWindow, options).then(result => {
@@ -724,15 +726,18 @@ ipcMain.on('searchFileOnTelephoneNumber', function (e, request) {
 
 // getFileForEditing callback
 ipcMain.on('getFileForEditing', function (e, id) {
-    if (_.isEmpty(addFileWindow)) {
-        services.searchFile({Id: id}).then((response) => {
-            if (!_.isEmpty(response.data)) {
-                file = response.data[0];
-                createAddFileWindow();
-            }
-        }).catch((error) => {
-        })
-    }
+    services.searchFile({Id: id}).then((response) => {
+        if (!_.isEmpty(response.data)) {
+            file = response.data[0];
+            createAddFileWindow();
+        }
+    }).catch((error) => {
+        const notification = {
+            title: 'خطا',
+            body: 'فایلی یافت نشد.'
+        };
+        new Notification(notification).show()
+    })
 });
 
 // getPrevFile callback
@@ -778,8 +783,8 @@ ipcMain.on('getNextFile', function (e, currentFile) {
 });
 
 function findWithAttr(array, attr, value) {
-    for(var i = 0; i < array.length; i += 1) {
-        if(array[i][attr] === value) {
+    for (var i = 0; i < array.length; i += 1) {
+        if (array[i][attr] === value) {
             return i;
         }
     }
@@ -883,10 +888,10 @@ ipcMain.on('getPrintFile', async function (e, request) {
 // get print file callback
 ipcMain.on('printFile', async function (e) {
 // Importing BrowserWindow from Main
-    if (!fs.existsSync(path.join(__dirname, './assets'))){
-        fs.mkdirSync(path.join(__dirname, './assets'));
+    if (!fs.existsSync(path.join('C:/assets'))) {
+        fs.mkdirSync(path.join('C:/assets'));
     }
-    let filepath = path.join(__dirname, './assets/print.pdf');
+    let filepath = path.join('C:/assets/print.pdf');
 
     let options = {
         marginsType: 0,
@@ -929,7 +934,7 @@ ipcMain.on('zonkanFiles', async function (e, fileList) {
     chooseZonkanWindow = new BrowserWindow({
         parent: searchFileTableWindow,
         modal: true,
-        width:300, height:200,
+        width: 300, height: 200,
         webPreferences: {
             enableRemoteModule: true,
             nodeIntegration: true,
@@ -948,7 +953,7 @@ ipcMain.on('contactInfo', async function (e, contactInfo) {
     contactInfoWindow = new BrowserWindow({
         parent: contactListWindow,
         modal: true,
-        width:800, height:200,
+        width: 800, height: 200,
         webPreferences: {
             enableRemoteModule: true,
             nodeIntegration: true,
@@ -1208,6 +1213,33 @@ function createUserManagementWindow() {
     });
 }
 
+// create search user window
+function createGetFilingWindow() {
+    getFilingWindow = new BrowserWindow({
+        webPreferences: {
+            enableRemoteModule: true,
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: 700,
+        height: 500,
+        title: 'دریافت فایل'
+    });
+    getFilingWindow.webContents.on('crashed', () => {
+        getFilingWindow.destroy();
+        createGetFilingWindow();
+    });
+    getFilingWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'getFilesFromFilingWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Handle garbage collection
+    getFilingWindow.on('close', function () {
+        getFilingWindow = null;
+    });
+}
+
 // create print file window
 function createFilePrintWindow() {
     filePrintWindow = new BrowserWindow({
@@ -1348,6 +1380,13 @@ ipcMain.on('searchUser', function (e) {
         };
         new Notification(notification).show()
     }
+});
+
+//search user menu press
+ipcMain.on('getFiling', function (e) {
+    const Store = require('electron-store');
+    const store = new Store();
+    createGetFilingWindow();
 });
 
 //addService

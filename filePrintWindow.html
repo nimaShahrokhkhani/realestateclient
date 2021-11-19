@@ -165,23 +165,22 @@
         document.querySelector('#number').innerHTML = file.Id;
         document.querySelector('#direction').innerHTML = getDirection(file);
         document.querySelector('#mored').innerHTML = file.sale;
-        document.querySelector('#ageBuilding').innerHTML = !_.isEmpty(file.age) ? StringUtils.convertNumbersToPersian(file.age) : '';
-        document.querySelector('#mortgagePrice').innerHTML = !_.isEmpty(file.mortgagePrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.mortgagePrice)) : '';
-        document.querySelector('#rentPrice').innerHTML = !_.isEmpty(file.rentPrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.rentPrice)) : '';
-        document.querySelector('#unitPrice').innerHTML = !_.isEmpty(file.unitPrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.unitPrice)) : '';
-        document.querySelector('#totalPrice').innerHTML = !_.isEmpty(file.totalPrice) ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.totalPrice)) : '';
+        document.querySelector('#ageBuilding').innerHTML = file.age ? StringUtils.convertNumbersToPersian(file.age.toString()) : '';
+        document.querySelector('#mortgagePrice').innerHTML = file.mortgagePrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.mortgagePrice)) : '';
+        document.querySelector('#rentPrice').innerHTML = file.rentPrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.rentPrice)) : '';
+        document.querySelector('#unitPrice').innerHTML = file.unitPrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.unitPrice)) : '';
+        document.querySelector('#totalPrice').innerHTML = file.totalPrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.totalPrice)) : '';
         document.querySelector('#documentKind').innerHTML = !_.isEmpty(file.documentKind) ? file.documentKind : '';
         document.querySelector('#frontKind').innerHTML = !_.isEmpty(file.frontKind) ? file.frontKind : '';
         document.querySelector('#unitWC').innerHTML = !_.isEmpty(file.unitWC) ? file.unitWC : '';
         document.querySelector('#unitFloorCovering').innerHTML = !_.isEmpty(file.unitFloorCovering) ? file.unitFloorCovering : '';
-        document.querySelector('#unitRoom').innerHTML = !_.isEmpty(file.unitRoom) ? StringUtils.convertNumbersToPersian(file.unitRoom) : '';
-        document.querySelector('#floorNo').innerHTML = !_.isEmpty(file.floorNo) ? StringUtils.convertNumbersToPersian(file.floorNo) : '';
-        document.querySelector('#unitNo').innerHTML = !_.isEmpty(file.unitNo) ? StringUtils.convertNumbersToPersian(file.unitNo) : '';
-        document.querySelector('#front').innerHTML = !_.isEmpty(file.front) ? StringUtils.convertNumbersToPersian(file.front) : '';
-        document.querySelector('#area').innerHTML = !_.isEmpty(file.area) ? StringUtils.convertNumbersToPersian(file.area) : '';
+        document.querySelector('#unitRoom').innerHTML = file.unitRoom ? StringUtils.convertNumbersToPersian(file.unitRoom.toString()) : '';
+        document.querySelector('#floorNo').innerHTML = file.floorNo ? StringUtils.convertNumbersToPersian(file.floorNo.toString()) : '';
+        document.querySelector('#unitNo').innerHTML = file.unitNo ? StringUtils.convertNumbersToPersian(file.unitNo.toString()) : '';
+        document.querySelector('#front').innerHTML = file.front ? StringUtils.convertNumbersToPersian(file.front.toString()) : '';
+        document.querySelector('#area').innerHTML = file.area ? StringUtils.convertNumbersToPersian(file.area.toString()) : '';
         document.querySelector('#comment').innerHTML = !_.isEmpty(file.comment) ? file.comment : '';
-        document.querySelector('#unitFloor').innerHTML = !_.isEmpty(file.unitFloor) ? StringUtils.convertNumbersToPersian(file.unitFloor) : '';
-
+        document.querySelector('#unitFloor').innerHTML = file.unitFloor ? StringUtils.convertNumbersToPersian(file.unitFloor.toString()) : '';
         document.querySelector('#iphoneImage').innerHTML = file.equipments.includes('آیفون تصویری') ? '✔' : '';
         document.querySelector('#remoteDoor').innerHTML = file.equipments.includes('درب ریموت') ? '✔' : '';
         document.querySelector('#balcony').innerHTML = file.unitBalcony ? '✔' : '';
@@ -206,7 +205,7 @@
         document.querySelector('#yard').innerHTML = file.yard === 'دارد' ? '✔' : '';
         document.querySelector('#publisher').innerHTML = file.source;
         document.querySelector('#noeMelk').innerHTML = getNoeMelk(file);
-        document.querySelector('#receiver').innerHTML = store.get('agencyName');
+        document.querySelector('#receiver').innerHTML = store.get('realStateName') ? store.get('realStateName') : '';
 
     });
 

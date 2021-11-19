@@ -85,7 +85,7 @@
         </div>
         <div class="overlap-group15">
             <div class="rectangle-124"></div>
-            <img class="path-cloud-download-outline" src="img/path---cloud-download-outline@1x.png" />
+            <img class="path-cloud-download-outline" src="img/path---cloud-download-outline@1x.png" id="getFiling"/>
             <div class="text-4 iransans-light-black-19px">دریافت فایل</div>
         </div>
         <div class="overlap-group5">
@@ -110,13 +110,11 @@
         </div>
         <div class="overlap-group16">
             <div class="rectangle-125"></div>
-            <img class="path-home-search-outline" src="img/path---home-search-outline@1x.png" id="searchAgency"/>
-            <div class="text-9 iransans-light-black-19px">جستجو آژانس</div>
+            <img class="path-home-search-outline" src="images/logoGilanFile.png" id="searchAgency"/>
         </div>
         <div class="overlap-group12">
             <div class="rectangle-122"></div>
-            <img class="path-home-plus-outline" src="img/path---home-plus-outline@1x.png" id="addAgency"/>
-            <div class="text-10 iransans-light-black-19px">ثبت آژانس</div>
+            <img class="path-home-plus-outline" src="images/logoGilanFile.png" id="addAgency"/>
         </div>
         <div class="overlap-group14">
             <h1 class="title">ADS</h1>
@@ -456,6 +454,10 @@
 
     document.querySelector('#searchUser').addEventListener("click", function () {
         ipcRenderer.send('searchUser');
+    });
+
+    document.querySelector('#getFiling').addEventListener("click", function () {
+        ipcRenderer.send('getFiling');
     });
 
     document.querySelector('#contactList').addEventListener("click", function () {

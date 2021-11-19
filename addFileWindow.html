@@ -1069,7 +1069,8 @@
     ipcRenderer.send('getEditFile');
 
     ipcRenderer.on('sendFileFromMain', function (event, file) {
-        if (!_.isEmpty(file)) {
+        if (!_.isEmpty(file) && !_.isEmpty(file.Id)) {
+            saleTypeClickEvent(file.sale)
             editFile = file;
             isEdit = true;
 
@@ -1097,13 +1098,13 @@
             onRegionCodeChange();
             document.querySelector('#regionName').value = file.regionName;
             document.querySelector('#date').value = StringUtils.convertMillisecondToShamsi(file.date);
-            document.querySelector('#rentPrice').value = file.rent ? StringUtils.commify(file.rent) : '';
+            document.querySelector('#rentPrice').value = file.rent ? StringUtils.commify(file.rent.toString()) : '';
             document.querySelector('#sale').checked = file.sale === 'فروش';
             document.querySelector('#rent').checked = file.sale === 'اجاره';
             document.querySelector('#mortgage').checked = file.sale === 'رهن';
             document.querySelector('#partnership').checked = file.sale === 'مشارکت';
             document.querySelector('#exchange').checked = file.sale === 'معاوضه';
-            document.querySelector('#mortgagePrice').value = file.mortgage ? StringUtils.commify(file.mortgage) : '';
+            document.querySelector('#mortgagePrice').value = file.mortgage ? StringUtils.commify(file.mortgage.toString()) : '';
             document.querySelector('#apartment').value = file.apartment;
             document.querySelector('#land').value = !_.isEmpty(file.land) ? file.land : '';
             document.querySelector('#vila').value = !_.isEmpty(file.vila) ? file.vila : '';
@@ -1159,8 +1160,8 @@
             document.querySelector('#tableKitchen0').value = file.unitKitchen;
             document.querySelector('#tableWC0').value = file.unitWC;
             document.querySelector('#tableKafPoosh0').value = file.unitFloorCovering;
-            document.querySelector('#tableParking0').value = file.unitParking;
-            document.querySelector('#tableAnbari0').value = file.unitAnbari;
+            document.querySelector('#tableParking0').value = file.unitParking ? file.unitParking : '';
+            document.querySelector('#tableAnbari0').value = file.unitAnbari ? file.unitAnbari : '';
             document.querySelector('#tableOpen0').checked = file.unitOpen;
             document.querySelector('#tableMetri0').value = file.unitMetri ? StringUtils.commify(file.unitMetri.toString()) : '';
             document.querySelector('#tableTotalAmount0').value = file.unitTotalAmount ? StringUtils.commify(file.unitTotalAmount.toString()) : '';

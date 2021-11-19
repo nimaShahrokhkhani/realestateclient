@@ -245,6 +245,8 @@
   position: absolute;
   top: 62px;
   width: 48px;
+  cursor: pointer;
+  z-index: 100;
 }
 
 .home-page .text-4 {
@@ -435,7 +437,7 @@
 .home-page .path-home-search-outline {
   height: 44px;
   left: 648px;
-  object-fit: cover;
+  object-fit: contain;
   position: absolute;
   top: 214px;
   width: 44px;
@@ -475,7 +477,7 @@
 .home-page .path-home-plus-outline {
   height: 43px;
   left: 650px;
-  object-fit: cover;
+  object-fit: contain;
   position: absolute;
   top: 62px;
   width: 44px;

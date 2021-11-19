@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <script>
         var $ = jQuery = require("jquery")
@@ -88,7 +88,8 @@
             margin-right: 10px;
             padding-left: 10px;
             padding-right: 10px;
-            height: 30px;
+            height: 40px;
+            width: 100px;
             background-image: linear-gradient(rgb(45 47 146), white);
             border: 0;
             border-radius: 10px;
@@ -98,11 +99,11 @@
         }
 
         .tabSideContainer {
-            flex: 1;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
-            align-items: center
+            align-items: center;
+            margin-top: 50px;
         }
 
         #loading {
@@ -154,55 +155,39 @@
             border-width: 0.5px;
             border-radius: 5px
         }
+
+        .inputStyle {
+            margin-left: 20px;
+        }
+
+        .custom-text-input {
+            height: 30px;
+            width: 200px;
+            font-family: IRANSansMobileFaNum-Light;
+        }
     </style>
 </head>
 <body>
 <div id="loading">
     <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
 </div>
-<div class="tab">
-    <button class="tablinks active" onclick="openTab(event, 'getConfigs')">دریافت کانفیگ</button>
-    <button class="tablinks" onclick="openTab(event, 'setPublisher')">تنظیم کننده</button>
-    <button class="tablinks" onclick="openTab(event, 'setFileTableHeader')">عنوان جدول فایل</button>
-</div>
-
-<div id="getConfigs" class="tabcontent" style="display: flex; justify-content: center; align-items: center">
+<div id="getFiling"
+     style="display: flex; flex-direction: column; align-items: center; background-image: url('./img/getFilingBg.jpeg');background-repeat: no-repeat; overflow: hidden; background-size: cover; width: 100%; height: 450px">
+    <img src="img/gilanFileIcon.jpeg" style="width: 100px; height: 70px; margin-top: 20px"/>
     <div class="tabSideContainer">
-        <button id="btn-getConfig" class="btn-submit">دریافت کانفیگ های برنامه</button>
+        <div class="inputStyle">
+            <input placeholder="از تاریخ" class='validate custom-text-input font-text-light date-picker'
+                   type='text' name='fromDate'
+                   id='fromDate'/>
+        </div>
+        <div class="inputStyle">
+            <input placeholder="تا تاریخ" class='validate custom-text-input font-text-light date-picker'
+                   type='text' name='toDate'
+                   id='toDate'/>
+        </div>
     </div>
-</div>
-
-<div id="setPublisher" class="tabcontent" style="justify-content: center; align-items: center">
     <div class="tabSideContainer">
-        <input class='validate custom-text-input font-text-light'
-               type='text' name='publisher' id='publisher'>
-        <button id="btn-setPublisher" class="btn-submit">ثبت</button>
-    </div>
-</div>
-
-<div id="setFileTableHeader" class="tabcontent">
-    <div class="tabSideContainer" style="justify-content: flex-start">
-        <div style="display: flex; flex-direction: row">
-            <select class='textInput validate custom-text-input font-text-light' name='headerTitle' id='headerTitle'>
-                <option>کد</option>
-                <option>تاریخ</option>
-                <option>مالک</option>
-                <option>نوع</option>
-                <option>طبقه</option>
-                <option>مورد</option>
-                <option>آدرس</option>
-                <option>خواب</option>
-                <option>زیربنا</option>
-                <option>سن</option>
-                <option>کل/ودیعه</option>
-                <option>متری/اجاره</option>
-            </select>
-            <button id="btn-addHeaderTitle" class="btn-submit">افزودن</button>
-        </div>
-        <div id="headerTitleResultList">
-
-        </div>
-        <button id="btn-setFileTableHeader" class="btn-submit">ثبت</button>
+        <button id="btn-getFile" class="btn-submit">دریافت فایل</button>
     </div>
 </div>
 
@@ -278,25 +263,6 @@
         return showFilesTitle.find(item => item.value === title);
     }
 
-    var btnAddHeaderTitle = document.getElementById("btn-addHeaderTitle");
-    btnAddHeaderTitle.addEventListener("click", function () {
-        var headerTitle = document.getElementById("headerTitle");
-        var headerTitleResultListDiv = document.getElementById("headerTitleResultList");
-        if (_.isEmpty(headerTitleList.find(item => item.value === headerTitle.value))) {
-            var headerTitleDiv = document.createElement('DIV');
-            headerTitleDiv.className = 'headerTitleResult';
-            headerTitleDiv.innerHTML = headerTitle.value;
-            headerTitleDiv.id = headerTitle.value;
-            headerTitleDiv.onclick = function () {
-                headerTitleList = headerTitleList.filter(item => item.value !== this.id);
-                var headerTitleResultListDiv = document.getElementById("headerTitleResultList");
-                headerTitleResultListDiv.removeChild(document.getElementById(this.id))
-            };
-            headerTitleResultListDiv.appendChild(headerTitleDiv);
-            headerTitleList.push(getheaderObject(headerTitle.value));
-        }
-    });
-
     var btnSubmit = document.getElementById("btn-getFile");
     btnSubmit.addEventListener("click", function () {
         var request = {
@@ -307,23 +273,6 @@
         };
         ipcRenderer.send('getFileFromFilling', request);
     });
-
-    var btnGetConfigs = document.getElementById("btn-getConfig");
-    btnGetConfigs.addEventListener("click", function () {
-        ipcRenderer.send('getConfigsFromFilling');
-    });
-
-    document.getElementById('publisher').value = !_.isEmpty(store.get('publisher')) ?
-        store.get('publisher') : '';
-    var btnSetPublisher = document.getElementById("btn-setPublisher");
-    btnSetPublisher.addEventListener("click", function () {
-        ipcRenderer.send('setPublisher', document.getElementById("publisher").value);
-    })
-
-    var btnSetFileTableHeader = document.getElementById("btn-setFileTableHeader");
-    btnSetFileTableHeader.addEventListener("click", function () {
-        ipcRenderer.send('setFileTableHeader', headerTitleList);
-    })
 </script>
 
 </body>
