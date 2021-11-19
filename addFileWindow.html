@@ -650,7 +650,7 @@
                 <input class="rectangle-18-4 border-1px-navy-blue" id="tabaghat" tabindex="28">
                 <div class="text-31 iransans-light-black-13px">: تعداد طبقات</div>
             </div>
-            <img class="bar" src="img/bar@1x.png"/>
+            <img id="tableHeader" class="bar" src="img/bar@1x.png"/>
             <div class="x border-1px-dove-gray">
                 <div class="mdi-minus-circle-outline">
                     <a onclick="onRemoveTableClick()" id="removeTableButton"><img class="path-minus-circle-outline"
@@ -1873,6 +1873,8 @@
             document.getElementById("totalPriceLabel").style.display = "block";
             document.getElementById("totalPrice").style.display = "block";
             document.getElementById("priceComment").style.display = "block";
+
+            document.getElementById("tableHeader").src = "img/bar@1x.png";
         } else {
             document.getElementById("rentPriceLabel").style.display = "block";
             document.getElementById("rentPrice").style.display = "block";
@@ -1885,6 +1887,8 @@
             document.getElementById("totalPriceLabel").style.display = "none";
             document.getElementById("totalPrice").style.display = "none";
             document.getElementById("priceComment").style.display = "none";
+
+            document.getElementById("tableHeader").src = "img/rentBar.jpeg";
         }
     }
 

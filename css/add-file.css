@@ -759,6 +759,7 @@
   padding: 7px;
   position: absolute;
   top: 0;
+  z-index: 50;
 }
 
 .add-file .rectangle-18 {
@@ -1968,6 +1969,7 @@
 .table {
   height: 93px;
   overflow: auto;
+  z-index: 50;
 }
 
 .table::-webkit-scrollbar {

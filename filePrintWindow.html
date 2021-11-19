@@ -166,10 +166,10 @@
         document.querySelector('#direction').innerHTML = getDirection(file);
         document.querySelector('#mored').innerHTML = file.sale;
         document.querySelector('#ageBuilding').innerHTML = file.age ? StringUtils.convertNumbersToPersian(file.age.toString()) : '';
-        document.querySelector('#mortgagePrice').innerHTML = file.mortgagePrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.mortgagePrice)) : '';
-        document.querySelector('#rentPrice').innerHTML = file.rentPrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.rentPrice)) : '';
-        document.querySelector('#unitPrice').innerHTML = file.unitPrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.unitPrice)) : '';
-        document.querySelector('#totalPrice').innerHTML = file.totalPrice ? StringUtils.convertNumbersToPersian(StringUtils.separateNumberWithCommas(file.totalPrice)) : '';
+        document.querySelector('#mortgagePrice').innerHTML = file.mortgage ? StringUtils.convertNumbersToPersian(StringUtils.commify(file.mortgage.toString())) : '';
+        document.querySelector('#rentPrice').innerHTML = file.rent ? StringUtils.convertNumbersToPersian(StringUtils.commify(file.rent.toString())) : '';
+        document.querySelector('#unitPrice').innerHTML = file.unitPrice ? StringUtils.convertNumbersToPersian(StringUtils.commify(file.unitPrice.toString())) : '';
+        document.querySelector('#totalPrice').innerHTML = file.totalPrice ? StringUtils.convertNumbersToPersian(StringUtils.commify(file.totalPrice.toString())) : '';
         document.querySelector('#documentKind').innerHTML = !_.isEmpty(file.documentKind) ? file.documentKind : '';
         document.querySelector('#frontKind').innerHTML = !_.isEmpty(file.frontKind) ? file.frontKind : '';
         document.querySelector('#unitWC').innerHTML = !_.isEmpty(file.unitWC) ? file.unitWC : '';

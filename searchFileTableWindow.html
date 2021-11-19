@@ -206,7 +206,7 @@
                     };
                     columnContainer.appendChild(selectInput);
                 } else if (showFilesTitle[j].key.includes("/")) {
-                    columnContainer.innerHTML = files.data[i][showFilesTitle[j].key.split("/")[0]] ? files.data[i][showFilesTitle[j].key.split("/")[0]] : files.data[i][showFilesTitle[j].key.split("/")[1]];
+                    columnContainer.innerHTML = StringUtils.commify(files.data[i][showFilesTitle[j].key.split("/")[0]] ? files.data[i][showFilesTitle[j].key.split("/")[0]].toString() : (files.data[i][showFilesTitle[j].key.split("/")[1]] ? files.data[i][showFilesTitle[j].key.split("/")[1]].toString() : ''));
                 } else if (showFilesTitle[j].key.includes("date")) {
                     columnContainer.innerHTML = StringUtils.convertMillisecondToShamsi(files.data[i][showFilesTitle[j].key]);
                 } else if (showFilesTitle[j].key === 'type') {
