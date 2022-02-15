@@ -3,16 +3,21 @@ const axios = require('axios');
 const Store = require('electron-store');
 const store = new Store();
 const _ = require('underscore');
+const https = require('https');
 
 let HOST_NAME = !_.isEmpty(store.get('serverAddress')) ? store.get('serverAddress') : 'http://localhost:3500/';
 let FILING_HOST_NAME = !_.isEmpty(store.get('filingServerAddress')) ? store.get('filingServerAddress') : 'http://localhost:3600/';
 let INSTALLATION_HOST_NAME = !_.isEmpty(store.get('installationServerAddress')) ? store.get('installationServerAddress') : 'http://localhost:3650/';
 
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+
 const filingInstance = axios.create({
+    httpsAgent: httpsAgent,
     baseURL: FILING_HOST_NAME
 });
 
 const installationInstance = axios.create({
+    httpsAgent: httpsAgent,
     baseURL: INSTALLATION_HOST_NAME
 });
 
@@ -30,7 +35,7 @@ function setAndResetSession(cookieList) {
 
 function loginFiling(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
-    return filingInstance.post(`/base/login`, {
+    return filingInstance.post(`/api/base/login`, {
         username: requestData.username,
         password: requestData.password,
     })
@@ -111,12 +116,12 @@ function getConfigs(requestData) {
 function getFilingConfigs(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
     // filingInstance.defaults.headers['Cookie'] = store.get('session');
-    return filingInstance.get(`/base/clientConfig/list`, requestData)
+    return filingInstance.get(`/api/base/clientConfig/list`, requestData)
 }
 
 function installDevice(requestData) {
     installationInstance.defaults.headers.post['Content-Type'] = 'application/json';
-    return installationInstance.post(`/devices/activeDevice`, requestData)
+    return installationInstance.post(`/api/devices/activeDevice`, requestData)
 }
 
 function getDevices(requestData) {
@@ -140,13 +145,33 @@ function insertConfig(requestData) {
 function registerAgency(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
     // filingInstance.defaults.headers['Cookie'] = store.get('session');
-    return filingInstance.post(`/base/agency/registerAgency`, requestData)
+    return filingInstance.post(`/api/base/agency/registerAgency`, requestData)
 }
 
 function getFileFromFilling(requestData) {
     filingInstance.defaults.headers.post['Content-Type'] = 'application/json';
     // filingInstance.defaults.headers['Cookie'] = store.get('session');
-    return filingInstance.post(`/base/clientFiles/getClientFileList`, requestData)
+    return filingInstance.post(`/api/base/clientFiles/getClientFileList`, requestData)
+}
+
+function deleteFiles(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.post(`/files/delete`, requestData)
+}
+
+function editZonkan(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.post(`/zonkan/edit`, requestData)
+}
+
+function getZonkan(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.get(`/zonkan/list`, {
+        params: requestData
+    })
 }
 
 module.exports = {
@@ -170,4 +195,7 @@ module.exports = {
     getFileFromFilling,
     editUser,
     deleteUser,
+    deleteFiles,
+    editZonkan,
+    getZonkan
 };

@@ -186,6 +186,9 @@
                    id='toDate'/>
         </div>
     </div>
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 20px">
+        <input type="checkbox" id="autoUpdate" onclick="autoUpdate();"><p>به روز رسانی خودکار</p>
+    </div>
     <div class="tabSideContainer">
         <button id="btn-getFile" class="btn-submit">دریافت فایل</button>
     </div>
@@ -231,38 +234,6 @@
         loading.style.display = "none";
     });
 
-    function openTab(evt, cityName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(cityName).style.display = "flex";
-        evt.currentTarget.className += " active";
-    }
-
-    function getheaderObject(title) {
-        var showFilesTitle = [
-            {key: 'Id', value: 'کد'},
-            {key: 'date', value: 'تاریخ'},
-            {key: 'owner', value: 'مالک'},
-            {key: 'type', value: 'نوع'},
-            {key: 'unitFloor', value: 'طبقه'},
-            {key: 'sale', value: 'مورد'},
-            {key: 'totalPrice/mortgage', value: 'کل/ودیعه'},
-            {key: 'unitPrice/rent', value: 'متری/اجاره'},
-            {key: 'unitRoom', value: 'خواب'},
-            {key: 'unitBuiltUpArea', value: 'زیربنا'},
-            {key: 'age', value: 'سن'},
-            {key: 'address', value: 'آدرس'}
-        ];
-        return showFilesTitle.find(item => item.value === title);
-    }
-
     var btnSubmit = document.getElementById("btn-getFile");
     btnSubmit.addEventListener("click", function () {
         var request = {
@@ -273,6 +244,15 @@
         };
         ipcRenderer.send('getFileFromFilling', request);
     });
+
+    document.getElementById('autoUpdate').checked = store.get('autoUpdate');
+    function autoUpdate() {
+        if (document.getElementById('autoUpdate').checked) {
+            store.set('autoUpdate', true)
+        } else {
+            store.set('autoUpdate', false)
+        }
+    }
 </script>
 
 </body>

@@ -5,6 +5,8 @@ const url = require('url');
 const services = require('./utils/services');
 const nodeMachineId = require('node-machine-id');
 const _ = require('underscore');
+var JalaliJs = require('./utils/jalali-js');
+var StringUtils = require('./utils/StringUtils');
 
 // SET ENV
 process.env.NODE_ENV = 'development';
@@ -24,6 +26,8 @@ let addFilingHostNameWindow;
 let filePrintWindow;
 let contactListWindow;
 let addContactWindow;
+let zoncanWindow;
+let chooseZonkanWindow;
 let screenWidth = 0;
 let screenHeight = 0;
 let deviceId = undefined;
@@ -210,6 +214,27 @@ ipcMain.on('setFile', async function (e, requestArray) {
 
 });
 
+// deleteFiles callback
+ipcMain.on('deleteFiles', async function (e, requestArray) {
+    searchFileTableWindow.webContents.send('showLoading');
+    services.deleteFiles(requestArray).then(async (response) => {
+        searchFileTableWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'موفقیت',
+            body: 'فایل با موفقیت حذف شد.'
+        };
+        new Notification(notification).show();
+        searchFileTableWindow.close();
+    }).catch(() => {
+        searchFileTableWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در حذف فایل.'
+        };
+        new Notification(notification).show();
+    })
+});
+
 // showFileValidationError callback
 ipcMain.on('showFileValidationError', async function (e, validationArray) {
     fileValidationArray = validationArray;
@@ -331,17 +356,33 @@ ipcMain.on('getFileFromFilling', function (e, request) {
     getFilingWindow.webContents.send('showLoading');
     services.getFileFromFilling(request).then(async response => {
         let requestArray = response.data;
-        for (var i in requestArray) {
-            // requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
-            var result = await services.insertFromFiling(requestArray[i]);
-            if (parseInt(i) === (requestArray.length - 1)) {
-                getFilingWindow.webContents.send('hideLoading');
-                const notification = {
-                    title: 'موفقیت',
-                    body: 'فایل با موفقیت ذخیره شد.'
-                };
-                new Notification(notification).show()
+        if (requestArray.length !== 0) {
+            for (var i in requestArray) {
+                let result;
+                if (requestArray[i].isDeleted) {
+                    let dataArray = [];
+                    dataArray.push(requestArray[i].Id);
+                    result = await services.deleteFiles(dataArray);
+                } else {
+                    result = await services.insertFromFiling(requestArray[i]);
+                }
+                // requestArray[i].Id = requestArray[i].Id.split("-")[0] + "-" + parseInt(parseInt(requestArray[i].Id.split("-")[1]) + parseInt(i));
+                if (parseInt(i) === (requestArray.length - 1)) {
+                    getFilingWindow.webContents.send('hideLoading');
+                    const notification = {
+                        title: 'موفقیت',
+                        body: 'فایل با موفقیت ذخیره شد.'
+                    };
+                    new Notification(notification).show()
+                }
             }
+        } else {
+            getFilingWindow.webContents.send('hideLoading');
+            const notification = {
+                title: 'موفقیت',
+                body: 'فایلی یافت نشد.'
+            };
+            new Notification(notification).show()
         }
     }).catch(error => {
         getFilingWindow.webContents.send('hideLoading');
@@ -470,6 +511,10 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
                 store.set('configList', response.data);
                 services.insertConfig(response.data).then(() => {
                     mainWindow.webContents.send('hideLoading');
+                    if (store.get('autoUpdate')) {
+                        getFile();
+                        getFilesFromFillingAutomatically()
+                    }
                     mainWindow.loadURL(url.format({
                         pathname: path.join(__dirname, 'mainWindow.html'),
                         protocol: 'file:',
@@ -501,6 +546,33 @@ ipcMain.on('loginData', function (e, loginDataObject, isInstallationSystem) {
         })
     }
 });
+
+function getFilesFromFillingAutomatically() {
+    setTimeout(() => {
+        getFile();
+    }, 1800000)
+}
+
+function getFile() {
+    const Store = require('electron-store');
+    const store = new Store();
+    const date = new Date();
+    let jalaliDate = JalaliJs.toJalaali(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    let jDate = StringUtils.convertShamsiToMillisecond(StringUtils.convertNumbersToPersian(jalaliDate.jy.toString()) + '/' + StringUtils.convertNumbersToPersian(jalaliDate.jm.toString()) + '/' + StringUtils.convertNumbersToPersian(jalaliDate.jd.toString()))
+    var request = {
+        realStateCode: store.get('realStateCode'),
+        realStateTemporaryCode: store.get('realStateTemporaryCode'),
+        fromDate: jDate - 86400000,
+        toDate: jDate
+    };
+    services.getFileFromFilling(request).then(async response => {
+        let requestArray = response.data;
+        for (var i in requestArray) {
+            var result = await services.insertFromFiling(requestArray[i]);
+        }
+    });
+    getFilesFromFillingAutomatically()
+}
 
 // setUser callback
 ipcMain.on('setUser', function (e, requestBody) {
@@ -582,6 +654,94 @@ ipcMain.on('getFileList', function (e, requestBody) {
         const notification = {
             title: 'خطا',
             body: 'خطا در جستجو فایل.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// get zonkan list  callback
+ipcMain.on('getUserZonkanShow', function (e, requestBody) {
+    const Store = require('electron-store');
+    const store = new Store();
+    zoncanWindow.webContents.send('showLoading');
+
+    services.getZonkan({username: store.get('userData').username}).then((response) => {
+        zoncanWindow.webContents.send('hideLoading');
+        zoncanWindow.webContents.send('sendUserZonkanShowFromMain', response.data[0]);
+    }).catch(() => {
+        zoncanWindow.webContents.send('hideLoading');
+        zoncanWindow.webContents.send('sendUserZonkanShowFromMain', undefined);
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در نمایش زونکن.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// get zonkan list  callback
+ipcMain.on('getUserZonkan', function (e, requestBody) {
+    const Store = require('electron-store');
+    const store = new Store();
+    chooseZonkanWindow.webContents.send('showLoading');
+
+    services.getZonkan({username: store.get('userData').username}).then((response) => {
+        chooseZonkanWindow.webContents.send('hideLoading');
+        chooseZonkanWindow.webContents.send('sendUserZonkanFromMain', response.data[0]);
+    }).catch(() => {
+        chooseZonkanWindow.webContents.send('hideLoading');
+        chooseZonkanWindow.webContents.send('sendUserZonkanFromMain', undefined);
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در نمایش زونکن.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// edit zonkan callback
+ipcMain.on('setZonkanNewValues', function (e) {
+    const Store = require('electron-store');
+    const store = new Store();
+    chooseZonkanWindow.webContents.send('showLoading');
+
+    services.editZonkan({
+        username: store.get('userData').username,
+        groupFileList: store.get('zonkan')[store.get('userData').username]
+    }).then((response) => {
+        chooseZonkanWindow.webContents.send('hideLoading');
+        chooseZonkanWindow.close();
+    }).catch(() => {
+        chooseZonkanWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در ذخیره زونکن.'
+        };
+        new Notification(notification).show()
+    })
+
+});
+
+// edit zonkan callback
+ipcMain.on('setZonkanNewValuesFromZonkanWindow', function (e) {
+    const Store = require('electron-store');
+    const store = new Store();
+    zoncanWindow.webContents.send('showLoading');
+
+    services.editZonkan({
+        username: store.get('userData').username,
+        groupFileList: store.get('zonkan')[store.get('userData').username]
+    }).then((response) => {
+        zoncanWindow.webContents.send('hideLoading');
+        zoncanWindow.reload();
+    }).catch(() => {
+        zoncanWindow.webContents.send('hideLoading');
+        const notification = {
+            title: 'خطا',
+            body: 'خطا در حذف زونکن.'
         };
         new Notification(notification).show()
     })

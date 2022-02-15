@@ -1,5 +1,10 @@
 {
   "name": "realstate",
+  "build": {
+  "win": {
+    "icon": "img/gilanFileIcon.jpeg"
+  }
+  },
   "version": "1.0.0",
   "description": "",
   "main": "main.js",

@@ -1113,7 +1113,7 @@
             document.querySelector('#kolangi').value = !_.isEmpty(file.oldHouse) ? file.oldHouse : '';
             document.querySelector('#office').value = !_.isEmpty(file.office) ? file.office : '';
             document.querySelector('#store').checked = file.store;
-            document.querySelector('#suite').checked = file.suite;
+            document.querySelector('#suite').checked = file.suit;
             document.querySelector('#north').checked = file.north;
             document.querySelector('#south').checked = file.south;
             document.querySelector('#east').checked = file.east;
@@ -1139,8 +1139,8 @@
             document.querySelector('#employeeService').value = file.employeeService;
             document.querySelector('#patio').value = file.patio;
             document.querySelector('#residential').checked = file.residential;
-            document.querySelector('#discharge').value = file.empty;
-            document.querySelector('#rented').value = file.rented;
+            document.querySelector('#discharge').checked = file.empty;
+            document.querySelector('#rented').checked = file.rented;
             document.querySelector('#ageBuilding').value = file.age;
             document.querySelector('#view').value = file.frontKind;
             document.querySelector('#InformationSource').value = file.source;
@@ -1639,202 +1639,206 @@
 
     //add button click in table
     function onAddTableClick() {
-        var index = document.querySelector('#table').childElementCount - 1;
-        var rowContainer = document.createElement("DIV");
-        rowContainer.style.display = 'flex';
-        rowContainer.style.flexDirection = 'row-reverse';
-        rowContainer.classList.add('sub-bar2-1');
-        rowContainer.classList.add('border-1px-dove-gray');
-        var inputFloor = document.createElement("SELECT");
-        inputFloor.classList.add('rectangle-2');
-        inputFloor.classList.add('border-1px-navy-blue');
-        inputFloor.id = ('tableFloor' + index);
-        rowContainer.appendChild(inputFloor);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floor)) {
-            var optionFloorEmpty = document.createElement('option');
-            optionFloorEmpty.value = '';
-            optionFloorEmpty.innerHTML = '';
-            inputFloor.appendChild(optionFloorEmpty);
-            for (let i = 0; i < store.get('configList')[0].floor.length; i++) {
-                var optionFloor = document.createElement('option');
-                optionFloor.value = store.get('configList')[0].floor[i];
-                optionFloor.innerHTML = store.get('configList')[0].floor[i];
-                inputFloor.appendChild(optionFloor);
-            }
-        }
-        var inputZirBana = document.createElement("INPUT");
-        inputZirBana.classList.add('rectangle-2-1');
-        inputZirBana.classList.add('border-1px-navy-blue');
-        inputZirBana.id = ('tableZirBana' + index);
-        rowContainer.appendChild(inputZirBana);
-        var inputKhab = document.createElement("INPUT");
-        inputKhab.classList.add('rectangle-2-1');
-        inputKhab.classList.add('border-1px-navy-blue');
-        inputKhab.id = ('tableKhab' + index);
-        rowContainer.appendChild(inputKhab);
-        var inputBalcon = document.createElement("INPUT");
-        inputBalcon.classList.add('ch-open');
-        inputBalcon.classList.add('border-1px-denim');
-        inputBalcon.style.marginRight = '15px';
-        inputBalcon.type = 'checkbox';
-        inputBalcon.id = ('tableBalcon' + index);
-        rowContainer.appendChild(inputBalcon);
-        var inputTelephone = document.createElement("SELECT");
-        inputTelephone.classList.add('rectangle-2');
-        inputTelephone.classList.add('border-1px-navy-blue');
-        inputTelephone.id = ('tableTelephone' + index);
-        rowContainer.appendChild(inputTelephone);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
-            var optionTelephoneEmpty = document.createElement('option');
-            optionTelephoneEmpty.value = '';
-            optionTelephoneEmpty.innerHTML = '';
-            inputTelephone.appendChild(optionTelephoneEmpty);
-            for (let i = 0; i < store.get('configList')[0].telephone.length; i++) {
-                var optionTelephone = document.createElement('option');
-                optionTelephone.value = store.get('configList')[0].telephone[i];
-                optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
-                inputTelephone.appendChild(optionTelephone);
-            }
-        }
-        var inputKitchen = document.createElement("SELECT");
-        inputKitchen.classList.add('rectangle-26');
-        inputKitchen.classList.add('border-1px-navy-blue');
-        inputKitchen.id = ('tableKitchen' + index);
-        rowContainer.appendChild(inputKitchen);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].kitchenService)) {
-            var optionKitchenEmpty = document.createElement('option');
-            optionKitchenEmpty.value = '';
-            optionKitchenEmpty.innerHTML = '';
-            inputKitchen.appendChild(optionKitchenEmpty);
-            for (let i = 0; i < store.get('configList')[0].kitchenService.length; i++) {
-                var optionKitchen = document.createElement('option');
-                optionKitchen.value = store.get('configList')[0].kitchenService[i];
-                optionKitchen.innerHTML = store.get('configList')[0].kitchenService[i];
-                inputKitchen.appendChild(optionKitchen);
-            }
-        }
-        var inputOpen = document.createElement("INPUT");
-        inputOpen.classList.add('ch-open');
-        inputOpen.classList.add('border-1px-denim');
-        inputOpen.id = ('tableOpen' + index);
-        inputOpen.type = 'checkbox';
-        rowContainer.appendChild(inputOpen);
-        var inputWC = document.createElement("SELECT");
-        inputWC.classList.add('rectangle-27');
-        inputWC.classList.add('border-1px-navy-blue');
-        inputWC.id = ('tableWC' + index);
-        rowContainer.appendChild(inputWC);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
-            var optionWCEmpty = document.createElement('option');
-            optionWCEmpty.value = '';
-            optionWCEmpty.innerHTML = '';
-            inputWC.appendChild(optionWCEmpty);
-            for (let i = 0; i < store.get('configList')[0].wcService.length; i++) {
-                var optionWC = document.createElement('option');
-                optionWC.value = store.get('configList')[0].wcService[i];
-                optionWC.innerHTML = store.get('configList')[0].wcService[i];
-                inputWC.appendChild(optionWC);
-            }
-        }
-        var inputKafPoosh = document.createElement("SELECT");
-        inputKafPoosh.classList.add('rectangle-28');
-        inputKafPoosh.classList.add('border-1px-navy-blue');
-        inputKafPoosh.id = ('tableKafPoosh' + index);
-        rowContainer.appendChild(inputKafPoosh);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
-            var optionFloorCoveringEmpty = document.createElement('option');
-            optionFloorCoveringEmpty.value = '';
-            optionFloorCoveringEmpty.innerHTML = '';
-            inputKafPoosh.appendChild(optionFloorCoveringEmpty);
-            for (let i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
-                var optionFloorCovering = document.createElement('option');
-                optionFloorCovering.value = store.get('configList')[0].floorCovering[i];
-                optionFloorCovering.innerHTML = store.get('configList')[0].floorCovering[i];
-                inputKafPoosh.appendChild(optionFloorCovering);
-            }
-        }
-        var inputParking = document.createElement("SELECT");
-        inputParking.classList.add('rectangle-17');
-        inputParking.classList.add('border-1px-navy-blue');
-        inputParking.id = ('tableParking' + index);
-        rowContainer.appendChild(inputParking);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].parking)) {
-            var optionParkingEmpty = document.createElement('option');
-            optionParkingEmpty.value = '';
-            optionParkingEmpty.innerHTML = '';
-            inputParking.appendChild(optionParkingEmpty);
-            for (let i = 0; i < store.get('configList')[0].parking.length; i++) {
-                var optionParking = document.createElement('option');
-                optionParking.value = store.get('configList')[0].parking[i];
-                optionParking.innerHTML = store.get('configList')[0].parking[i];
-                inputParking.appendChild(optionParking);
-            }
-        }
-        var inputAnbari = document.createElement("SELECT");
-        inputAnbari.classList.add('rectangle-17');
-        inputAnbari.classList.add('border-1px-navy-blue');
-        inputAnbari.id = ('tableAnbari' + index);
-        rowContainer.appendChild(inputAnbari);
-        if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].warehouse)) {
-            var optionWarehouseEmpty = document.createElement('option');
-            optionWarehouseEmpty.value = '';
-            optionWarehouseEmpty.innerHTML = '';
-            inputAnbari.appendChild(optionWarehouseEmpty);
-            for (let i = 0; i < store.get('configList')[0].warehouse.length; i++) {
-                var optionWarehouse = document.createElement('option');
-                optionWarehouse.value = store.get('configList')[0].warehouse[i];
-                optionWarehouse.innerHTML = store.get('configList')[0].warehouse[i];
-                inputAnbari.appendChild(optionWarehouse);
-            }
-        }
-        var inputTotalAmount = document.createElement("INPUT");
-        inputTotalAmount.classList.add('rectangle');
-        inputTotalAmount.classList.add('border-1px-navy-blue');
-        inputTotalAmount.id = ('tableTotalAmount' + index);
-        rowContainer.appendChild(inputTotalAmount);
-        var inputMetri = document.createElement("INPUT");
-        inputMetri.classList.add('rectangle-30');
-        inputMetri.classList.add('border-1px-navy-blue');
-        inputMetri.id = ('tableMetri' + index);
-        rowContainer.appendChild(inputMetri);
-        document.querySelector('#table').insertBefore(rowContainer, document.querySelector('#table').firstChild);
-        $('#' + 'tableFloor' + index).editableSelect();
-        $('#' + 'tableKafPoosh' + index).editableSelect();
-        $('#' + 'tableAnbari' + index).editableSelect();
-        $('#' + 'tableParking' + index).editableSelect();
-        $('#' + 'tableWC' + index).editableSelect();
-        $('#' + 'tableTelephone' + index).editableSelect();
-        $('#' + 'tableKitchen' + index).editableSelect();
-
-        var tableMetri = document.querySelector('#tableMetri' + index);
-        tableMetri.addEventListener("input", (event) => {
-            tableMetri.value = StringUtils.commify(event.target.value)
-        });
-        tableMetri.addEventListener('keydown', function (event) {
-            if (event.key === 'Shift') {
-                if (!_.isEmpty(tableMetri.value)) {
-                    tableMetri.value = StringUtils.commify((parseInt(tableMetri.value.replace(/,/g, '')) * 1000) + '')
+        if (!isEdit) {
+            var index = document.querySelector('#table').childElementCount - 1;
+            var rowContainer = document.createElement("DIV");
+            rowContainer.style.display = 'flex';
+            rowContainer.style.flexDirection = 'row-reverse';
+            rowContainer.classList.add('sub-bar2-1');
+            rowContainer.classList.add('border-1px-dove-gray');
+            var inputFloor = document.createElement("SELECT");
+            inputFloor.classList.add('rectangle-2');
+            inputFloor.classList.add('border-1px-navy-blue');
+            inputFloor.id = ('tableFloor' + index);
+            rowContainer.appendChild(inputFloor);
+            if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floor)) {
+                var optionFloorEmpty = document.createElement('option');
+                optionFloorEmpty.value = '';
+                optionFloorEmpty.innerHTML = '';
+                inputFloor.appendChild(optionFloorEmpty);
+                for (let i = 0; i < store.get('configList')[0].floor.length; i++) {
+                    var optionFloor = document.createElement('option');
+                    optionFloor.value = store.get('configList')[0].floor[i];
+                    optionFloor.innerHTML = store.get('configList')[0].floor[i];
+                    inputFloor.appendChild(optionFloor);
                 }
             }
-        });
-
-        var tableTotalAmount = document.querySelector('#tableTotalAmount' + index);
-        tableTotalAmount.addEventListener("input", (event) => {
-            tableTotalAmount.value = StringUtils.commify(event.target.value)
-        });
-        tableTotalAmount.addEventListener('keydown', function (event) {
-            if (event.key === 'Shift') {
-                if (!_.isEmpty(tableTotalAmount.value)) {
-                    tableTotalAmount.value = StringUtils.commify((parseInt(tableTotalAmount.value.replace(/,/g, '')) * 1000) + '')
+            var inputZirBana = document.createElement("INPUT");
+            inputZirBana.classList.add('rectangle-2-1');
+            inputZirBana.classList.add('border-1px-navy-blue');
+            inputZirBana.id = ('tableZirBana' + index);
+            rowContainer.appendChild(inputZirBana);
+            var inputKhab = document.createElement("INPUT");
+            inputKhab.classList.add('rectangle-2-1');
+            inputKhab.classList.add('border-1px-navy-blue');
+            inputKhab.id = ('tableKhab' + index);
+            rowContainer.appendChild(inputKhab);
+            var inputBalcon = document.createElement("INPUT");
+            inputBalcon.classList.add('ch-open');
+            inputBalcon.classList.add('border-1px-denim');
+            inputBalcon.style.marginRight = '15px';
+            inputBalcon.type = 'checkbox';
+            inputBalcon.id = ('tableBalcon' + index);
+            rowContainer.appendChild(inputBalcon);
+            var inputTelephone = document.createElement("SELECT");
+            inputTelephone.classList.add('rectangle-2');
+            inputTelephone.classList.add('border-1px-navy-blue');
+            inputTelephone.id = ('tableTelephone' + index);
+            rowContainer.appendChild(inputTelephone);
+            if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].telephone)) {
+                var optionTelephoneEmpty = document.createElement('option');
+                optionTelephoneEmpty.value = '';
+                optionTelephoneEmpty.innerHTML = '';
+                inputTelephone.appendChild(optionTelephoneEmpty);
+                for (let i = 0; i < store.get('configList')[0].telephone.length; i++) {
+                    var optionTelephone = document.createElement('option');
+                    optionTelephone.value = store.get('configList')[0].telephone[i];
+                    optionTelephone.innerHTML = store.get('configList')[0].telephone[i];
+                    inputTelephone.appendChild(optionTelephone);
                 }
             }
-        });
+            var inputKitchen = document.createElement("SELECT");
+            inputKitchen.classList.add('rectangle-26');
+            inputKitchen.classList.add('border-1px-navy-blue');
+            inputKitchen.id = ('tableKitchen' + index);
+            rowContainer.appendChild(inputKitchen);
+            if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].kitchenService)) {
+                var optionKitchenEmpty = document.createElement('option');
+                optionKitchenEmpty.value = '';
+                optionKitchenEmpty.innerHTML = '';
+                inputKitchen.appendChild(optionKitchenEmpty);
+                for (let i = 0; i < store.get('configList')[0].kitchenService.length; i++) {
+                    var optionKitchen = document.createElement('option');
+                    optionKitchen.value = store.get('configList')[0].kitchenService[i];
+                    optionKitchen.innerHTML = store.get('configList')[0].kitchenService[i];
+                    inputKitchen.appendChild(optionKitchen);
+                }
+            }
+            var inputOpen = document.createElement("INPUT");
+            inputOpen.classList.add('ch-open');
+            inputOpen.classList.add('border-1px-denim');
+            inputOpen.id = ('tableOpen' + index);
+            inputOpen.type = 'checkbox';
+            rowContainer.appendChild(inputOpen);
+            var inputWC = document.createElement("SELECT");
+            inputWC.classList.add('rectangle-27');
+            inputWC.classList.add('border-1px-navy-blue');
+            inputWC.id = ('tableWC' + index);
+            rowContainer.appendChild(inputWC);
+            if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].wcService)) {
+                var optionWCEmpty = document.createElement('option');
+                optionWCEmpty.value = '';
+                optionWCEmpty.innerHTML = '';
+                inputWC.appendChild(optionWCEmpty);
+                for (let i = 0; i < store.get('configList')[0].wcService.length; i++) {
+                    var optionWC = document.createElement('option');
+                    optionWC.value = store.get('configList')[0].wcService[i];
+                    optionWC.innerHTML = store.get('configList')[0].wcService[i];
+                    inputWC.appendChild(optionWC);
+                }
+            }
+            var inputKafPoosh = document.createElement("SELECT");
+            inputKafPoosh.classList.add('rectangle-28');
+            inputKafPoosh.classList.add('border-1px-navy-blue');
+            inputKafPoosh.id = ('tableKafPoosh' + index);
+            rowContainer.appendChild(inputKafPoosh);
+            if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].floorCovering)) {
+                var optionFloorCoveringEmpty = document.createElement('option');
+                optionFloorCoveringEmpty.value = '';
+                optionFloorCoveringEmpty.innerHTML = '';
+                inputKafPoosh.appendChild(optionFloorCoveringEmpty);
+                for (let i = 0; i < store.get('configList')[0].floorCovering.length; i++) {
+                    var optionFloorCovering = document.createElement('option');
+                    optionFloorCovering.value = store.get('configList')[0].floorCovering[i];
+                    optionFloorCovering.innerHTML = store.get('configList')[0].floorCovering[i];
+                    inputKafPoosh.appendChild(optionFloorCovering);
+                }
+            }
+            var inputParking = document.createElement("SELECT");
+            inputParking.classList.add('rectangle-17');
+            inputParking.classList.add('border-1px-navy-blue');
+            inputParking.id = ('tableParking' + index);
+            rowContainer.appendChild(inputParking);
+            if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].parking)) {
+                var optionParkingEmpty = document.createElement('option');
+                optionParkingEmpty.value = '';
+                optionParkingEmpty.innerHTML = '';
+                inputParking.appendChild(optionParkingEmpty);
+                for (let i = 0; i < store.get('configList')[0].parking.length; i++) {
+                    var optionParking = document.createElement('option');
+                    optionParking.value = store.get('configList')[0].parking[i];
+                    optionParking.innerHTML = store.get('configList')[0].parking[i];
+                    inputParking.appendChild(optionParking);
+                }
+            }
+            var inputAnbari = document.createElement("SELECT");
+            inputAnbari.classList.add('rectangle-17');
+            inputAnbari.classList.add('border-1px-navy-blue');
+            inputAnbari.id = ('tableAnbari' + index);
+            rowContainer.appendChild(inputAnbari);
+            if (!_.isEmpty(store.get('configList')) && !_.isEmpty(store.get('configList')[0].warehouse)) {
+                var optionWarehouseEmpty = document.createElement('option');
+                optionWarehouseEmpty.value = '';
+                optionWarehouseEmpty.innerHTML = '';
+                inputAnbari.appendChild(optionWarehouseEmpty);
+                for (let i = 0; i < store.get('configList')[0].warehouse.length; i++) {
+                    var optionWarehouse = document.createElement('option');
+                    optionWarehouse.value = store.get('configList')[0].warehouse[i];
+                    optionWarehouse.innerHTML = store.get('configList')[0].warehouse[i];
+                    inputAnbari.appendChild(optionWarehouse);
+                }
+            }
+            var inputTotalAmount = document.createElement("INPUT");
+            inputTotalAmount.classList.add('rectangle');
+            inputTotalAmount.classList.add('border-1px-navy-blue');
+            inputTotalAmount.id = ('tableTotalAmount' + index);
+            rowContainer.appendChild(inputTotalAmount);
+            var inputMetri = document.createElement("INPUT");
+            inputMetri.classList.add('rectangle-30');
+            inputMetri.classList.add('border-1px-navy-blue');
+            inputMetri.id = ('tableMetri' + index);
+            rowContainer.appendChild(inputMetri);
+            document.querySelector('#table').insertBefore(rowContainer, document.querySelector('#table').firstChild);
+            $('#' + 'tableFloor' + index).editableSelect();
+            $('#' + 'tableKafPoosh' + index).editableSelect();
+            $('#' + 'tableAnbari' + index).editableSelect();
+            $('#' + 'tableParking' + index).editableSelect();
+            $('#' + 'tableWC' + index).editableSelect();
+            $('#' + 'tableTelephone' + index).editableSelect();
+            $('#' + 'tableKitchen' + index).editableSelect();
+
+            var tableMetri = document.querySelector('#tableMetri' + index);
+            tableMetri.addEventListener("input", (event) => {
+                tableMetri.value = StringUtils.commify(event.target.value)
+            });
+            tableMetri.addEventListener('keydown', function (event) {
+                if (event.key === 'Shift') {
+                    if (!_.isEmpty(tableMetri.value)) {
+                        tableMetri.value = StringUtils.commify((parseInt(tableMetri.value.replace(/,/g, '')) * 1000) + '')
+                    }
+                }
+            });
+
+            var tableTotalAmount = document.querySelector('#tableTotalAmount' + index);
+            tableTotalAmount.addEventListener("input", (event) => {
+                tableTotalAmount.value = StringUtils.commify(event.target.value)
+            });
+            tableTotalAmount.addEventListener('keydown', function (event) {
+                if (event.key === 'Shift') {
+                    if (!_.isEmpty(tableTotalAmount.value)) {
+                        tableTotalAmount.value = StringUtils.commify((parseInt(tableTotalAmount.value.replace(/,/g, '')) * 1000) + '')
+                    }
+                }
+            });
+        }
     }
 
     //remove button click in table
     function onRemoveTableClick() {
-        var index = document.querySelector('#table').childElementCount;
-        (index !== 2) && document.querySelector('#table').removeChild(document.querySelector('#table').childNodes[0]);
+        if (!isEdit) {
+            var index = document.querySelector('#table').childElementCount;
+            (index !== 2) && document.querySelector('#table').removeChild(document.querySelector('#table').childNodes[0]);
+        }
     }
 
     // Get the modal
@@ -1965,7 +1969,7 @@
         }
         if (_.isEmpty(file.apartment) && _.isEmpty(file.land) && _.isEmpty(file.vila)
             && _.isEmpty(file.building) && _.isEmpty(file.home) && _.isEmpty(file.oldHouse)
-            && _.isEmpty(file.office) && file.store && file.suite) {
+            && _.isEmpty(file.office) && file.store && file.suit) {
             validationArray.push('نوع ملک');
         }
         if (!_.isEmpty(file.apartment) && isNaN(file.floorNo)) {
@@ -2033,7 +2037,7 @@
                 oldHouse: document.querySelector('#kolangi').value,
                 office: document.querySelector('#office').value,
                 store: document.querySelector('#store').checked,
-                suite: document.querySelector('#suite').checked,
+                suit: document.querySelector('#suite').checked,
                 north: document.querySelector('#north').checked,
                 south: document.querySelector('#south').checked,
                 east: document.querySelector('#east').checked,
@@ -2058,8 +2062,8 @@
                 employeeService: document.querySelector('#employeeService').value,
                 patio: document.querySelector('#patio').value,
                 residential: document.querySelector('#residential').checked,
-                empty: document.querySelector('#discharge').value,
-                rented: document.querySelector('#rented').value,
+                empty: document.querySelector('#discharge').checked,
+                rented: document.querySelector('#rented').checked,
                 age: parseInt(StringUtils.convertNumbersToEnglish(document.querySelector('#ageBuilding').value)),
                 frontKind: document.querySelector('#view').value,
                 source: document.querySelector('#InformationSource').value,

@@ -93,9 +93,32 @@
             border-radius: 5px;
             font-family: IRANSansMobileFaNum-Light;
         }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #loading-image {
+            position: absolute;
+            top: 150px;
+            left: 300px;
+            z-index: 100;
+        }
     </style>
 </head>
 <body>
+<div id="loading">
+    <img id="loading-image" src="images/loading.gif" alt="Loading..."/>
+</div>
 <div class="container">
     <span>گروه مورد نظر را انتخاب کنید</span>
     <div class="inner-container">
@@ -116,52 +139,135 @@
     const { remote } = require('electron');
     let zonkanFileArray = [];
 
-    if (!_.isEmpty(store.get('zonkan')) && !_.isEmpty(store.get('zonkan')[store.get('userData').username])
-        && !_.isEmpty(store.get('zonkan')[store.get('userData').username])) {
-        var groupSelect = document.getElementById("group");
-        let zonkanTitleList = Object.keys(store.get('zonkan')[store.get('userData').username]);
-        for (var i = 0; i < zonkanTitleList.length; i++) {
-            var optionGroup = document.createElement('option');
-            optionGroup.value = zonkanTitleList[i];
-            optionGroup.innerHTML = zonkanTitleList[i];
-            groupSelect.appendChild(optionGroup);
-        }
-    }
+    ipcRenderer.on('showLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "block";
 
-    $('#group').editableSelect();
-
-    ipcRenderer.on('sendZonkanFilesFromMain', function (event, fileArray) {
-        zonkanFileArray = fileArray;
     });
 
-    var btnSubmit = document.getElementById("btn-submit");
-    btnSubmit.addEventListener("click", function () {
-        let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
-        if (!_.isEmpty(zonkanObject)) {
-            let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
-            if (!_.isEmpty(currentUserZonkanObject)) {
-                let zonkanArray = !_.isEmpty(currentUserZonkanObject[document.querySelector('#group').value]) ? currentUserZonkanObject[document.querySelector('#group').value] : [];
-                zonkanArray = [...zonkanArray, ...zonkanFileArray];
-                currentUserZonkanObject[document.querySelector('#group').value] = zonkanArray;
-                store.set('zonkan', zonkanObject);
-            } else {
-                store.get('zonkan')[store.get('userData').username] = {};
-                currentUserZonkanObject[document.querySelector('#group').value] = zonkanFileArray;
-                store.set('zonkan', zonkanObject);
+    ipcRenderer.on('hideLoading', function () {
+        var loading = document.getElementById("loading");
+        loading.style.display = "none";
+    });
+
+    ipcRenderer.send('getUserZonkan');
+
+    ipcRenderer.on('sendUserZonkanFromMain', function (event, zonkan) {
+        if (!_.isEmpty(zonkan)) {
+            let zonkanObject = {};
+            zonkanObject[zonkan.username] = zonkan.groupFileList;
+            store.set('zonkan', zonkanObject);
+        }
+
+
+        if (!_.isEmpty(store.get('zonkan')) && !_.isEmpty(store.get('zonkan')[store.get('userData').username])
+            && !_.isEmpty(store.get('zonkan')[store.get('userData').username])) {
+            var groupSelect = document.getElementById("group");
+            let zonkanTitleList = Object.keys(store.get('zonkan')[store.get('userData').username]);
+            for (var i = 0; i < zonkanTitleList.length; i++) {
+                var optionGroup = document.createElement('option');
+                optionGroup.value = zonkanTitleList[i];
+                optionGroup.innerHTML = zonkanTitleList[i];
+                groupSelect.appendChild(optionGroup);
             }
-        } else {
-            let finalObject = {};
-            finalObject[store.get('userData').username] = {};
-            finalObject[store.get('userData').username][document.querySelector('#group').value] = zonkanFileArray;
-            store.set('zonkan', finalObject);
         }
-        remote.getCurrentWindow().close();
+
+        $('#group').editableSelect();
+
+        ipcRenderer.on('sendZonkanFilesFromMain', function (event, fileArray) {
+            zonkanFileArray = fileArray;
+        });
+
+        var btnSubmit = document.getElementById("btn-submit");
+        btnSubmit.addEventListener("click", function () {
+            let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
+            if (!_.isEmpty(zonkanObject)) {
+                let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+                if (!_.isEmpty(currentUserZonkanObject)) {
+                    let zonkanArray = !_.isEmpty(currentUserZonkanObject[document.querySelector('#group').value]) ? currentUserZonkanObject[document.querySelector('#group').value] : [];
+                    zonkanArray = [...zonkanArray, ...zonkanFileArray];
+                    currentUserZonkanObject[document.querySelector('#group').value] = zonkanArray;
+                    store.set('zonkan', zonkanObject);
+                } else {
+                    store.get('zonkan')[store.get('userData').username] = {};
+                    currentUserZonkanObject[document.querySelector('#group').value] = zonkanFileArray;
+                    store.set('zonkan', zonkanObject);
+                }
+            } else {
+                let finalObject = {};
+                finalObject[store.get('userData').username] = {};
+                finalObject[store.get('userData').username][document.querySelector('#group').value] = zonkanFileArray;
+                store.set('zonkan', finalObject);
+            }
+            ipcRenderer.send('setZonkanNewValues');
+        });
+
+        var btnCancel = document.getElementById("btn-cancel");
+        btnCancel.addEventListener("click", function () {
+            remote.getCurrentWindow().close();
+        });
+
+
+
+
+
     });
 
-    var btnCancel = document.getElementById("btn-cancel");
-    btnCancel.addEventListener("click", function () {
-        remote.getCurrentWindow().close();
-    });
+
+
+
+
+
+
+
+
+
+    // if (!_.isEmpty(store.get('zonkan')) && !_.isEmpty(store.get('zonkan')[store.get('userData').username])
+    //     && !_.isEmpty(store.get('zonkan')[store.get('userData').username])) {
+    //     var groupSelect = document.getElementById("group");
+    //     let zonkanTitleList = Object.keys(store.get('zonkan')[store.get('userData').username]);
+    //     for (var i = 0; i < zonkanTitleList.length; i++) {
+    //         var optionGroup = document.createElement('option');
+    //         optionGroup.value = zonkanTitleList[i];
+    //         optionGroup.innerHTML = zonkanTitleList[i];
+    //         groupSelect.appendChild(optionGroup);
+    //     }
+    // }
+    //
+    // $('#group').editableSelect();
+    //
+    // ipcRenderer.on('sendZonkanFilesFromMain', function (event, fileArray) {
+    //     zonkanFileArray = fileArray;
+    // });
+    //
+    // var btnSubmit = document.getElementById("btn-submit");
+    // btnSubmit.addEventListener("click", function () {
+    //     let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
+    //     if (!_.isEmpty(zonkanObject)) {
+    //         let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+    //         if (!_.isEmpty(currentUserZonkanObject)) {
+    //             let zonkanArray = !_.isEmpty(currentUserZonkanObject[document.querySelector('#group').value]) ? currentUserZonkanObject[document.querySelector('#group').value] : [];
+    //             zonkanArray = [...zonkanArray, ...zonkanFileArray];
+    //             currentUserZonkanObject[document.querySelector('#group').value] = zonkanArray;
+    //             store.set('zonkan', zonkanObject);
+    //         } else {
+    //             store.get('zonkan')[store.get('userData').username] = {};
+    //             currentUserZonkanObject[document.querySelector('#group').value] = zonkanFileArray;
+    //             store.set('zonkan', zonkanObject);
+    //         }
+    //     } else {
+    //         let finalObject = {};
+    //         finalObject[store.get('userData').username] = {};
+    //         finalObject[store.get('userData').username][document.querySelector('#group').value] = zonkanFileArray;
+    //         store.set('zonkan', finalObject);
+    //     }
+    //     remote.getCurrentWindow().close();
+    // });
+    //
+    // var btnCancel = document.getElementById("btn-cancel");
+    // btnCancel.addEventListener("click", function () {
+    //     remote.getCurrentWindow().close();
+    // });
 
 </script>
 </body>

@@ -297,17 +297,6 @@
         }
     });
 
-    var btnSubmit = document.getElementById("btn-getFile");
-    btnSubmit.addEventListener("click", function () {
-        var request = {
-            realStateCode: store.get('realStateCode'),
-            realStateTemporaryCode: store.get('realStateTemporaryCode'),
-            fromDate: StringUtils.convertShamsiToMillisecond(document.querySelector('#fromDate').value),
-            toDate: StringUtils.convertShamsiToMillisecond(document.querySelector('#toDate').value)
-        };
-        ipcRenderer.send('getFileFromFilling', request);
-    });
-
     var btnGetConfigs = document.getElementById("btn-getConfig");
     btnGetConfigs.addEventListener("click", function () {
         ipcRenderer.send('getConfigsFromFilling');

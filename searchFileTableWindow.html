@@ -90,6 +90,7 @@
     </tr>
 </table>
 <div style="display: flex; justify-content: flex-end; position: fixed; bottom: 0; height: 50px; width: 100%; background-color: #007bff">
+    <button style="display: none" id="btn-delete" class="btn-submit">حذف</button>
     <button id="btn-zonkan" class="btn-submit">زونکن</button>
 </div>
 <script>
@@ -262,6 +263,16 @@
             }
         }
     };
+
+    var btnDelete = document.getElementById("btn-delete");
+    if (store.get('userData').userRole === 'مدیر سیستم') {
+        btnDelete.style.display = 'block';
+    }
+    btnDelete.addEventListener("click", function () {
+        if (!_.isEmpty(selectList)) {
+            ipcRenderer.send('deleteFiles', selectList);
+        }
+    });
 
 </script>
 </body>
