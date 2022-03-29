@@ -78,7 +78,7 @@ function insertUser(requestData) {
 function insertFile(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
     instance.defaults.headers['Cookie'] = store.get('session');
-    return instance.post(`/files/insert`, requestData)
+    return instance.post(`/files/insertV2`, requestData)
 }
 
 function insertFromFiling(requestData) {

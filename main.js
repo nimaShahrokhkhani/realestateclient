@@ -181,13 +181,9 @@ ipcMain.on('setFile', async function (e, requestArray) {
     const store = new Store();
     if (store.get('userData').insertFile) {
         addFileWindow.webContents.send('showLoading');
-        let fileId = '';
-        services.getFileTotalCount().then(async (response) => {
-            fileId = 'cl-' + (10000 + parseInt(response.data));
-            for (var i in requestArray) {
-                requestArray[i].Id = fileId.split("-")[0] + "-" + parseInt(parseInt(fileId.split("-")[1]) + parseInt(i));
-                requestArray[i].Number = parseInt(parseInt(fileId.split("-")[1]) + parseInt(i));
-                var result = await services.insertFile(requestArray[i]);
+        for (var i in requestArray) {
+            services.insertFile(requestArray[i]).then(() => {
+                addFileWindow.webContents.send('hideLoading');
                 if (parseInt(i) === (requestArray.length - 1)) {
                     addFileWindow.reload();
                     const notification = {
@@ -196,15 +192,17 @@ ipcMain.on('setFile', async function (e, requestArray) {
                     };
                     new Notification(notification).show()
                 }
-            }
-        }).catch(() => {
-            const notification = {
-                title: 'خطا',
-                body: 'خطا در دریافت کد فایل.'
-            };
-            new Notification(notification).show()
-        })
+            }).catch(() => {
+                addFileWindow.webContents.send('hideLoading');
+                const notification = {
+                    title: 'خطا',
+                    body: 'خطا در ثبت فایل لطفا چند لحظه دیگر امتحان کنید.'
+                };
+                new Notification(notification).show()
+            });
+        }
     } else {
+        addFileWindow.webContents.send('hideLoading');
         const notification = {
             title: 'خطا',
             body: 'دسترسی برای ایجاد فایل وجود ندارد.'

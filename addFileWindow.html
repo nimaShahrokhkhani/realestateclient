@@ -2076,7 +2076,7 @@
                 participation: participation,
                 username: document.querySelector('#username').value,
                 unitFloor: StringUtils.convertNumbersToEnglish(document.querySelector('#tableFloor' + index).value),
-                unitBuiltUpArea: StringUtils.convertNumbersToEnglish(document.querySelector('#tableZirBana' + index).value),
+                unitBuiltUpArea: parseFloat(StringUtils.convertNumbersToEnglish(document.querySelector('#tableZirBana' + index).value)),
                 unitRoom: StringUtils.convertNumbersToEnglish(document.querySelector('#tableKhab' + index).value),
                 unitBalcony: document.querySelector('#tableBalcon' + index).checked,
                 unitTelephone: document.querySelector('#tableTelephone' + index).value,
