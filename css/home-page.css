@@ -15,11 +15,10 @@
   background-position: 50% 50%;
   background-size: cover;
   display: flex;
-  height: 740px;
   justify-content: flex-end;
   left: 975px;
   min-width: 49px;
-  padding: 14px 10.0px;
+  padding: 25px 10.0px;
   position: absolute;
   top: -1px;
 }
@@ -67,7 +66,6 @@
 .home-page .path-account-outline {
   height: 20px;
   margin-left: 3.36px;
-  margin-top: 585px;
   object-fit: cover;
   width: 20px;
   z-index: 100;

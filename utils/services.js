@@ -160,10 +160,16 @@ function deleteFiles(requestData) {
     return instance.post(`/files/delete`, requestData)
 }
 
-function editZonkan(requestData) {
+function editZonkanV1(requestData) {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
     instance.defaults.headers['Cookie'] = store.get('session');
     return instance.post(`/zonkan/edit`, requestData)
+}
+
+function editZonkan(requestData) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json';
+    instance.defaults.headers['Cookie'] = store.get('session');
+    return instance.post(`/zonkan/editV2`, requestData)
 }
 
 function getZonkan(requestData) {
@@ -196,6 +202,7 @@ module.exports = {
     editUser,
     deleteUser,
     deleteFiles,
+    editZonkanV1,
     editZonkan,
     getZonkan
 };

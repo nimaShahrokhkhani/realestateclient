@@ -251,8 +251,11 @@
                 let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
                 if (!_.isEmpty(zonkanObject)) {
                     let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+                    console.log('currentUserZonkanObject=>', currentUserZonkanObject)
                     if (!_.isEmpty(currentUserZonkanObject)) {
+                        console.log('iddddd=>', this.id.split('dl-')[1])
                         delete currentUserZonkanObject[this.id.split('dl-')[1]];
+                        console.log('zonkanObject=>', zonkanObject)
                         store.set('zonkan', zonkanObject);
                     }
                 }

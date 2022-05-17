@@ -180,26 +180,26 @@
 
         var btnSubmit = document.getElementById("btn-submit");
         btnSubmit.addEventListener("click", function () {
-            let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
-            if (!_.isEmpty(zonkanObject)) {
-                let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
-                if (!_.isEmpty(currentUserZonkanObject)) {
-                    let zonkanArray = !_.isEmpty(currentUserZonkanObject[document.querySelector('#group').value]) ? currentUserZonkanObject[document.querySelector('#group').value] : [];
-                    zonkanArray = [...zonkanArray, ...zonkanFileArray];
-                    currentUserZonkanObject[document.querySelector('#group').value] = zonkanArray;
-                    store.set('zonkan', zonkanObject);
-                } else {
-                    store.get('zonkan')[store.get('userData').username] = {};
-                    currentUserZonkanObject[document.querySelector('#group').value] = zonkanFileArray;
-                    store.set('zonkan', zonkanObject);
-                }
-            } else {
-                let finalObject = {};
-                finalObject[store.get('userData').username] = {};
-                finalObject[store.get('userData').username][document.querySelector('#group').value] = zonkanFileArray;
-                store.set('zonkan', finalObject);
-            }
-            ipcRenderer.send('setZonkanNewValues');
+            // let zonkanObject = !_.isEmpty(store.get('zonkan')) ? store.get('zonkan') : {};
+            // if (!_.isEmpty(zonkanObject)) {
+            //     let currentUserZonkanObject = !_.isEmpty(zonkanObject[store.get('userData').username]) ? zonkanObject[store.get('userData').username] : {};
+            //     if (!_.isEmpty(currentUserZonkanObject)) {
+            //         let zonkanArray = !_.isEmpty(currentUserZonkanObject[document.querySelector('#group').value]) ? currentUserZonkanObject[document.querySelector('#group').value] : [];
+            //         zonkanArray = [...zonkanArray, ...zonkanFileArray];
+            //         currentUserZonkanObject[document.querySelector('#group').value] = zonkanArray;
+            //         store.set('zonkan', zonkanObject);
+            //     } else {
+            //         store.get('zonkan')[store.get('userData').username] = {};
+            //         currentUserZonkanObject[document.querySelector('#group').value] = zonkanFileArray;
+            //         store.set('zonkan', zonkanObject);
+            //     }
+            // } else {
+            //     let finalObject = {};
+            //     finalObject[store.get('userData').username] = {};
+            //     finalObject[store.get('userData').username][document.querySelector('#group').value] = zonkanFileArray;
+            //     store.set('zonkan', finalObject);
+            // }
+            ipcRenderer.send('setZonkanNewValues', zonkanFileArray, document.querySelector('#group').value);
         });
 
         var btnCancel = document.getElementById("btn-cancel");

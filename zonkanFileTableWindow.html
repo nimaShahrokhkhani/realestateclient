@@ -141,6 +141,7 @@
                     store.set('zonkan', zonkanObject);
                 }
             }
+            ipcRenderer.send('setZonkanNewValuesFromZonkanWindow');
         }
         remote.getCurrentWindow().close();
     });
@@ -163,6 +164,7 @@
             {key: 'Id', value: 'کد'},
             {key: 'date', value: 'تاریخ'},
             {key: 'owner', value: 'مالک'},
+            {key: 'tel1', value: 'تلفن'},
             {key: 'type', value: 'نوع'},
             {key: 'unitFloor', value: 'طبقه'},
             {key: 'sale', value: 'مورد'},

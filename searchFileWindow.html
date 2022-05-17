@@ -383,6 +383,14 @@
                 <div class="text-196 iransans-light-black-13px">نما</div>
                 <select class="rectangle-53-6 border-1px-navy-blue" id="nama" tabindex="37"></select>
             </div>
+            <div class="overlap-group23">
+                <div class="text-296 iransans-light-black-13px">خواب</div>
+                <div class="rectangle-container" style="display: flex; flex-direction: row;">
+                    <input class="rectangle-53 border-1px-navy-blue" id="fromRoom" tabindex="37"/>
+                </div>
+            </div>
+
+
         </div>
         <div class="overlap-group9 border-1px-navy-blue">
             <div class="flex-col-3">
@@ -461,35 +469,40 @@
                 <div class="text-157 iransans-light-san-felix-13px">رهن&nbsp;&nbsp;کامل</div>
                 <div class="text-158 iransans-light-san-felix-13px">اجاره و رهن</div>
                 <div class="text-159 iransans-light-red-13px">فروش</div>
-                <input type="checkbox" class="ch-khareji border-1px-denim" id="rentToForeigner" name="saleType" tabindex="10"/>
+                <input type="checkbox" class="ch-khareji border-1px-denim" id="rentToForeigner" name="saleType"
+                       tabindex="10"/>
                 <input type="checkbox" class="ch-moavezeh border-1px-denim" id="exchange" name="saleType" tabindex="9"/>
-                <input type="checkbox" class="ch-mosharekak border-1px-denim" id="collabration" name="saleType" tabindex="8"/>
+                <input type="checkbox" class="ch-mosharekak border-1px-denim" id="collabration" name="saleType"
+                       tabindex="8"/>
                 <input type="checkbox" class="ch-rahn border-1px-denim" id="mortinage" name="saleType" tabindex="7"/>
-                <input type="checkbox" class="ch-ejareh border-1px-denim" id="rentAndMortinage" name="saleType" tabindex="6"/>
+                <input type="checkbox" class="ch-ejareh border-1px-denim" id="rentAndMortinage" name="saleType"
+                       tabindex="6"/>
                 <input type="checkbox" class="ch-forosh border-1px-denim" id="sale" name="saleType" tabindex="5"/>
             </div>
         </div>
         <div class="overlap-group6 border-1px-dove-gray">
-            <input class="rectangle-9-20 border-1px-navy-blue" id="toNumber" tabindex="50"/>
-            <div class="text-174 iransans-light-black-13px">تا</div>
+            <input class="rectangle-9-20 border-1px-navy-blue" id="toNumber" tabindex="50" type="checkbox"/>
+            <div class="text-174 iransans-light-black-13px">فایل های داخلی</div>
             <div class="flex-col-9">
                 <div class="text-172 iransans-light-denim-13px">شماره فایل</div>
-                <input class="rectangle-9-21 border-1px-navy-blue" id="fromNumber" tabindex="49"/>
+                <input class="rectangle-9-21 border-1px-navy-blue" id="fromNumber" tabindex="49" type="checkbox"/>
             </div>
-            <div class="text-173 iransans-light-black-13px">: از</div>
+            <div class="text-173 iransans-light-black-13px">فایل های دریافتی</div>
         </div>
         <div class="aria">
             <div class="overlap-group26">
                 <div class="rectangle-48-1 border-1px-dove-gray"></div>
                 <div class="text-175 iransans-light-denim-13px">مناطق</div>
-                <div id="codeListContainer" class="rectangle-49 border-1px-navy-blue" style="overflow-x: scroll; display: flex; flex-direction: row-reverse; padding-right: 50px; align-items: center">
+                <div id="codeListContainer" class="rectangle-49 border-1px-navy-blue"
+                     style="overflow-x: scroll; display: flex; flex-direction: row-reverse; padding-right: 50px; align-items: center">
 
                 </div>
                 <div>
                     <select class="rectangle-50 border-1px-navy-blue" id="code" tabindex="44"></select>
                 </div>
                 <div class="rectangle-51 border-1px-navy-blue">
-                    <ul id="regionNameResultAreaList" style="height: 100%;direction: rtl; overflow: scroll; padding: 5px">
+                    <ul id="regionNameResultAreaList"
+                        style="height: 100%;direction: rtl; overflow: scroll; padding: 5px">
 
                     </ul>
                 </div>
@@ -1110,7 +1123,7 @@
     // Get the btnSubmit
     var btnSubmit = document.getElementById("btn-submit");
     btnSubmit.addEventListener("click", function () {
-        let saleTypeValue = ['خارجی','معاوضه','مشارکت', 'رهن', 'اجاره', 'فروش'];
+        let saleTypeValue = ['خارجی', 'معاوضه', 'مشارکت', 'رهن', 'اجاره', 'فروش'];
         var saleTypeList = document.getElementsByName('saleType');
         var saleType = [];
         for (var i = 0, n = saleTypeList.length; i < n; i++) {
@@ -1122,19 +1135,28 @@
         for (i = 0; i < regionCodeListForSearch.length; i++) {
             regionCodeList.push(regionCodeListForSearch[i].value)
         }
+        let numberRegex = undefined;
+        if (document.querySelector('#fromNumber').checked) {
+            if (document.querySelector('#toNumber').checked) {
+                numberRegex = undefined;
+            } else {
+                numberRegex = 'fl';
+            }
+        } else if (document.querySelector('#toNumber').checked) {
+            numberRegex = 'cl';
+        }
         var requestBody = {
             username: !_.isEmpty(document.querySelector('#username').value) ? document.querySelector('#username').value : undefined,
             tel1: !_.isEmpty(document.querySelector('#telephone').value) ? document.querySelector('#telephone').value : undefined,
-            address: _.compact([
-                !_.isEmpty(document.querySelector('#address').value) ? document.querySelector('#address').value : undefined,
-            ]),
+            address: !_.isEmpty(document.querySelector('#address').value) ? document.querySelector('#address').value : undefined,
             owner: !_.isEmpty(document.querySelector('#owner').value) ? document.querySelector('#owner').value : undefined,
             regionCode: regionCodeList,
             regionName: regionNameResultList,
             fromDate: !_.isEmpty(document.querySelector('#fromDate').value) ? StringUtils.convertShamsiToMillisecond(document.querySelector('#fromDate').value) : undefined,
             toDate: !_.isEmpty(document.querySelector('#toDate').value) ? StringUtils.convertShamsiToMillisecond(document.querySelector('#toDate').value) : undefined,
-            fromNumber: !_.isEmpty(document.querySelector('#fromNumber').value) ? document.querySelector('#fromNumber').value : undefined,
-            toNumber: !_.isEmpty(document.querySelector('#toNumber').value) ? document.querySelector('#toNumber').value : undefined,
+            // fromNumber: !_.isEmpty(document.querySelector('#fromNumber').value) ? document.querySelector('#fromNumber').value : undefined,
+            // toNumber: !_.isEmpty(document.querySelector('#toNumber').value) ? document.querySelector('#toNumber').value : undefined,
+            number: numberRegex,
             sale: !_.isEmpty(saleType) ? saleType : undefined,
             fromRent: !_.isEmpty(document.querySelector('#fromRent').value) ? parseInt(document.querySelector('#fromRent').value.replace(/,/g, '')) : undefined,
             toRent: !_.isEmpty(document.querySelector('#toRent').value) ? parseInt(document.querySelector('#toRent').value.replace(/,/g, '')) : undefined,
@@ -1162,6 +1184,7 @@
             pool: !_.isEmpty(document.querySelector('#pool').value) ? document.querySelector('#pool').value : undefined,
             sona: !_.isEmpty(document.querySelector('#sauna').value) ? document.querySelector('#sauna').value : undefined,
             jakozi: !_.isEmpty(document.querySelector('#Jacuzzi').value) ? document.querySelector('#Jacuzzi').value : undefined,
+            unitRoom: !_.isEmpty(document.querySelector('#fromRoom').value) ? document.querySelector('#fromRoom').value : undefined,
             fromArea: !_.isEmpty(document.querySelector('#fromArea').value) ? document.querySelector('#fromArea').value : undefined,
             toArea: !_.isEmpty(document.querySelector('#toArea').value) ? document.querySelector('#toArea').value : undefined,
             fromUnitBuiltUpArea: !_.isEmpty(document.querySelector('#fromZirbana').value) ? document.querySelector('#fromZirbana').value : undefined,

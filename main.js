@@ -701,14 +701,15 @@ ipcMain.on('getUserZonkan', function (e, requestBody) {
 });
 
 // edit zonkan callback
-ipcMain.on('setZonkanNewValues', function (e) {
+ipcMain.on('setZonkanNewValues', function (e, fileList, zoonkanName) {
     const Store = require('electron-store');
     const store = new Store();
     chooseZonkanWindow.webContents.send('showLoading');
 
     services.editZonkan({
         username: store.get('userData').username,
-        groupFileList: store.get('zonkan')[store.get('userData').username]
+        groupFileList: fileList,//store.get('zonkan')[store.get('userData').username]
+        zonkanName: zoonkanName
     }).then((response) => {
         chooseZonkanWindow.webContents.send('hideLoading');
         chooseZonkanWindow.close();
@@ -729,7 +730,7 @@ ipcMain.on('setZonkanNewValuesFromZonkanWindow', function (e) {
     const store = new Store();
     zoncanWindow.webContents.send('showLoading');
 
-    services.editZonkan({
+    services.editZonkanV1({
         username: store.get('userData').username,
         groupFileList: store.get('zonkan')[store.get('userData').username]
     }).then((response) => {
